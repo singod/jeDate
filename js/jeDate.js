@@ -1,7 +1,7 @@
 /**
  
  @Name : jeDate v1.0 日期控件
- @Author: 贤心
+ @Author: chne guojun
  @Date: 2015-11-20
  @QQ群：516754269
  @Site：https://github.com/singod/jeDate
@@ -161,7 +161,7 @@
 		var format = format, _this = this;
 		return format.replace(/YYYY|MM|DD|hh|mm|ss/g, function(str, index) {
 			ymd.index = ++ymd.index | 0;
-			return ymd[ymd.index];
+			return jeDt.digit(ymd[ymd.index]);
 		});
 	}
     //初始化日期
@@ -323,7 +323,7 @@
 			obj.style.top = Math.max(tops + (pos ? 0 : jeDt.scroll()) + 2,1) + 'px';
 		},
 		getDateStr:function(y, m, d) {
-			var that = this, opts = that.config, dayStr = "";
+			var that = this, opts = that.config, dayStr = "",m=jeDt.digit(m)
 			jeDt.text(QD(Cell+" .jedateyear")[0], y+"年").attr(QD(Cell+" .jedateyear")[0], "data-year", y);
             jeDt.text(QD(Cell+" .jedatemonth")[0], m+"月").attr(QD(Cell+" .jedatemonth")[0], "data-month", m);
 			//是否显示节日
@@ -342,13 +342,13 @@
 			var lastdays = pervMonthlastDay - pervLastDay;
 
             //判断是否超出允许的日期范围	
-            var startDay = 1, mindate = parseArr(opts.minDate),maxdate = parseArr(opts.maxDate),
+            var startDay = 1, minArr = parseArr(opts.minDate),maxArr = parseArr(opts.maxDate),
 				endDay = currentMonthDays, 
 				thisDate = new Date(y, m, d), 
 				firstDate = new Date(y, m, 1), 
 				lastDate = new Date(y, m, currentMonthDays),
-				minTime = new Date(mindate[0],mindate[1],mindate[2]), 
-				maxTime = new Date(maxdate[0],maxdate[1],maxdate[2]), 
+				minTime = new Date(minArr[0],minArr[1],minArr[2]), 
+				maxTime = new Date(maxArr[0],maxArr[1],maxArr[2]), 
 				minDateDay = minTime.getDate();
             if (minTime > lastDate) {
                 startDay = parseInt(currentMonthDays) + 1;
@@ -367,43 +367,47 @@
 
 			//循环上月剩余的天数
 			for(var p = pervLastDay - 1; p >= 0; p--){
-				var py,pm,preCls;
+				var py,pm,preCls, preDays = jeDt.digit(pervMonthlastDay - p);
                 (m == 1) ? (py = parseInt(y) - 1, pm = 13) : (py = y, pm = m); 
-				var thatpretm = parseInt(py.toString() + jeDt.digit(parseInt(pm)-1).toString() + jeDt.digit(pervMonthlastDay - p).toString()),
-				minpretm = parseInt(mindate[0].toString() + jeDt.digit(mindate[1]).toString() + jeDt.digit(mindate[2]).toString()),
-				maxnexttm = parseInt(maxdate[0].toString() + jeDt.digit(maxdate[1]).toString() + jeDt.digit(maxdate[2]).toString());
+				var thatpretm = parseInt(py.toString() + jeDt.digit(parseInt(pm)-1).toString() + preDays.toString()),
+				minpretm = parseInt(minArr[0].toString() + jeDt.digit(minArr[1]).toString() + jeDt.digit(minArr[2]).toString()),
+				maxnexttm = parseInt(maxArr[0].toString() + jeDt.digit(maxArr[1]).toString() + jeDt.digit(maxArr[2]).toString());
 				preCls = ( thatpretm >= minpretm && thatpretm <= maxnexttm )? "prevdate" : preCls = "disabled";
-				dayStr +="<li class='"+preCls+"' data-y='" + py + "' data-m='" + (parseInt(pm)-1) + "' data-d='" + (pervMonthlastDay - p) + "'>"+ isfestival(parseInt(pm)-1 + '.' + (pervMonthlastDay - p),(pervMonthlastDay - p)) +"</li>";
+				dayStr +="<li class='"+preCls+"' data-y='" + py + "' data-m='" + (parseInt(pm)-1) + "' data-d='" + preDays + "'>"+ isfestival(parseInt(pm)-1 + '.' + preDays, preDays) +"</li>";
 			}
 
 			//循环本月的天数,将日期按允许的范围分三段拼接
-            for (var i = 1; i < startDay; i++) {
+            for (var i = 1; i < startDay; i++) { 
+			    i=jeDt.digit(i);
                 dayStr += '<li class="disabled" data-y="' + y + '" data-m="' + m + '" data-d="' + i + '">' + isfestival(m + '.' + i, i) + "</li>";
             }
             for (var j = startDay; j <= endDay; j++) {
                 var current = "";
+				j=jeDt.digit(j);
                 if (/*y==value.year && m==value.month+1&& */ d == j) {
                     current = "action";
                 }
                 dayStr += '<li class="' + current + '" data-y="' + y + '" data-m="' + m + '" data-d="' + j + '">' + isfestival(m + '.' + j, j) + "</li>";
             }
             for (var k = endDay + 1; k <= currentMonthDays; k++) {
+				k=jeDt.digit(k);
                 dayStr += '<li class="disabled" data-y="' + y + '" data-m="' + m + '" data-d="' + k + '">' + isfestival(m + '.' + k, k) + "</li>";
             }
 			//循环补上下个月的开始几天
 			var nextDayArr = [],nextMonthStartDays = 42 - pervLastDay - setMonthDays(y, m);
 			for (var n = 1; n <= nextMonthStartDays; n++) {
 				var ny,nm,nextCls;
+				n=jeDt.digit(n);
                 m >= 12 ? (ny = parseInt(y) + 1, nm = 0) : (ny = y, nm = m);
 				var thatnexttm = parseInt(ny.toString() + jeDt.digit(parseInt(nm)+1).toString() + jeDt.digit(n).toString()),
-				minnexttm = parseInt(mindate[0].toString() + jeDt.digit(mindate[1]).toString() + jeDt.digit(mindate[2]).toString()),
-				maxnexttm = parseInt(maxdate[0].toString() + jeDt.digit(maxdate[1]).toString() + jeDt.digit(maxdate[2]).toString());
+				minnexttm = parseInt(minArr[0].toString() + jeDt.digit(minArr[1]).toString() + jeDt.digit(minArr[2]).toString()),
+				maxnexttm = parseInt(maxArr[0].toString() + jeDt.digit(maxArr[1]).toString() + jeDt.digit(maxArr[2]).toString());
 				nextCls = ( thatnexttm <= maxnexttm && thatnexttm >= minnexttm )? "nextdate" : nextCls = "disabled";
 				dayStr +="<li class='"+nextCls+"' data-y='" + ny + "' data-m='" + (parseInt(nm)+1) + "' data-d='" + n + "'>"+ isfestival((parseInt(nm)+1) + '.' + n, n) +"</li>";
 			}
 			jeDt.html(QD(Cell+" .jedaul")[0], dayStr);
-			jeDt.attr(QD(Cell+" .monthprev")[0],"data-y",parseInt(m)-1);
-			jeDt.attr(QD(Cell+" .monthnext")[0],"data-y",parseInt(m)+1);
+			jeDt.attr(QD(Cell+" .monthprev")[0],"data-y",jeDt.digit(parseInt(m)-1));
+			jeDt.attr(QD(Cell+" .monthnext")[0],"data-y",jeDt.digit(parseInt(m)+1));
 			//计算某年某月有多少天,如果是二月，闰年28天否则29天
 			function setMonthDays(year, month) {
 				var er = (((year % 4) == 0 && (year % 100) != 0) || (year % 400) == 0) ? 29 : 28;
@@ -436,7 +440,7 @@
 					jeDt.stopmp(ev);  
 					var y = parseInt(jeDt.attr(jedateyear, "data-year")), m = parseInt(jeDt.attr(jedatemonth, "data-month"));
 					if (cls == monthPre) {
-						m == 1 ? (y -= 1, m = 12) : m -= 1;
+						m == 01 ? (y -= 1, m = 12) : m -= 1;
 					}else{
 						m == 12 ? (y += 1, m = 1) : m += 1;   	
 					} 
@@ -452,6 +456,7 @@
 					removeEmpty = function (){jeDt.removeClass(hmscell, hmslen == 24 ? "jedateh" : "jedatems"); jeDt.html(hmscell, '')};
 					hmsStr += '<div class="jedatehmstitle">' + hmsstxt[i] + '<div class="jedatehmsclose">&times;</div></div>';
 					for (var h = 0; h < hmslen; h++) {
+						h=jeDt.digit(h);
 					    acton = jeDt.text(this) == h ? "action":""; 
                         hmsStr += '<p class="' + acton + '">' + h + '</p>';
                     } 
@@ -533,7 +538,7 @@
 				var ymStr = "";	
 				if(ymlen == 12){	
 				    jeDt.each([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ], function(i,val){
-						var getmonth = jeDt.attr(jedatemonth, "data-month");
+						var getmonth = jeDt.attr(jedatemonth, "data-month"),val=jeDt.digit(val);
 						ymStr += '<li '+ (getmonth == val ? 'class="action"' : '') +' data-m="'+ val +'">'+ val +'月</li>';
 					});	
 					jeDt.each([ mchri, mchle ], function(c,cls){cls.style.display = "none"});	
