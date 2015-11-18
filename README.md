@@ -62,7 +62,7 @@ jeDate.js
     jeDate({
         dateCell: '#hello3',
         minDate: jeDate.now(-1), //0代表今天，-1代表昨天，-2代表前天，以此类推
-        maxDate: jeDate.now(+1) //+1代表明天，+2代表后天，以此类推
+        maxDate: jeDate.now(+1) //1代表明天，2代表后天，以此类推
     });
     </script>
     
