@@ -17,7 +17,7 @@ jeDate.js
 		isTime:false, //isClear:false,
 		minDate:"2014-09-19 00:00:00"
 	})
-        jeDate({
+ 	jeDate({
 		dateCell:"#dateinfo",
 		isinitVal:true,
 		isTime:true, //isClear:false,
@@ -31,11 +31,11 @@ jeDate.js
         dateCell:"#id", //需显示日期的元素选择器
         format:"YYYY-MM-DD hh:mm:ss",   //日期格式
         minDate:"1900-01-01 00:00:00",   //最小日期
-	maxDate:"2099-12-31 23:59:59",  //最大日期
+        maxDate:"2099-12-31 23:59:59",  //最大日期
         isinitVal:false,   //是否初始化时间
         isTime:false,     //是否开启时间选择
-	isClear: true,    //是否显示清空
-	festival:false,   //是否显示节日
+        isClear: true,    //是否显示清空
+        festival:false,   //是否显示节日
         zIndex:999,   //弹出层的层级高度
         choose:function(val) {}  //选择时间之后的回调函
 
