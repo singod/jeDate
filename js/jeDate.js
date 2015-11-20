@@ -2,7 +2,7 @@
  
  @Name : jeDate v1.0 日期控件
  @Author: chne guojun
- @Date: 2015-11-20
+ @Date: 2015-11-15
  @QQ群：516754269
  @Site：https://github.com/singod/jeDate
  
