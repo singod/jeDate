@@ -106,12 +106,12 @@
 	};
     //事件监听器
     jeDt.on = function(obj,type,fn) {
-		if(obj.attachEvent){
-			obj.attachEvent("on"+type,(function(){
-				return function(){ window.event.cancelBubble=true; obj.attachEvent=fn.apply(obj); }
-			})(obj));
-		}else if(obj.addEventListener){
-			obj.addEventListener(type,function(event){ event.stopPropagation(); fn.apply(this); },false);
+		if (obj.addEventListener) {
+			obj.addEventListener(type, fn, false);
+		} else if (obj.attachEvent) {
+			obj.attachEvent("on" + type, fn);
+		} else {
+			obj["on" + type] = fn;
 		}
     };
 	//阻断mouseup
