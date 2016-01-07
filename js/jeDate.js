@@ -167,53 +167,18 @@
     jeDt.festival = function(md, n) {
         var str = "";
         switch (md) {
-          case "01.01":
-            str = "元旦";
-            break;
-
-          case "02.14":
-            str = "情人";
-            break;
-
-          case "03.08":
-            str = "妇女";
-            break;
-
-          case "04.05":
-            str = "清明";
-            break;
-
-          case "05.01":
-            str = "劳动";
-            break;
-
-          case "06.01":
-            str = "儿童";
-            break;
-
-          case "08.01":
-            str = "建军";
-            break;
-
-          case "09.10":
-            str = "教师";
-            break;
-
-          case "10.01":
-            str = "国庆";
-            break;
-
-          case "12.24":
-            str = "平安";
-            break;
-
-          case "12.25":
-            str = "圣诞";
-            break;
-
-          default:
-            str = n;
-            break;
+          case "01.01": str = "元旦"; break;
+          case "02.14": str = "情人"; break;
+          case "03.08": str = "妇女"; break;
+          case "04.05": str = "清明"; break;
+          case "05.01": str = "劳动"; break;
+          case "06.01": str = "儿童"; break;
+          case "08.01": str = "建军"; break;
+          case "09.10": str = "教师"; break;
+          case "10.01": str = "国庆"; break;
+          case "12.24": str = "平安"; break;
+          case "12.25": str = "圣诞"; break;
+          default: str = n; break;
         }
         return str;
     };
@@ -227,22 +192,14 @@
     };
     var config = {
         dateCell:"#dateval",
-        format:"YYYY-MM-DD hh:mm:ss",
-        //日期格式
-        minDate:"1900-01-01 00:00:00",
-        //最小日期
-        maxDate:"2099-12-31 23:59:59",
-        //最大日期
-        isinitVal:false,
-        //是否初始化时间
-        isTime:false,
-        //是否开启时间选择
-        isClear:true,
-        //是否显示清空
-        festival:false,
-        //是否显示节日
-        zIndex:999,
-        //弹出层的层级高度
+        format:"YYYY-MM-DD hh:mm:ss", //日期格式
+        minDate:"1900-01-01 00:00:00", //最小日期
+        maxDate:"2099-12-31 23:59:59", //最大日期
+        isinitVal:false, //是否初始化时间
+        isTime:false, //是否开启时间选择
+        isClear:true, //是否显示清空
+        festival:false, //是否显示节日
+        zIndex:999,  //弹出层的层级高度
         choose:function(val) {}
     }, InitDate = function(options) {
         var that = this, newConf = JSON.parse(JSON.stringify(config));
