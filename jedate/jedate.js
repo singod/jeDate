@@ -479,7 +479,8 @@
                 });
                 //本月
                 jeDt.on(QD(Cell + " .jedatebot .jedatetodaymonth")[0], "click", function() {
-                    var thisYM = jeDt.attr(QD(Cell + " .jedaym .action")[0], "data-onym").match(/\w+|d+/g), thisYMDate = jeDt.parse([ thisYM[0], thisYM[1], 1 ], [ 0, 0, 0 ], opts.format);
+                    var ymTime = [ newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate()], 
+					thisYMDate = jeDt.parse([ ymTime[0], ymTime[1], 0 ], [ 0, 0, 0 ], opts.format);
                     jeDt.isValHtml(self) ? jeDt.val(self, thisYMDate) :jeDt.text(self, thisYMDate);
                     jeDt.html(QD(Cell)[0], "");
                     jeDt.shdeCell(true);
