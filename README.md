@@ -1,5 +1,6 @@
 jeDate.js
 =======
+# [详细日期API](http://www.jayui.com/jedate/) 
 # 快速上手
 
 **使用对象**
