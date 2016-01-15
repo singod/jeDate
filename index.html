@@ -28,7 +28,8 @@
   <a href="http://www.jayui.com/jedate/">日期控件API</a><br/><br/>
   <input class="datainp" id="indateym" type="text" placeholder="只显示年月"  readonly><br/><br/>
   <input class="datainp" id="indate" type="text" placeholder="请选择"  readonly><br/><br/>
-  <input class="datainp" id="dateinfo" type="text" placeholder="请选择"  readonly>
+  <input class="datainp" id="dateinfo" type="text" placeholder="请选择"  readonly><br/><br/>
+  <input class="datainp" id="datemarks" type="text" placeholder="给日期标注点"  readonly>
   </div>
   
   <script type="text/javascript">  
@@ -49,7 +50,14 @@
 		isinitVal:true,
 		isTime:true, //isClear:false,
 		minDate:"2014-09-19 00:00:00"
-	}) 
+	})
+	jeDate({
+		dateCell:"#datemarks",
+		isinitVal:true,
+		marks:['2015-01-03','2016-01-01','2016-01-10','2016-01-15','2016-02-15','2016-03-10','2016-04-18'],
+		isTime:true, //isClear:false,
+		minDate:"2014-09-19 00:00:00"
+	})
   </script>
   </body>
 </html>
