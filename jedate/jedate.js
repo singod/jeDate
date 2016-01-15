@@ -63,14 +63,6 @@
         e.stopPropagation ? e.stopPropagation() :e.cancelBubble = true;
         return this;
     };
-    jeDt.getCss = function(obj, name) {
-        if (obj.currentStyle) {
-            return obj.currentStyle[name];
-        } else if (window.getComputedStyle) {
-            return document.defaultView.getComputedStyle(obj)[name];
-        }
-        return null;
-    };
     //查询样式是否存在
     jeDt.hasClass = function(elem, cls) {
         elem = elem || {};
@@ -141,6 +133,10 @@
     jeDt.winarea = function(type) {
         return doc.documentElement[type ? "clientWidth" :"clientHeight"];
     };
+	jeDt.type = function (obj, type) {
+		var types = type.replace(/\b(\w)|\s(\w)/g,function(m){return m.toUpperCase()});
+        return Object.prototype.toString.call(obj) === '[object ' + types + ']';
+	}
     //转换日期格式
     jeDt.parse = function(ymd, hms, format) {
         ymd = ymd.concat(hms);
@@ -201,6 +197,7 @@
         isClear:true, //是否显示清空
         festival:false, //是否显示节日
         zIndex:999,  //弹出层的层级高度
+		marks:null, //给日期做标注
         choosefun:function(val) {},  //选中日期后的回调
 		clearfun:function(val) {},   //清除日期后的回调
 		okfun:function(val) {}       //点击确定后的回调
@@ -251,9 +248,9 @@
             var that = this, weekHtml = "", date = new Date(), nowDateVal = jeDt.nowDate(null, opts.format), isformat = opts.format.match(/\w+|d+/g).join("-") == "YYYY-MM" ? true :false;
             var initVal = opts.isinitVal ? jeDt.isValHtml(self) ? jeDt.val(self) :jeDt.text(self) :(jeDt.val(self) || jeDt.text(self)) == "" ? nowDateVal :jeDt.isValHtml(self) ? jeDt.val(self) :jeDt.text(self);
             if (jeDt.val(self) != "" || jeDt.text(self) != "") {
-                var arrTime = initVal.match(/\d+/g);
+                var Tms = initVal.match(/\d+/g);
             } else {
-                var arrTime = [ date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() ];
+                var Tms = [ date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() ];
             }
             var topymSty = !isformat ? '<div class="jedateym" style="width:50%;"><i class="prev triangle yearprev"></i><span class="jedateyy" data-ym="24"><em class="jedateyear"></em><em class="pndrop"></em></span><i class="next triangle yearnext"></i></div>' + '<div class="jedateym" style="width:50%;"><i class="prev triangle monthprev"></i><span class="jedatemm" data-ym="12"><em class="jedatemonth"></em><em class="pndrop"></em></span><i class="next triangle monthnext"></i></div>' :'<div class="jedateym" style="width:100%;"><i class="prev triangle ymprev"></i><span class="jedateyy"><em class="jedateyearmonth"></em></span><i class="next triangle ymnext"></i></div>';
             var datetopStr = '<div class="jedatetop">' + topymSty + "</div>";
@@ -265,7 +262,7 @@
             jeDt.html(QD(Cell)[0], dateHtmStr);
             opts.isClear ? "" :QD(Cell + " .jedatebot .jedateclear")[0].style.display = "none";
             if (opts.isTime) {
-                var dhmsArr = jeDt.val(self) != "" || jeDt.text(self) != "" ? [ arrTime[3], arrTime[4], arrTime[5] ] :[ date.getHours(), date.getMinutes() + 1, date.getSeconds() ];
+                var dhmsArr = jeDt.val(self) != "" || jeDt.text(self) != "" ? [ Tms[3], Tms[4], Tms[5] ] :[ date.getHours(), date.getMinutes() + 1, date.getSeconds() ];
                 jeDt.each(QD(Cell + " .jedatebot .jedatehms em"), function(i, cls) {
                     jeDt.html(cls, jeDt.digit(dhmsArr[i]));
                 });
@@ -278,16 +275,16 @@
                     weekHtml += '<li class="weeks" data-week="' + jeDt.weeks[i] + '">' + jeDt.weeks[i] + "</li>";
                 }
                 jeDt.html(QD(Cell + " .jedaol")[0], weekHtml);
-                that.getDateStr(arrTime[0], arrTime[1], arrTime[2]);
-                that.YearAndMonth(that, opts, self, arrTime);
+                that.getDateStr(Tms[0], Tms[1], Tms[2]);
+                that.chooseYM(that, opts, self, Tms);
             } else {
-                jeDt.html(QD(Cell + " .jedaym")[0], that.onlyYMStr(arrTime[0], arrTime[1]));
-                jeDt.text(QD(Cell + " .jedateym .jedateyearmonth")[0], arrTime[0] + "年" + jeDt.digit(arrTime[1]) + "月");
-                that.onlyYMevents(that, opts, self, arrTime);
+                jeDt.html(QD(Cell + " .jedaym")[0], that.onlyYMStr(Tms[0], Tms[1]));
+                jeDt.text(QD(Cell + " .jedateym .jedateyearmonth")[0], Tms[0] + "年" + jeDt.digit(Tms[1]) + "月");
+                that.onlyYMevents(that, opts, self, Tms);
             }
             jeDt.shdeCell(false);
             that.orien(QD(Cell)[0], self);
-            that.events(that, opts, self, arrTime);
+            that.events(that, opts, self, Tms);
         },
         onlyYMStr:function(y, m) {
             var onlyYM = "";
@@ -296,14 +293,14 @@
             });
             return onlyYM;
         },
-        onlyYMevents:function(that, opts, self, arrTime) {
-            var ymPre = QD(Cell + " .jedateym .ymprev")[0], ymNext = QD(Cell + " .jedateym .ymnext")[0], ony = parseInt(arrTime[0]), onm = parseInt(arrTime[1]);
+        onlyYMevents:function(that, opts, self, Tms) {
+            var ymPre = QD(Cell + " .jedateym .ymprev")[0], ymNext = QD(Cell + " .jedateym .ymnext")[0], ony = parseInt(Tms[0]), onm = parseInt(Tms[1]);
             jeDt.each([ ymPre, ymNext ], function(i, cls) {
                 jeDt.on(cls, "click", function(ev) {
                     jeDt.stopmp(ev);
                     var ym = cls == ymPre ? ony -= 1 :ony += 1;
                     jeDt.html(QD(Cell + " .jedaym")[0], that.onlyYMStr(ym, onm));
-                    that.events(that, opts, self, arrTime);
+                    that.events(that, opts, self, Tms);
                 });
             });
         },
@@ -319,6 +316,18 @@
             var that = this, opts = that.config, dayStr = "", m = jeDt.digit(m);
             jeDt.text(QD(Cell + " .jedateyear")[0], y + "年").attr(QD(Cell + " .jedateyear")[0], "data-year", y);
             jeDt.text(QD(Cell + " .jedatemonth")[0], m + "月").attr(QD(Cell + " .jedatemonth")[0], "data-month", m);
+			//设置时间标注
+			function mks(y,m,d){
+				var contains = function(arr, obj) {  
+					var len = arr.length;  
+					while (len--) {  
+						if (arr[len] === obj) return true;   
+					}  
+					return false;  
+				}
+				return jeDt.type(opts.marks,"array") && opts.marks.length > 0 && 
+					contains(opts.marks, y+'-'+m+'-'+d) ? '<i class="marks"></i>' : '';
+		    }
             //是否显示节日
             var isfestival = function(day, n) {
                 return opts.festival ? jeDt.festival(day, n) :n;
@@ -355,13 +364,13 @@
                 var py, pm, preCls, preDays = jeDt.digit(pervMonthlastDay - p);
                 m == 1 ? (py = parseInt(y) - 1, pm = 13) :(py = y, pm = m);
                 var thatpretm = parseInt(py.toString() + jeDt.digit(parseInt(pm) - 1).toString() + preDays.toString()), minpretm = parseInt(minArr[0].toString() + jeDt.digit(minArr[1]).toString() + jeDt.digit(minArr[2]).toString()), maxnexttm = parseInt(maxArr[0].toString() + jeDt.digit(maxArr[1]).toString() + jeDt.digit(maxArr[2]).toString());
-                preCls = thatpretm >= minpretm && thatpretm <= maxnexttm ? "prevdate" :preCls = "disabled";
-                dayStr += "<li class='" + preCls + "' data-y='" + py + "' data-m='" + (parseInt(pm) - 1) + "' data-d='" + preDays + "'>" + isfestival(parseInt(pm) - 1 + "." + preDays, preDays) + "</li>";
+                preCls = thatpretm >= minpretm && thatpretm <= maxnexttm ? "prevdate" : "disabled";
+                dayStr += "<li class='" + preCls + "' data-y='" + py + "' data-m='" + (parseInt(pm) - 1) + "' data-d='" + preDays + "'>" + isfestival(parseInt(pm) - 1 + "." + preDays, preDays) + mks(py,(parseInt(pm) - 1),preDays) + "</li>";
             }
             //循环本月的天数,将日期按允许的范围分三段拼接
             for (var i = 1; i < startDay; i++) {
                 i = jeDt.digit(i);
-                dayStr += '<li class="disabled" data-y="' + y + '" data-m="' + m + '" data-d="' + i + '">' + isfestival(m + "." + i, i) + "</li>";
+                dayStr += '<li class="disabled" data-y="' + y + '" data-m="' + m + '" data-d="' + i + '">' + isfestival(m + "." + i, i) + mks(y,m,i) + "</li>";
             }
             for (var j = startDay; j <= endDay; j++) {
                 var current = "";
@@ -369,11 +378,11 @@
                 if (/*y==value.year && m==value.month+1&& */ d == j) {
                     current = "action";
                 }
-                dayStr += '<li class="' + current + '" data-y="' + y + '" data-m="' + m + '" data-d="' + j + '">' + isfestival(m + "." + j, j) + "</li>";
+                dayStr += '<li class="' + current + '" data-y="' + y + '" data-m="' + m + '" data-d="' + j + '">' + isfestival(m + "." + j, j) + mks(y,m,j) + "</li>";
             }
             for (var k = endDay + 1; k <= currentMonthDays; k++) {
                 k = jeDt.digit(k);
-                dayStr += '<li class="disabled" data-y="' + y + '" data-m="' + m + '" data-d="' + k + '">' + isfestival(m + "." + k, k) + "</li>";
+                dayStr += '<li class="disabled" data-y="' + y + '" data-m="' + m + '" data-d="' + k + '">' + isfestival(m + "." + k, k) + mks(y,m,k) + "</li>";
             }
             //循环补上下个月的开始几天
             var nextDayArr = [], nextMonthStartDays = 42 - pervLastDay - setMonthDays(y, m);
@@ -383,7 +392,7 @@
                 m >= 12 ? (ny = parseInt(y) + 1, nm = 0) :(ny = y, nm = m);
                 var thatnexttm = parseInt(ny.toString() + jeDt.digit(parseInt(nm) + 1).toString() + jeDt.digit(n).toString()), minnexttm = parseInt(minArr[0].toString() + jeDt.digit(minArr[1]).toString() + jeDt.digit(minArr[2]).toString()), maxnexttm = parseInt(maxArr[0].toString() + jeDt.digit(maxArr[1]).toString() + jeDt.digit(maxArr[2]).toString());
                 nextCls = thatnexttm <= maxnexttm && thatnexttm >= minnexttm ? "nextdate" :nextCls = "disabled";
-                dayStr += "<li class='" + nextCls + "' data-y='" + ny + "' data-m='" + (parseInt(nm) + 1) + "' data-d='" + n + "'>" + isfestival(parseInt(nm) + 1 + "." + n, n) + "</li>";
+                dayStr += "<li class='" + nextCls + "' data-y='" + ny + "' data-m='" + (parseInt(nm) + 1) + "' data-d='" + n + "'>" + isfestival(parseInt(nm) + 1 + "." + n, n) + mks(ny,(parseInt(nm) + 1),n) + "</li>";
             }
             jeDt.html(QD(Cell + " .jedaul")[0], dayStr);
             jeDt.attr(QD(Cell + " .monthprev")[0], "data-y", jeDt.digit(parseInt(m) - 1));
@@ -399,39 +408,40 @@
                 return parseInt(new Date(year, month - 1, 0).getDate());
             }
         },
-        events:function(that, opts, self, arrTime) {
-            var yearPre = QD(Cell + " .yearprev")[0], yearNext = QD(Cell + " .yearnext")[0], monthPre = QD(Cell + " .monthprev")[0], monthNext = QD(Cell + " .monthnext")[0], newDate = new Date(), jedateyear = QD(Cell + " .jedateyear")[0], jedatemonth = QD(Cell + " .jedatemonth")[0], isformat = opts.format.match(/\w+|d+/g).join("-") == "YYYY-MM" ? true :false;
+        events:function(that, opts, self, Tms) {
+            var yPre = QD(Cell + " .yearprev")[0], yNext = QD(Cell + " .yearnext")[0], mPre = QD(Cell + " .monthprev")[0], mNext = QD(Cell + " .monthnext")[0], newDate = new Date(), jedateyear = QD(Cell + " .jedateyear")[0], jedatemonth = QD(Cell + " .jedatemonth")[0], isformat = opts.format.match(/\w+|d+/g).join("-") == "YYYY-MM" ? true :false;
             if (!isformat) {
                 //切换年
-                jeDt.each([ yearPre, yearNext ], function(i, cls) {
+                jeDt.each([ yPre, yNext ], function(i, cls) {
                     jeDt.on(cls, "click", function(ev) {
                         jeDt.stopmp(ev);
                         var y = parseInt(jeDt.attr(jedateyear, "data-year")), m = parseInt(jeDt.attr(jedatemonth, "data-month"));
-                        cls == yearPre ? y -= 1 :y += 1;
-                        var d = newDate.toLocaleDateString() == y + "/" + m + "/" + newDate.getDate() ? arrTime[2] :1;
+                        cls == yPre ? y -= 1 :y += 1;
+                        var d = newDate.toLocaleDateString() == y + "/" + m + "/" + newDate.getDate() ? Tms[2] :1;
                         that.getDateStr(y, m, d);
-                        that.clickLiDays(that, opts, self);
+                        that.chooseDays(that, opts, self);
                     });
                 });
                 //切换月
-                jeDt.each([ monthPre, monthNext ], function(i, cls) {
+                jeDt.each([ mPre, mNext ], function(i, cls) {
                     jeDt.on(cls, "click", function(ev) {
                         jeDt.stopmp(ev);
                         var y = parseInt(jeDt.attr(jedateyear, "data-year")), m = parseInt(jeDt.attr(jedatemonth, "data-month"));
-                        if (cls == monthPre) {
+                        if (cls == mPre) {
                             m == 1 ? (y -= 1, m = 12) :m -= 1;
                         } else {
                             m == 12 ? (y += 1, m = 1) :m += 1;
                         }
-                        var d = newDate.toLocaleDateString() == y + "/" + m + "/" + newDate.getDate() ? arrTime[2] :1;
+                        var d = newDate.toLocaleDateString() == y + "/" + m + "/" + newDate.getDate() ? Tms[2] :1;
                         that.getDateStr(y, m, d);
-                        that.clickLiDays(that, opts, self);
+                        that.chooseDays(that, opts, self);
                     });
                 });
                 //生成定位时分秒
                 jeDt.each(QD(Cell + " .jedatebot .jedatehms em"), function(i, cls) {
                     jeDt.on(cls, "click", function() {
-                        var hmsStr = "", acton, hmscell = QD(Cell + " .jedateprophms")[0], hmslen = jeDt.attr(cls, "data-hms"), hmsstxt = [ "小时", "分钟", "秒数" ], removeEmpty = function() {
+                        var hmsStr = "", acton, hmscell = QD(Cell + " .jedateprophms")[0], hmslen = jeDt.attr(cls, "data-hms"), hmsstxt = [ "小时", "分钟", "秒数" ], 
+						removeEmpty = function() {
                             jeDt.removeClass(hmscell, hmslen == 24 ? "jedateh" :"jedatems");
                             jeDt.html(hmscell, "");
                         };
@@ -464,7 +474,7 @@
                     jeDt.isValHtml(self) ? jeDt.val(self, gettoDate) :jeDt.text(self, gettoDate);
                     jeDt.html(QD(Cell)[0], "");
                     jeDt.shdeCell(true);
-                    if (opts.choosefun === "function" || opts.choosefun != null) opts.choosefun(gettoDate);
+                    if (jeDt.type(opts.choosefun,"function") || opts.choosefun != null) opts.choosefun(gettoDate);
                 });
             } else {
                 jeDt.each(QD(Cell + " .jedaym li"), function(i, cls) {
@@ -480,11 +490,11 @@
                 //本月
                 jeDt.on(QD(Cell + " .jedatebot .jedatetodaymonth")[0], "click", function() {
                     var ymTime = [ newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate()], 
-					thisYMDate = jeDt.parse([ ymTime[0], ymTime[1], 0 ], [ 0, 0, 0 ], opts.format);
-                    jeDt.isValHtml(self) ? jeDt.val(self, thisYMDate) :jeDt.text(self, thisYMDate);
+					YMDate = jeDt.parse([ ymTime[0], ymTime[1], 0 ], [ 0, 0, 0 ], opts.format);
+                    jeDt.isValHtml(self) ? jeDt.val(self, YMDate) :jeDt.text(self, YMDate);
                     jeDt.html(QD(Cell)[0], "");
                     jeDt.shdeCell(true);
-                    if (opts.choosefun === "function" || opts.choosefun != null) opts.choosefun(thisYMDate);
+                    if (jeDt.type(opts.choosefun,"function") || opts.choosefun != null) opts.choosefun(YMDate);
                 });
             }
             //清空
@@ -494,7 +504,7 @@
                 jeDt.html(QD(Cell)[0], "");
                 jeDt.shdeCell(true);
 				if(clearVal != ""){
-				    if (opts.clearfun === "function" || opts.clearfun != null) opts.clearfun(clearVal);
+				    if (jeDt.type(opts.clearfun,"function") || opts.clearfun != null) opts.clearfun(clearVal);
 				}
             });
             //确认
@@ -502,7 +512,7 @@
                 jeDt.stopmp(ev);
 				var jedCell = isformat ? QD(Cell + " .jedaym li") :QD(Cell + " .jedaul li")
                 if (!isformat) {
-                    var okTimeArr = [], okTime = [ parseInt(jeDt.attr(jedateyear, "data-year")), parseInt(jeDt.attr(jedatemonth, "data-month")), arrTime[2] ];
+                    var okTimeArr = [], okTime = [ parseInt(jeDt.attr(jedateyear, "data-year")), parseInt(jeDt.attr(jedatemonth, "data-month")), Tms[2] ];
                     jeDt.each(QD(Cell + " .jedatehms em"), function(l, tval) {
                         okTimeArr.push(jeDt.text(tval));
                     });
@@ -520,7 +530,7 @@
                 jeDt.html(QD(Cell)[0], "");
                 jeDt.shdeCell(true);
 				if(okVal != ""){
-				    if (opts.okfun === "function" || opts.okfun != null) opts.okfun(okVal);
+				    if (jeDt.type(opts.okfun,"function") || opts.okfun != null) opts.okfun(okVal);
 				}
             });
             //点击空白处隐藏
@@ -531,10 +541,10 @@
             jeDt.on(QD(Cell)[0], "click", function(ev) {
                 jeDt.stopmp(ev);
             });
-            that.clickLiDays(that, opts, self);
+            that.chooseDays(that, opts, self);
         },
         //下拉选择年和月
-        YearAndMonth:function(that, opts, self, arrTime) {
+        chooseYM:function(that, opts, self, Tms) {
             var jetopym = QD(Cell + " .jedatetopym")[0], jedateyy = QD(Cell + " .jedateyy")[0], jedatemm = QD(Cell + " .jedatemm")[0], jedateyear = QD(Cell + " .jedateyy .jedateyear")[0], jedatemonth = QD(Cell + " .jedatemm .jedatemonth")[0], mchri = QD(Cell + " .jedateymchri")[0], mchle = QD(Cell + " .jedateymchle")[0];
             function eachYears(YY) {
                 var eachStr = "";
@@ -575,8 +585,8 @@
                         jeDt.attr(year, "data-year", Years);
                         jeDt.html(year, Years);
                         jetopym.style.display = "none";
-                        that.getDateStr(Years, Months, arrTime[2]);
-                        that.clickLiDays(that, opts, self);
+                        that.getDateStr(Years, Months, Tms[2]);
+                        that.chooseDays(that, opts, self);
                     });
                 });
             }
@@ -596,8 +606,8 @@
                         jeDt.attr(jedatemonth, "data-month", Months);
                         jeDt.html(jedatemonth, Months);
                         jetopym.style.display = "none";
-                        that.getDateStr(Years, Months, arrTime[2]);
-                        that.clickLiDays(that, opts, self);
+                        that.getDateStr(Years, Months, Tms[2]);
+                        that.chooseDays(that, opts, self);
                     });
                 });
             });
@@ -607,10 +617,10 @@
                 jetopym.style.display = "none";
             });
             var yearMch = parseInt(jeDt.attr(jedateyear, "data-year"));
-            jeDt.each([ mchle, mchri ], function(lr, cls) {
+            jeDt.each([ mchle, mchri ], function(d, cls) {
                 jeDt.on(cls, "click", function(ev) {
                     jeDt.stopmp(ev);
-                    lr == 0 ? yearMch -= 15 :yearMch += 15;
+                    d == 0 ? yearMch -= 15 :yearMch += 15;
                     var mchStr = eachYears(yearMch);
                     jeDt.html(QD(Cell + " .jedatetopym .ymdropul")[0], mchStr);
                     clickLiYears(jedateyear);
@@ -618,7 +628,7 @@
             });
         },
         //选择日
-        clickLiDays:function(that, opts, self) {
+        chooseDays:function(that, opts, self) {
             jeDt.each(QD(Cell + " .jedaul li"), function(i, cls) {
                 jeDt.on(cls, "click", function(ev) {
                     if (jeDt.hasClass(cls, "disabled")) return;
@@ -633,7 +643,7 @@
                     jeDt.isValHtml(self) ? jeDt.val(self, getParDate) :jeDt.text(self, getParDate);
                     jeDt.html(QD(Cell)[0], "");
                     jeDt.shdeCell(true);
-                    if (opts.choosefun === "function" || opts.choosefun != null) {
+                    if (jeDt.type(opts.choosefun,"function") || opts.choosefun != null) {
                         opts.choosefun(getParDate);
                     }
                 });
