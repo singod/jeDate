@@ -29,7 +29,7 @@ img{vertical-align:middle;border:0;-ms-interpolation-mode:bicubic;-webkit-tap-hi
 .jedateym .pndrop{width:14px;height:14px; overflow:hidden;display: inline-block;position:relative;vertical-align: middle;}
 .jedateym .pndrop:before{width: 0;height: 0; display:inline-block;border-width:5px; border-style: dashed;border-color: transparent;overflow: hidden;border-top-style:solid; border-top-color:#fff;content: ""; position:absolute; top:4px; left:2px;}
 
-.jedatesety,.jedatesetm{width: 100%; position:absolute;left:0; top:40px; bottom:0;background-color: #fff;}
+.jedatesety,.jedatesetm{width: 100%; position:absolute;left:0; top:40px; bottom:0;background-color: #fff; z-index:50;}
 .jedatesety .ymdropul,.jedatesetm .ymdropul{width:100%;height:210px;overflow:auto;}
 .jedatesety .ymdropul li{width:33.3%;float:left;text-align: center;height:40px; line-height:40px;}
 .jedatesetm .ymdropul li{width:33.3%;float:left;text-align: center;height:50px; line-height:50px;}
