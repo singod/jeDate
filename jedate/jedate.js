@@ -1,7 +1,7 @@
 /**
  @Name : jeDate v2.0 日期控件
  @Author: chne guojun
- @Date: 2015-12-28
+ @Date: 2016-2-17
  @QQ群：516754269
  @Site：https://github.com/singod/jeDate
  */
@@ -306,14 +306,15 @@
         },
         //方位辨别
         orien:function(obj, self, pos) {
-            var tops, rect = self.getBoundingClientRect();
-            obj.style.left = rect.left + (pos ? 0 :jeDt.scroll(1)) + "px";
-            tops =  (rect.bottom + obj.offsetHeight / 1.5 <= jeDt.winarea()) ?
+            var tops,ris, rect = self.getBoundingClientRect();
+			leris = (rect.right + obj.offsetWidth / 1.5 >= jeDt.winarea(1)) ?  rect.right - obj.offsetWidth : rect.left + (pos ? 0 :jeDt.scroll(1));
+            tops = (rect.bottom + obj.offsetHeight / 1.5 <= jeDt.winarea()) ?
                 rect.bottom - 1 : rect.top > obj.offsetHeight / 1.5 ? rect.top - obj.offsetHeight + 1 :jeDt.winarea() - obj.offsetHeight;
+			obj.style.left = leris + "px";
             obj.style.top = Math.max(tops + (pos ? 0 :jeDt.scroll()) + 1, 1) + "px";
         },
         getDateStr:function(y, m, d) {
-            var that = this, opts = that.config, dayStr = "", m = jeDt.digit(m);
+            var that = this, opts = that.config, dayStr = "", m = jeDt.digit(m),newDate = new Date(),nY=newDate.getFullYear(), nM=newDate.getMonth() + 1; 
             jeDt.text(QD(Cell + " .jedateyear")[0], y + "年").attr(QD(Cell + " .jedateyear")[0], "data-year", y);
             jeDt.text(QD(Cell + " .jedatemonth")[0], m + "月").attr(QD(Cell + " .jedatemonth")[0], "data-month", m);
 			//设置时间标注
@@ -350,11 +351,11 @@
                 startDay = parseInt(currentMonthDays) + 1;
             } else if (minTime >= firstDate && minTime <= lastDate) {
                 startDay = minDateDay;
-            } else if (minTime >= firstDate) {}
+            }
             if (maxTime) {
                 var maxDateDay = maxTime.getDate();
                 if (maxTime < firstDate) {
-                    endDay = startDay;
+                    endDay = 0;    //endDay = startDay;
                 } else if (maxTime >= firstDate && maxTime <= lastDate) {
                     endDay = maxDateDay;
                 }
@@ -373,11 +374,8 @@
                 dayStr += '<li class="disabled" data-y="' + y + '" data-m="' + m + '" data-d="' + i + '">' + isfestival(m + "." + i, i) + mks(y,m,i) + "</li>";
             }
             for (var j = startDay; j <= endDay; j++) {
-                var current = "";
                 j = jeDt.digit(j);
-                if (/*y==value.year && m==value.month+1&& */ d == j) {
-                    current = "action";
-                }
+                var current = (/*y==nY && m==nM && */d == j)? "action" : "";
                 dayStr += '<li class="' + current + '" data-y="' + y + '" data-m="' + m + '" data-d="' + j + '">' + isfestival(m + "." + j, j) + mks(y,m,j) + "</li>";
             }
             for (var k = endDay + 1; k <= currentMonthDays; k++) {
