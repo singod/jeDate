@@ -30,16 +30,19 @@ jeDate.js
 **核心方法：jeDate(options)**
 
     options是一个对象，它包含了以下key: '默认值'
-        dateCell:"#id", //需显示日期的元素选择器
-        format:"YYYY-MM-DD hh:mm:ss",   //日期格式
-        minDate:"1900-01-01 00:00:00",   //最小日期
-        maxDate:"2099-12-31 23:59:59",  //最大日期
-        isinitVal:false,   //是否初始化时间
-        isTime:false,     //是否开启时间选择
-        isClear: true,    //是否显示清空
-        festival:false,   //是否显示节日
-        zIndex:999,   //弹出层的层级高度
-        choose:function(val) {}  //选择时间之后的回调函
+     dateCell:"#id", //目标元素。由于jedate.js封装了一个轻量级的选择器，因此dateCell还允许你传入class、tag这种方式 '#id .class'
+     format:"YYYY-MM-DD hh:mm:ss", //日期格式
+     minDate:"1900-01-01 00:00:00", //最小日期
+     maxDate:"2099-12-31 23:59:59", //最大日期
+     isinitVal:false, //是否初始化时间
+     isTime:false, //是否开启时间选择
+     isClear:true, //是否显示清空
+     festival:false, //是否显示节日
+     zIndex:999,  //弹出层的层级高度
+     marks:null, //给日期做标注
+     choosefun:function(val) {},  //选中日期后的回调
+     clearfun:function(val) {},   //清除日期后的回调
+     okfun:function(val) {}       //点击确定后的回调
 
 
 **【自定义日期格式】**
