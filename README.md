@@ -58,6 +58,6 @@ jeDate除了包含 日历可以直接显示与点击显示、日期标注点、�
 
 **下载**
 
-* [jeDate.js](https://github.com/singod/jeDate/blob/gh-pages/js/jedate.js)
+* [jedate.js](https://github.com/singod/jeDate/blob/gh-pages/jedate/jedate.js)
 
 ============
