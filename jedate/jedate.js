@@ -1,7 +1,7 @@
 /**
- @Name : jeDate v2.5 日期控件
+ @Name : jeDate v2.6 日期控件
  @Author: chen guojun
- @Date: 2016-4-3
+ @Date: 2016-5-12
  @QQ群：516754269
  @官网：http://www.jayui.com/jedate/ 或 https://github.com/singod/jeDate
  */
@@ -10,7 +10,7 @@
 	/* (tag), (#id), (.className) ,(tag > .className) ,(tag > tag) ,(#id > tag.className) ,
 	   (.className tag) ,(tag, tag, #id) ,(tag#id.className) ,(span > * > b) ,(input[name=radio]) 
 	*/
-	var QD=function(){function b(a){var h,i,j,k,l,m,n,o,p,q,r,c=function(a,b){for(var c=0;c<a.length&&b(c,a[c])!==!1;c++);},d=function(a){return document.getElementById(a)},e=function(a,b){var d=void 0!=b?b:document,e=[],f=d.getElementsByTagName("*");return c(f,function(b,c){new RegExp("(\\s|^)"+a+"(\\s|$)").test(c.className)&&e.push(c)}),e},f=function(a,b){var j,k,l,m,d=void 0!=b?b:document,e=[],f=/\./.test(a),g=/\=/.test(a),h=g?a.match(/\w+\[([\w\-_][^=]+)=([\'\[\]\w\-_]+)\]/):a.split("."),i=d.getElementsByTagName(f?h[0]:h[0].split("[")[0]);return f&&void 0!=h[1]||g?(j=f?h[1]:h,k=/MSIE (6|7)/i.test(navigator.userAgent)?"className":"class",l=f?k:j[1],m=f?j:j[2],c(i,function(a,b){new RegExp(m).test(b.getAttribute(l))&&e.push(b)})):c(i,function(a,b){e.push(b)}),e},g=this.elements=[];if("string"==typeof a)if(a=a.replace(/(^\s*)|(\s*$)/g,""),h=/\s+/g,i=/\>/.test(a)?a.replace(/([ \t\r\n\v\f])*>([ \t\r\n\v\f])*/g,">").replace(/\>/g," ").replace(h," "):a.replace(h," "),j=/^\#/,k=/^\./,/\,/.test(i))for(l=i.split(/,/g),m=l.length,n=0;m>n;++n)g=g.concat(b(l[n]));else/\s*/.test(i)?(o=i.split(" "),p=[],q=[],c(o,function(a,b){0==q.length&&q.push(document);var g=b.substring(1);p=[],j.test(b)?p.push(d(g)):k.test(b)?c(q,function(a,b){c(e(g,b),function(a,b){p.push(b)})}):c(q,function(a,d){c(f(b,d),function(a,b){p.push(b)})}),q=p}),g=p):(r=i.substring(1),j.test(i)?g.push(d(r)):g=k.test(i)?e(r):f(i));else"Object"==typeof i&&void 0!=i&&(g[0]=i);return g}var c=function(a){return new b(a)};return c}();
+	var QD=function(){function r(c,g){g=g||document;if(!/^[\w\-_#]+$/.test(c)&&g.querySelectorAll)return m(g.querySelectorAll(c));if(-1<c.indexOf(",")){for(var d=c.split(/,/g),a=[],b=0,e=d.length;b<e;++b)a=a.concat(r(d[b],g));return y(a)}var d=c.match(z),a=d.pop(),e=(a.match(t)||k)[1],f=!e&&(a.match(u)||k)[1],b=!e&&(a.match(v)||k)[1],a=c.match(/\[(?:[\w\-_][^=]+)=(?:[\'\[\]\w\-_]+)\]/g);if(f&&!a&&!b&&g.getElementsByClassName)b=m(g.getElementsByClassName(f));else{b=!e&&m(g.getElementsByTagName(b||"*"));f&&(b=w(b,"className",RegExp("(^|\\s)"+f+"(\\s|$)")));if(e)return(d=g.getElementById(e))?[d]:[];if(a)for(e=0;e<a.length;e++)var f=(a[e].match(x)||k)[1],h=(a[e].match(x)||k)[2],h=h.replace(/\'/g,"").replace(/\-/g,"\\-").replace(/\[/g,"\\[").replace(/\]/g,"\\]"),b=w(b,f,RegExp("(^"+h+"$)"))}return d[0]&&b[0]?p(d,b):b}function m(c){try{return Array.prototype.slice.call(c)}catch(g){for(var d=[],a=0,b=c.length;a<b;++a)d[a]=c[a];return d}}function p(c,g,d){var a=c.pop();if("\x3e"===a)return p(c,g,!0);for(var b=[],e=-1,f=(a.match(t)||k)[1],h=!f&&(a.match(u)||k)[1],a=!f&&(a.match(v)||k)[1],m=-1,q,l,n,a=a&&a.toLowerCase();q=g[++m];){l=q.parentNode;do if(n=(n=(n=!a||"*"===a||a===l.nodeName.toLowerCase())&&(!f||l.id===f))&&(!h||RegExp("(^|\\s)"+h+"(\\s|$)").test(l.className)),d||n)break;while(l=l.parentNode);n&&(b[++e]=q)}return c[0]&&b[0]?p(c,b):b}function w(c,g,d){for(var a=-1,b,e=-1,f=[];b=c[++a];)d.test(b.getAttribute(g))&&(f[++e]=b);return f}var z=/(?:[\*\w\-\\.#]+)+(?:\[(?:[\w\-_][^=]+)=(?:[\'\[\]\w\-_]+)\])*|\*|>/gi,u=/^(?:[\w\-_]+)?\.([\w\-_]+)/,t=/^(?:[\w\-_]+)?#([\w\-_]+)/,v=/^([\w\*\-_]+)/,k=[null,null,null],x=/\[([\w\-_][^=]+)=([\'\[\]\w\-_]+)\]/,y=function(){var c=+new Date,g=function(){var d=1;return function(a){var b=a[c],e=d++;return b?!1:(a[c]=e,!0)}}();return function(d){for(var a=d.length,b=[],e=-1,f=0,h;f<a;++f)h=d[f],g(h)&&(b[++e]=h);c+=1;return b}}();return r}();
     jeDt.each = function(arr, fn) {
         var i = 0, len = arr.length;
         for (;i < len; i++) {
@@ -168,7 +168,7 @@
     };
     jeDt.index = Math.floor(Math.random() * 9e3);
 	jeDt.initDate = function(opts){
-		var even = window.event, target;
+		var even = jeDt.event, target;
 		try {
 			target = even.target || even.srcElement || {};
 		} catch(e){
@@ -713,6 +713,7 @@
 	};
     //核心部分
 	var jeDate = function(options) {
+		try{ jeDt.event = window.event ? window.event : jeDate.caller.arguments[0]; } catch(e){};
         return new jeDt.initDate(options || {});
     };
 	jeDt.getPath = (function(){
@@ -730,7 +731,7 @@
 	};
 	jeDt.creatlink('jedate');
 	//版本
-	jeDate.version = "2.5";
+	jeDate.version = "2.6";
 	//更换控件风格
 	jeDate.skin = function(lib){
 		QD('#jeDateSkin')[0].parentNode.removeChild(QD('#jeDateSkin')[0]);
