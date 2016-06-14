@@ -264,7 +264,7 @@
 			ishhmmss ? jeDt.getDateStr(opts, lyerCell, date.getFullYear(), date.getMonth() + 1, date.getDate()) : jeDt.getDateStr(opts, lyerCell, tms[0], tms[1], tms[2]);   
 			jeDt.chooseYM(opts, self, lyerCell, tms);
 		} else {
-			jeDt.html(QD(lyerCell + " .jedaym")[0], jeDt.onlyYMStr(tms[0], tms[1]));
+			jeDt.html(QD(lyerCell + " .jedaym")[0], jeDt.onlyYMStr(opts, tms[0], tms[1]));
 			jeDt.text(QD(lyerCell + " .jedateym .jedateyearmonth")[0], tms[0] + "年" + jeDt.digit(tms[1]) + "月");
 			jeDt.onlyYMevents(opts, self, lyerCell, tms);
 		}
@@ -273,10 +273,25 @@
 
 	};
 	//仅年月（YYYY-MM）
-	jeDt.onlyYMStr = function(y, m) {
+	jeDt.onlyYMStr = function(opts, y, m) {
 		var onlyYM = "";
+		var parseArr = function(str) {
+			var timeArr = str.split(" ");
+			return timeArr[0].split("-");
+		};
 		jeDt.each(jeDt.montharr, function(i, val) {
-			onlyYM += "<li " + (m == val ? 'class="action"' :"") + ' data-onym="' + y + "-" + jeDt.digit(val) + '">' + y + "年" + jeDt.digit(val) + "月</li>";
+			var minArr = parseArr(opts.minDate),
+				maxArr = parseArr(opts.maxDate),
+				thisDate = new Date(y, jeDt.digit(val), '01'),
+				minTime = new Date(minArr[0], minArr[1], minArr[2]),
+				maxTime = new Date(maxArr[0], maxArr[1], maxArr[2]);
+
+			if(thisDate < minTime || thisDate > maxTime){
+				onlyYM += "<li class='disabled' " + (m == val ? 'class="action"' :"") + ' data-onym="' + y + "-" + jeDt.digit(val) + '">' + y + "年" + jeDt.digit(val) + "月</li>";
+			}
+			else{
+				onlyYM += "<li " + (m == val ? 'class="action"' :"") + ' data-onym="' + y + "-" + jeDt.digit(val) + '">' + y + "年" + jeDt.digit(val) + "月</li>";
+			}
 		});
 		return onlyYM;
 	};
@@ -285,9 +300,10 @@
 		    ony = parseInt(tms[0]), onm = parseFloat(tms[1]);
 		jeDt.each([ ymPre, ymNext ], function(i, cls) {
 			jeDt.bind(cls, "click", function(ev) {
+				if (jeDt.hasClass(cls, "disabled")) return;
 				jeDt.stopmp(ev);
 				var ym = cls == ymPre ? ony -= 1 :ony += 1;
-				jeDt.html(QD(lyerCell + " .jedaym")[0], jeDt.onlyYMStr(ym, onm));
+				jeDt.html(QD(lyerCell + " .jedaym")[0], jeDt.onlyYMStr(opts, ym, onm));
 				jeDt.events(opts, self, lyerCell,tms);
 			});
 		});
@@ -518,15 +534,17 @@
 			});
 		}else{
 			var valcell = (opts.isDisplay) ? QD("body "+lyerCell.replace(/\#/g,"."))[0] : self;
-			//选择年
+			//选择年月
 			jeDt.bind(QD(lyerCell + " .jedaym li"), "click", function(ev) {
+				var that = this;
+				if (jeDt.hasClass(that, "disabled")) return;
 				jeDt.stopmp(ev);
 				var atYM = jeDt.attr(this, "data-onym").match(/\w+|d+/g),
 				    getYMDate = jeDt.parse([ atYM[0], atYM[1], 1 ], [ 0, 0, 0 ], opts.format||config.format);
 				jeDt.isValHtml(valcell) ? jeDt.val(valcell, getYMDate) :jeDt.text(valcell, getYMDate);
 				jeDt.dateClose(opts, lyerCell);
-				if (jeDt.isType(opts.choosefun,"function") || opts.choosefun != null) opts.choosefun(getYMDate);
-				jeDt.initDate(opts);
+				//if (jeDt.isType(opts.choosefun,"function") || opts.choosefun != null) opts.choosefun(getYMDate);
+				//jeDt.initDate(opts);
 			});
 			//本月
 			jeDt.bind(QD(lyerCell + " .jedatebot .jedatetodaymonth"), "click", function() {
