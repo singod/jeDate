@@ -434,7 +434,7 @@
         var hmsArr = [];
         var parsehms = function(str) {
             var ymdstr = str.match(ymdMacth).join("-"), timeArr = str.split(" ");
-            var isHMtime = ymdstr.substring(0, 10) == "YYYY-MM-DD" ? timeArr[1] :timeArr[0];
+            var isHMtime = ymdstr.substring(0, 10) == "YYYY-MM-DD-hh-mm" ? timeArr[1] :timeArr[0];
             return isHMtime.match(ymdMacth).join(":");
         };
         jeDt.each([ 24, 60, 60 ], function(i, len) {
