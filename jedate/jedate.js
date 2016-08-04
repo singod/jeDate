@@ -611,7 +611,8 @@ window.console && (console = console || {log : function(){return;}});
             !ishhmmss && jeDt.each([ mPre, mNext ], function(i, cls) {
                 jeDt.bind(cls, "click", function(ev) {
                     jeDt.stopmp(ev);
-                    cls == mPre ?jeDt.getDateStr(jeDt.currDate.getFullYear(), --jeDt.currMonth) : jeDt.getDateStr(jeDt.currDate.getFullYear(), ++jeDt.currMonth);
+                    var year = parseInt(jeDt.attr(jeDt.find(".jedateyear")[0], "year"));
+                    cls == mPre ?jeDt.getDateStr(year, --jeDt.currMonth) : jeDt.getDateStr(year, ++jeDt.currMonth);
                 });
             });
             //时分秒事件绑定
