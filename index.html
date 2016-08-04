@@ -32,87 +32,75 @@
 <li class="datep" style="width:700px;">jeDate除了包含 日历可以直接显示与点击显示、日期标注点、设定年月（YYYY-MM）、日期范围限制、开始日期设定、自定义日期格式、时间戳转换、当天的前后若干天返回、时分秒选择、智能响应、自动纠错、节日识别，操作等常规功能外，还拥有更多趋近完美的解决方案。<span class="green b">您可以免费将她用于任何个人项目。但是不能去除头部信息。</span>  QQ群：516754269 </li>
 <li class="datep" style="width:700px;">1、解压后，将jedate整个文件放至您项目的任意目录，不要移动其文件结构，它们具有完整的依赖体系<br/>
 2、使用只需在页面引入jedate.js即可。</li>
-<li class="datep"><input class="datainp" id="inpstart" type="text" placeholder="开始日期"  readonly></li>
-<li class="datep"><input class="datainp" id="inpend" type="text" placeholder="结束日期"   readonly></li>
-<li class="datep"><input class="datainp" id="textymdhms" type="text" placeholder="YYYY-MM-DD hh:mm:ss" value=""  readonly></li>
-<li class="datep"><input class="datainp" id="texthms" type="text" placeholder="时分秒" value=""  readonly></li>
-<li class="datep"><input class="datainp" id="testym" type="text" placeholder="只显示年月"  readonly></li>
-<li class="datep"><input class="datainp" id="testy" type="text" placeholder="只显示年"  readonly></li>
-<li class="datep"><input class="datainp datep" type="text" placeholder=""  readonly><input class="datainp datep" type="text" placeholder=""  readonly></li>
+    <li class="datep"><input class="datainp" id="inpstart" type="text" placeholder="开始日期" value=""  readonly></li>
+    <li class="datep"><input class="datainp" id="inpend" type="text" placeholder="结束日期"   readonly></li>
+    <li class="datep"><input class="datainp" id="date01" type="text" placeholder="YYYY-MM-DD hh:mm:ss" value=""  readonly></li>
+    <li class="datep"><input class="datainp" id="date02" type="text" placeholder="YYYY-MM-DD hh:mm" value=""  readonly></li>
+    <li class="datep"><input class="datainp" id="date03" type="text" placeholder="YYYY-MM-DD"  readonly></li>
+    <li class="datep"><input class="datainp" id="date04" type="text" placeholder="YYYY-MM"  readonly></li>
+    <li class="datep"><input class="datainp" id="date05" type="text" placeholder="hh:mm:ss"  readonly></li>
+    <li class="datep"><input class="datainp" id="date06" type="text" placeholder="hh:mm"  readonly></li>
 </ul>
 <div class="discls" style="float:left;margin-right:5px;"></div>
 <div class="discls" style="float:left;margin-right:5px;"></div>
   </div>
   
 <script type="text/javascript">
+    var start = {
+        dateCell: '#inpstart',
+        format: 'YYYY-MM-DD hh:mm:ss',
+        minDate: jeDate.now(0), //设定最小日期为当前日期
+        isinitVal:true,
+        festival:true,
+        ishmsVal:false,
+        maxDate: '2099-06-30 23:59:59', //最大日期
+        choosefun: function(elem,datas){
+            //console.log(datas)
+            end.minDate = datas; //开始日选好后，重置结束日的最小日期
+        }
+    };
+    var end = {
+        dateCell: '#inpend',
+        format: 'YYYY年MM月DD日 hh:mm:ss',
+        minDate: jeDate.now(0), //设定最小日期为当前日期
+        festival:true,
+        maxDate: '2099-06-16 23:59:59', //最大日期
+        choosefun: function(elem,datas){
+            //console.log(end.minDate)
+            start.maxDate = datas; //将结束日的初始值设定为开始日的最大日期
+        }
+    };
+    jeDate(start);
+    jeDate(end);
 
 
-var start = {
-    dateCell: '#inpstart',
-    format: 'YYYY-MM-DD hh:mm',
-    minDate: '2014-06-16 23:59:59', //设定最小日期为当前日期
-	festival:true,
-    maxDate: '2099-06-16 23:59:59', //最大日期
-   isTime: true,
-    choosefun: function(datas){
-         end.minDate = datas; //开始日选好后，重置结束日的最小日期
-    }
-};
-var end = {
-    dateCell: '#inpend',
-    format: 'YYYY-MM-DD hh:mm',
-    minDate: jeDate.now(0), //设定最小日期为当前日期
-	festival:true,
-    maxDate: '2099-06-16 23:59:59', //最大日期
-    isTime: true,
-    choosefun: function(datas){
-         start.maxDate = datas; //将结束日的初始值设定为开始日的最大日期
-    },
-	okfun:function(val){alert(val)}
-};
-jeDate(start);
-jeDate(end);
-
-jeDate({
-	dateCell:"#textymdhms",  
-	format:"YYYY-MM-DD hh:mm:ss",
-	//isinitVal:true,
-	isTime:true, 
-	festival: true, //显示节日
-	minDate:"2015-09-19 00:00:00",
-	maxDate:"2019-09-19 00:00:00"
-})
-
-jeDate({
-	dateCell:"#texthms",  
-	format:"hh:mm"
-});
-
-jeDate({
-    dateCell: '#testym',
-	isinitVal:true,
-    format: 'YYYY/MM', // 分隔符可以任意定义，该例子表示只显示年月 
-	minDate: '2015-06-01', //最小日期
-    maxDate: '2017-06-01',  //最大日期
-	choosefun:function(val){alert(val)}
-});
-jeDate({
-    dateCell: '#testy',
-	isinitVal:true,
-    format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月 
-    minDate: '2010-06-01', //最小日期
-    maxDate: '2020-06-01' //最大日期
-})
-jeDate({
-	dateCell:"input.datep",  
-	format:"YYYY-MM-DD hh:mm:ss",
-	minDate:"2015-09-19 00:00:00",
-	isinitVal:true,
-	isDisplay:true,
-    displayCell:".discls",
-	isTime:true, 
-	festival: true, //显示节日	
-})
+    jeDate({
+        dateCell: '#date01',
+        isClear:true,
+        format: 'YYYY年MM月DD日 hh:mm:ss'
+    });
+    jeDate({
+        dateCell: '#date02',
+        isinitVal:true,
+        format: 'YYYY-MM-DD hh:mm'
+    });
+    jeDate({
+        dateCell: '#date03',
+        format: 'YYYY-MM-DD'
+    });
+    jeDate({
+        dateCell: '#date04',
+        format: 'YYYY-MM'
+    });
+    jeDate({
+        dateCell: '#date05',
+        isinitVal:true,
+        format: 'hh:mm:ss'
+    });
+    jeDate({
+        dateCell: '#date06',
+        format: 'hh:mm'
+    });
 
 </script>
   </body>
