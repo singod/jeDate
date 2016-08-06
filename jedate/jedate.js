@@ -1,7 +1,7 @@
 /**
- @Name : jeDate v3.0 日期控件
+ @Name : jeDate v3.1 日期控件
  @Author: chen guojun
- @Date: 2016-8-1
+ @Date: 2016-8-6
  @QQ群：516754269
  @官网：http://www.jayui.com/jedate/ 或 https://github.com/singod/jeDate
  */
@@ -204,6 +204,7 @@ window.console && (console = console || {log : function(){return;}});
         return str;
     };
     var config = {
+        initAddVal:[0],
         format:"YYYY-MM-DD hh:mm:ss", //日期格式
         minDate:"1900-01-01 00:00:00", //最小日期
         maxDate:"2099-12-31 23:59:59" //最大日期
@@ -214,6 +215,19 @@ window.console && (console = console || {log : function(){return;}});
         return QD(jeDt.boxCell + " " +tagName);
     };
     jeDt.isBool = function(obj){  return (obj == undefined || obj == true ?  true : false); };
+    jeDt.addDateTime = function(time,num,type,format){
+        var tarr = time.match(ymdMacth), date = new Date(), addNum,
+            tm0 = parseInt(tarr[0]),  tm1 = tarr[1] == undefined ? date.getMonth() + 1 : parseInt(tarr[1]), tm2 = tarr[2] == undefined ? date.getDate() : parseInt(tarr[2]),
+            tm3 = tarr[3] == undefined ? date.getHours() : parseInt(tarr[3]), tm4 = tarr[4] == undefined ? date.getMinutes() : parseInt(tarr[4]), tm5 = tarr[5] == undefined ? date.getMinutes() : parseInt(tarr[5]),
+            newDate = new Date(tm0,jeDt.digit(tm1),jeDt.digit(tm2),jeDt.digit(tm3),jeDt.digit(tm4),jeDt.digit(tm5));
+        switch (type){
+            case "DD": addNum = 1000*60*60*24*num; break;
+            case "hh": addNum = 1000*60*60*num; break;
+            case "mm": addNum = 1000*60*num; break;
+        }
+        newDate.setTime(newDate.getTime() + addNum);
+        return jeDt.parse([ newDate.getFullYear(), newDate.getMonth(), newDate.getDate() ], [ newDate.getHours(), newDate.getMinutes(), newDate.getSeconds() ], format);
+    }
     //初始化控件
     jeDt.initDate = function(opts) {
         var even = jeDt.event, target, isinitVal = (opts.isinitVal == undefined || opts.isinitVal == false) ? false : true;
@@ -239,16 +253,21 @@ window.console && (console = console || {log : function(){return;}});
             dateDiv.style.cssText = (dis == true ? "" : "z-index:" + zIndex) + ";position:" + (dis == true ? "relative" :"absolute") + ";display:block;";
             disCell.appendChild(dateDiv);
         }, initVals = function(elem) {
-            var nowDateVal = jeDt.nowDate(null, opts.format || config.format);
-            (jeDt.val(elem) || jeDt.text(elem)) == "" ? jeDt.isValHtml(elem) ? jeDt.val(elem, nowDateVal) :jeDt.text(elem, nowDateVal) :jeDt.isValHtml(elem) ? jeDt.val(elem) :jeDt.text(elem);
+            var jeformat = opts.format || config.format, inaddVal = opts.initAddVal || config.initAddVal, num, type;
+            if(inaddVal.length == 1){
+                num = inaddVal[0], type = "DD";
+            }else{
+                num = inaddVal[0], type = inaddVal[1];
+            }
+            var nowDateVal = jeDt.nowDate(null, jeformat), jeaddDate = jeDt.addDateTime(nowDateVal, num, type, jeformat);
+            (jeDt.val(elem) || jeDt.text(elem)) == "" ? jeDt.isValHtml(elem) ? jeDt.val(elem, jeaddDate) :jeDt.text(elem, jeaddDate) :jeDt.isValHtml(elem) ? jeDt.val(elem) :jeDt.text(elem);
         };
-
+        //为开启初始化的时间设置值
         if (isinitVal) {
             jeDt.each(QD("body "+ opts.dateCell), function(i, elem) {
                 initVals(elem);
             });
         }
-
         if (even && target.tagName) {
             jeDt.stopmp(even);
             createDiv(doc.body, jeDt.boxCell, false);
@@ -261,7 +280,7 @@ window.console && (console = console || {log : function(){return;}});
                 jeDt.elemCell = this;
                 jeDt.setHtml();
             });
-        }
+        };
     };
     //方位辨别
     jeDt.orien = function(obj, self, pos) {
@@ -273,15 +292,14 @@ window.console && (console = console || {log : function(){return;}});
     };
     //布局控件骨架
     jeDt.setHtml = function() {
-        var weekHtml = "", tmsArr = "", date = new Date(), nowDateVal = jeDt.nowDate(null, jeDt.format),   dateFormat = jeDt.checkFormat(jeDt.format),
-            isYYMM = dateFormat == "YYYY-MM" ? true :false,  ishhmm = dateFormat.substring(0, 5) == "hh-mm" ? true :false,
-            initVal = jeDt.opts.isinitVal ? jeDt.isValHtml(jeDt.elemCell) ? jeDt.val(jeDt.elemCell) :jeDt.text(jeDt.elemCell) :(jeDt.val(jeDt.elemCell) || jeDt.text(jeDt.elemCell)) == "" ? nowDateVal :jeDt.isValHtml(jeDt.elemCell) ? jeDt.val(jeDt.elemCell) :jeDt.text(jeDt.elemCell);
+        var weekHtml = "", tmsArr = "", date = new Date(),  dateFormat = jeDt.checkFormat(jeDt.format),
+            isYYMM = dateFormat == "YYYY-MM" ? true :false,  ishhmm = dateFormat.substring(0, 5) == "hh-mm" ? true :false;
         if ((jeDt.val(jeDt.elemCell) || jeDt.text(jeDt.elemCell)) == "") {
             jeDt.currDate = date;
             tmsArr = [ date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() ];
             jeDt.ymdDate = tmsArr[0] + "-" + jeDt.digit(tmsArr[1]) + "-" + jeDt.digit(tmsArr[2]);
         } else {
-            var inVals = initVal.match(ymdMacth);
+            var initVal = jeDt.isValHtml(jeDt.elemCell) ? jeDt.val(jeDt.elemCell) :jeDt.text(jeDt.elemCell), inVals = initVal.match(ymdMacth);
             if(ishhmm){
                 tmsArr = dateFormat == "hh-mm" ? [ inVals[0], inVals[1], date.getSeconds() ] :[ inVals[0], inVals[1], inVals[2] ];
                 jeDt.currDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -476,9 +494,9 @@ window.console && (console = console || {log : function(){return;}});
             return isHMtime.match(ymdMacth).join("-");
         };
         var parmathm = parsehms(parseFormat) == "hh-mm";
-        if(parmathm){
+        if(parmathm){  console.log(jeDt.getStyle(hmsliCls[0],'width'))
             var hmsliWidth = jeDt.getStyle(hmsliCls[0],'width').replace(/\px|em|rem/g,''), hmsiW = jeDt.getStyle(jeDt.find(".jedatehms i")[0],'width').replace(/\px|em|rem/g,''),
-                hmschoseW = jeDt.getStyle(proptextCls[0],'width').replace(/\px|em|rem/g,''), hmslival = Math.round(parseInt(hmsliWidth) + parseInt(hmsliWidth)/2 + parseInt(hmsiW)/2 +1);
+                hmschoseW = jeDt.getStyle(proptextCls[0],'width').replace(/\px|em|rem/g,''), hmslival = Math.round(parseInt(hmsliWidth) + parseInt(hmsliWidth)/2 + parseInt(hmsiW)/2);
             hmsliCls[0].style.width = hmsliCls[1].style.width = hmslival + "px";
             proptextCls[0].style.width = proptextCls[1].style.width = propconCls[0].style.width = propconCls[1].style.width = Math.round(parseInt(hmschoseW) + parseInt(hmschoseW)/2 + 2) + "px";
         }
@@ -783,7 +801,7 @@ window.console && (console = console || {log : function(){return;}});
         return new jeDt.initDate(options || {});
     };
     //版本
-    jeDate.version = "3.0";
+    jeDate.version = "3.1";
     //返回指定日期
     jeDate.now = function(num) {
         if(typeof num === "string"){
@@ -799,17 +817,7 @@ window.console && (console = console || {log : function(){return;}});
     //为当前获取到的日期加减天数，这里只能控制到天数，不能控制时分秒加减
     jeDate.addDate = function(time,num,type) {
         num = num | 0;   type = type || "DD";
-        var tarr = time.match(ymdMacth), date = new Date(), addNum,
-            tm0 = parseInt(tarr[0]),  tm1 = tarr[1] == undefined ? date.getMonth() + 1 : parseInt(tarr[1]), tm2 = tarr[2] == undefined ? date.getDate() : parseInt(tarr[2]),
-            tm3 = tarr[3] == undefined ? date.getHours() : parseInt(tarr[3]), tm4 = tarr[4] == undefined ? date.getMinutes() : parseInt(tarr[4]), tm5 = tarr[5] == undefined ? date.getMinutes() : parseInt(tarr[5]),
-            newDate = new Date(tm0,jeDt.digit(tm1),jeDt.digit(tm2),jeDt.digit(tm3),jeDt.digit(tm4),jeDt.digit(tm5));
-        switch (type){
-            case "DD": addNum = 1000*60*60*24*num; break;
-            case "hh": addNum = 1000*60*60*num; break;
-            case "mm": addNum = 1000*60*num; break;
-        }
-        newDate.setTime(newDate.getTime() + addNum);
-        return jeDt.parse([ newDate.getFullYear(), newDate.getMonth(), newDate.getDate() ], [ newDate.getHours(), newDate.getMinutes(), newDate.getSeconds() ], jeDt.format);
+        return jeDt.addDateTime(time,num,type,jeDt.format);
     };
     return jeDate;
 });
