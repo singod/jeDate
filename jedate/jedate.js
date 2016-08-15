@@ -826,7 +826,12 @@ window.console && (console = console || {log : function(){return;}});
                 if (ishhmmss) {
                     okVal = jeDt.parse([ tmsArr[0], tmsArr[1], tmsArr[2] ], [ okArr[0], okArr[1], okArr[2] ], jeDt.format);
                 } else {
-                    var okDate = isYYYY ? jeDt.attr(monthCls, "data-onyy").match(/\w+|d+/g) : jeDt.attr(monthCls, "data-onym").match(/\w+|d+/g);
+                    var okDate;
+                    if(isYYMM){
+                        okDate = jeDt.checkFormat(jeDt.format) == "YYYY" ? jeDt.attr(monthCls, "data-onyy").match(/\w+|d+/g) : jeDt.attr(monthCls, "data-onym").match(/\w+|d+/g);
+                    }else{
+                        okDate = [ newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate()];
+                    }
                     okVal = isYYYY ? jeDt.parse([parseInt(okDate[0]), newDate.getMonth() + 1, 1], [0, 0, 0], jeDt.format) :
                         jeDt.parse([parseInt(okDate[0]), parseInt(okDate[1]), newDate.getDate()], [okArr[0], okArr[1], okArr[2]], jeDt.format);
                 }
