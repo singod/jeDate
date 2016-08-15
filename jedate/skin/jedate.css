@@ -28,7 +28,11 @@
 .jedatebox .jedatetopym p span.jedateymchle{background-color: #ECF4FB;color: #1F547E;float:left;font-size: 16px;}
 .jedatebox .jedatetopym p span.jedateymchok{background-color: #00A1CB;color:#fff;float:right;font-size: 12px;}
 
-.jedatebox .jedaym{height:202px;overflow:auto; padding:5px;}
+.jedatebox .jedayy,.jedatebox .jedaym{height:202px;overflow:auto; padding:5px;}
+.jedatebox .jedayy li{width:33.3%;float:left;text-align: center;height:38px; line-height:38px;}
+.jedatebox .jedayy li.action,.jedatebox .jedayy li.action:hover{background: #00A1CB;color:#fff;}
+.jedatebox .jedayy li:hover{background: #ECF4FB;}
+.jedatebox .jedayy li.disabled{ color:#bbb;}
 .jedatebox .jedaym li{width:50%;float:left;text-align: center;height:32px; line-height:32px;}
 .jedatebox .jedaym li.action,.jedatebox .jedaym li.action:hover{background: #00A1CB;color:#fff;}
 .jedatebox .jedaym li:hover{background: #ECF4FB;}
