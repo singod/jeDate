@@ -239,12 +239,7 @@ window.console && (console = console || {log : function(){return;}});
     }
     //初始化控件
     jeDt.initDate = function(opts) {
-        var even = jeDt.event, target, isinitVal = (opts.isinitVal == undefined || opts.isinitVal == false) ? false : true;
-        try {
-            target = even.target || even.srcElement || {};
-        } catch (e) {
-            target = {};
-        }
+        var even = jeDt.event? jeDt.event: window.event, target, isinitVal = (opts.isinitVal == undefined || opts.isinitVal == false) ? false : true;
         //创建控件骨架外层
         var createDiv = function(disCell, self) {
             if (QD(self)[0]) return;
@@ -278,7 +273,7 @@ window.console && (console = console || {log : function(){return;}});
                 initVals(elem);
             });
         }
-        if (even && target.tagName) {
+        if (even) {
             jeDt.stopmp(even);
             createDiv(doc.body, jeDt.boxCell);
             jeDt.elemCell = typeof (opts.dateCell) == "string" ? QD(opts.dateCell)[0] : opts.dateCell;
