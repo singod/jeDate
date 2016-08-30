@@ -225,17 +225,11 @@ window.console && (console = console || {log : function(){return;}});
     jeDt.find = function(tagName){ return QD(jeDt.boxCell + " " +tagName); };
     jeDt.isBool = function(obj){  return (obj == undefined || obj == true ?  true : false); };
     jeDt.addDateTime = function(time,num,type,format){
-        var tarr = time.match(ymdMacth), date = new Date(), addNum,
-            tm0 = parseInt(tarr[0]),  tm1 = tarr[1] == undefined ? date.getMonth()+1 : parseInt(tarr[1]), tm2 = tarr[2] == undefined ? date.getDate() : parseInt(tarr[2]),
-            tm3 = tarr[3] == undefined ? date.getHours() : parseInt(tarr[3]), tm4 = tarr[4] == undefined ? date.getMinutes() : parseInt(tarr[4]), tm5 = tarr[5] == undefined ? date.getMinutes() : parseInt(tarr[5]),
-            newDate = new Date(tm0,jeDt.digit(tm1),jeDt.digit(tm2)-1,jeDt.digit(tm3),jeDt.digit(tm4),jeDt.digit(tm5));
-        switch (type){
-            case "DD": addNum = 1000*60*60*24*num; break;
-            case "hh": addNum = 1000*60*60*num; break;
-            case "mm": addNum = 1000*60*num; break;
-        }  console.log(newDate.getTime()+"----"+addNum);   console.log(newDate.getTime()+addNum)
-        newDate.setTime(newDate.getTime() + addNum);
-        return jeDt.parse([ newDate.getFullYear(), newDate.getMonth(), newDate.getDate() ], [ newDate.getHours(), newDate.getMinutes(), newDate.getSeconds() ], format);
+        var tarr = time.match(ymdMacth), date = new Date(),
+            tm0 = parseInt(tarr[0]),  tm1 = tarr[1] == undefined ? date.getMonth() + 1 : parseInt(tarr[1]), tm2 = tarr[2] == undefined ? date.getDate() : parseInt(tarr[2]),
+            tm3 = tarr[3] == undefined ? date.getHours() : parseInt(tarr[3]), tm4 = tarr[4] == undefined ? date.getMinutes() : parseInt(tarr[4]), tm5 = tarr[5] == undefined ? date.getMinutes() : parseInt(tarr[5]);
+        var newDate = new Date(tm0,jeDt.digit(tm1)-1,(type == "DD" ? tm2 + num : tm2),(type == "hh" ? tm3 + num : tm3),(type == "mm" ? tm4 + num : tm4),jeDt.digit(tm5));
+        return jeDt.parse([ newDate.getFullYear(), newDate.getMonth()+1, newDate.getDate() ], [ newDate.getHours(), newDate.getMinutes(), newDate.getSeconds() ], format);
     }
     //初始化控件
     jeDt.initDate = function(opts) {
@@ -831,7 +825,7 @@ window.console && (console = console || {log : function(){return;}});
                         jeDt.parse([parseInt(okDate[0]), parseInt(okDate[1]), newDate.getDate()], [okArr[0], okArr[1], okArr[2]], jeDt.format);
                 }
             }
-            jeDt.isValHtml(valcell) ? jeDt.val(valcell, okVal) :jeDt.text(valcell, okVal)
+            jeDt.isValHtml(valcell) ? jeDt.val(valcell, okVal) :jeDt.text(valcell, okVal);
             jeDt.dateClose();
             if (jeDt.isType(jeDt.opts.okfun, "function") || jeDt.opts.okfun != null) jeDt.opts.okfun(jeDt.elemCell,okVal);
         });
