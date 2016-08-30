@@ -1,7 +1,7 @@
 /**
  @Name : jeDate v3.2 日期控件
  @Author: chen guojun
- @Date: 2016-8-14
+ @Date: 2016-8-30
  @QQ群：516754269
  @官网：http://www.jayui.com/jedate/ 或 https://github.com/singod/jeDate
  */
@@ -226,14 +226,14 @@ window.console && (console = console || {log : function(){return;}});
     jeDt.isBool = function(obj){  return (obj == undefined || obj == true ?  true : false); };
     jeDt.addDateTime = function(time,num,type,format){
         var tarr = time.match(ymdMacth), date = new Date(), addNum,
-            tm0 = parseInt(tarr[0]),  tm1 = tarr[1] == undefined ? date.getMonth() + 1 : parseInt(tarr[1]), tm2 = tarr[2] == undefined ? date.getDate() : parseInt(tarr[2]),
+            tm0 = parseInt(tarr[0]),  tm1 = tarr[1] == undefined ? date.getMonth()+1 : parseInt(tarr[1]), tm2 = tarr[2] == undefined ? date.getDate() : parseInt(tarr[2]),
             tm3 = tarr[3] == undefined ? date.getHours() : parseInt(tarr[3]), tm4 = tarr[4] == undefined ? date.getMinutes() : parseInt(tarr[4]), tm5 = tarr[5] == undefined ? date.getMinutes() : parseInt(tarr[5]),
-            newDate = new Date(tm0,jeDt.digit(tm1),jeDt.digit(tm2),jeDt.digit(tm3),jeDt.digit(tm4),jeDt.digit(tm5));
+            newDate = new Date(tm0,jeDt.digit(tm1),jeDt.digit(tm2)-1,jeDt.digit(tm3),jeDt.digit(tm4),jeDt.digit(tm5));
         switch (type){
             case "DD": addNum = 1000*60*60*24*num; break;
             case "hh": addNum = 1000*60*60*num; break;
             case "mm": addNum = 1000*60*num; break;
-        }
+        }  console.log(newDate.getTime()+"----"+addNum);   console.log(newDate.getTime()+addNum)
         newDate.setTime(newDate.getTime() + addNum);
         return jeDt.parse([ newDate.getFullYear(), newDate.getMonth(), newDate.getDate() ], [ newDate.getHours(), newDate.getMinutes(), newDate.getSeconds() ], format);
     }
