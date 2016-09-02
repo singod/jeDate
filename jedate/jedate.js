@@ -1,7 +1,7 @@
 /**
- @Name : jeDate v3.2 日期控件
+ @Name : jeDate v3.3 日期控件
  @Author: chen guojun
- @Date: 2016-8-30
+ @Date: 2016-9-1
  @QQ群：516754269
  @官网：http://www.jayui.com/jedate/ 或 https://github.com/singod/jeDate
  */
@@ -15,8 +15,8 @@ window.console && (console = console || {log : function(){return;}});
         root.jeDate = factory(root.jeDate);
     }
 })(this, function(jeDate) {
-    var jeDt = {}, doc = document, ymdMacth = /\w+|d+/g, oldParseInt = window.parseInt;
-    var parseInt = function (n) { return oldParseInt(n, 10); };
+    var jeDt = {}, doc = document, ymdMacth = /\w+|d+/g;
+    var parseInt = function (n) { return window.parseInt(n, 10); };
     // (tag), (#id), (.className) ,(tag > .className) ,(tag > tag) ,(#id > tag.className) , (.className tag) ,(tag, tag, #id) ,(tag#id.className) ,(span > * > b) ,(input[name=radio])
     var QD=function(){function r(c,g){g=g||document;if(!/^[\w\-_#]+$/.test(c)&&g.querySelectorAll)return m(g.querySelectorAll(c));if(-1<c.indexOf(",")){for(var d=c.split(/,/g),a=[],b=0,e=d.length;b<e;++b)a=a.concat(r(d[b],g));return y(a)}var d=c.match(z),a=d.pop(),e=(a.match(t)||k)[1],f=!e&&(a.match(u)||k)[1],b=!e&&(a.match(v)||k)[1],a=c.match(/\[(?:[\w\-_][^=]+)=(?:[\'\[\]\w\-_]+)\]/g);if(f&&!a&&!b&&g.getElementsByClassName)b=m(g.getElementsByClassName(f));else{b=!e&&m(g.getElementsByTagName(b||"*"));f&&(b=w(b,"className",RegExp("(^|\\s)"+f+"(\\s|$)")));if(e)return(d=g.getElementById(e))?[d]:[];if(a)for(e=0;e<a.length;e++)var f=(a[e].match(x)||k)[1],h=(a[e].match(x)||k)[2],h=h.replace(/\'/g,"").replace(/\-/g,"\\-").replace(/\[/g,"\\[").replace(/\]/g,"\\]"),b=w(b,f,RegExp("(^"+h+"$)"))}return d[0]&&b[0]?p(d,b):b}function m(c){try{return Array.prototype.slice.call(c)}catch(g){for(var d=[],a=0,b=c.length;a<b;++a)d[a]=c[a];return d}}function p(c,g,d){var a=c.pop();if("\x3e"===a)return p(c,g,!0);for(var b=[],e=-1,f=(a.match(t)||k)[1],h=!f&&(a.match(u)||k)[1],a=!f&&(a.match(v)||k)[1],m=-1,q,l,n,a=a&&a.toLowerCase();q=g[++m];){l=q.parentNode;do if(n=(n=(n=!a||"*"===a||a===l.nodeName.toLowerCase())&&(!f||l.id===f))&&(!h||RegExp("(^|\\s)"+h+"(\\s|$)").test(l.className)),d||n)break;while(l=l.parentNode);n&&(b[++e]=q)}return c[0]&&b[0]?p(c,b):b}function w(c,g,d){for(var a=-1,b,e=-1,f=[];b=c[++a];)d.test(b.getAttribute(g))&&(f[++e]=b);return f}var z=/(?:[\*\w\-\\.#]+)+(?:\[(?:[\w\-_][^=]+)=(?:[\'\[\]\w\-_]+)\])*|\*|>/gi,u=/^(?:[\w\-_]+)?\.([\w\-_]+)/,t=/^(?:[\w\-_]+)?#([\w\-_]+)/,v=/^([\w\*\-_]+)/,k=[null,null,null],x=/\[([\w\-_][^=]+)=([\'\[\]\w\-_]+)\]/,y=function(){var c=+new Date,g=function(){var d=1;return function(a){var b=a[c],e=d++;return b?!1:(a[c]=e,!0)}}();return function(d){for(var a=d.length,b=[],e=-1,f=0,h;f<a;++f)h=d[f],g(h)&&(b[++e]=h);c+=1;return b}}();return r}();
     //判断类型
@@ -128,6 +128,38 @@ window.console && (console = console || {log : function(){return;}});
     jeDt.winarea = function(type) {
         return doc.documentElement[type ? "clientWidth" :"clientHeight"];
     };
+    //判断是否闰年
+    jeDt.isLeap = function(y) {
+        return (y % 100 !== 0 && y % 4 === 0) || (y % 400 === 0);
+    }
+    //获取本月的总天数
+    jeDt.getDaysNum = function(y, m) {
+        var num = 31;
+        switch (parseInt(m)) {
+            case 2:
+                num = jeDt.isLeap(y) ? 29 : 28; break;
+            case 4: case 6: case 9: case 11:
+            num = 30; break;
+        }
+        return num;
+    }
+    //获取月与年
+    jeDt.getYM = function(y, m, n) {
+        var nd = new Date(y, m - 1);
+        nd.setMonth(m - 1 + n);
+        return {
+            y: nd.getFullYear(),
+            m: nd.getMonth() + 1
+        };
+    }
+    //获取上个月
+    jeDt.getPrevMonth = function(y, m, n) {
+        return  jeDt.getYM(y, m, 0 - (n || 1));
+    }
+    //获取下个月
+    jeDt.getNextMonth = function(y, m, n) {
+        return jeDt.getYM(y, m, n || 1);
+    }
     //补齐数位
     jeDt.digit = function(num) {
         return num < 10 ? "0" + (num | 0) :num;
@@ -161,7 +193,7 @@ window.console && (console = console || {log : function(){return;}});
     };
     //验证日期
     jeDt.checkDate = function (date) {
-        var dateArr = date.match(/\w+|d+/g);
+        var dateArr = date.match(ymdMacth);
         if (isNaN(dateArr[0]) || isNaN(dateArr[1]) || isNaN(dateArr[2])) return false;
         if (dateArr[1] > 12 || dateArr[1] < 1) return false;
         if (dateArr[2] < 1 || dateArr[2] > 31) return false;
@@ -198,14 +230,14 @@ window.console && (console = console || {log : function(){return;}});
     jeDt.festival = function(md, n) {
         var str = "";
         switch (md) {
-            case "01.01": str = "元旦"; break;
-            case "02.14": str = "情人"; break;
-            case "03.08": str = "妇女"; break;
-            case "05.01": str = "劳动"; break;
-            case "06.01": str = "儿童"; break;
-            case "08.01": str = "建军"; break;
-            case "09.10": str = "教师"; break;
-            case "10.01": str = "国庆"; break;
+            case "1.1": str = "元旦"; break;
+            case "2.14": str = "情人"; break;
+            case "3.8": str = "妇女"; break;
+            case "5.1": str = "劳动"; break;
+            case "6.1": str = "儿童"; break;
+            case "8.1": str = "建军"; break;
+            case "9.10": str = "教师"; break;
+            case "10.1": str = "国庆"; break;
             case "12.24": str = "平安"; break;
             case "12.25": str = "圣诞"; break;
             default: str = n; break;
@@ -217,8 +249,8 @@ window.console && (console = console || {log : function(){return;}});
         format:"YYYY-MM-DD hh:mm:ss", //日期格式
         minDate:"1900-01-01 00:00:00", //最小日期
         maxDate:"2099-12-31 23:59:59", //最大日期
-        startMin:jeDt.nowDate(0),
-        startMax:this.maxDate
+        startMin:"", //清除日期后返回到预设的最小日期
+        startMax:""  //清除日期后返回到预设的最大日期
     };
     jeDt.index = Math.floor(Math.random() * 9e3);
     jeDt.boxCell = "#jedatebox";
@@ -245,9 +277,10 @@ window.console && (console = console || {log : function(){return;}});
             }else{
                 jeDt.minDate = minTime, jeDt.maxDate = maxTime;
             }
-            var dateDiv = doc.createElement("div"), zIndex = opts.zIndex == undefined ? 999 : opts.zIndex;
+            var dateDiv = doc.createElement("div"), zIndex = opts.zIndex == undefined ? 2099 : opts.zIndex;
             dateDiv.className = "jedatebox";
             dateDiv.id = jeDt.boxCell.replace(/\#/g,"");
+            jeDt.attr(dateDiv, "author","chen guojun--www.jayui.com--version:"+jeDate.version+"");
             if(opts.isDisplay) jeDt.attr(dateDiv, "date", true);
             dateDiv.style.cssText = "z-index:" + zIndex + ";position:" + (jeDt.fixed == true ? "absolute" :"fixed") + ";display:block;";
             disCell.appendChild(dateDiv);
@@ -296,27 +329,31 @@ window.console && (console = console || {log : function(){return;}});
         obj.style.top = ortop;
         obj.style.left = orleri;
     };
+    //关闭层
+    jeDt.dateClose = function() {
+        doc.body.removeChild(QD(jeDt.boxCell)[0]);
+    };
     //布局控件骨架
-    jeDt.setHtml = function() {
+    jeDt.setHtml = function(){
         var weekHtml = "", tmsArr = "", date = new Date(),  dateFormat = jeDt.checkFormat(jeDt.format),
             isYYMM = (dateFormat == "YYYY-MM" || dateFormat == "YYYY") ? true :false,  ishhmm = dateFormat.substring(0, 5) == "hh-mm" ? true :false;
         if ((jeDt.val(jeDt.elemCell) || jeDt.text(jeDt.elemCell)) == "") {
-            jeDt.currDate = date;
             tmsArr = [ date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() ];
+            jeDt.currDate = new Date(tmsArr[0], parseInt(tmsArr[1])-1, tmsArr[2], tmsArr[3], tmsArr[4], tmsArr[5]);
             jeDt.ymdDate = tmsArr[0] + "-" + jeDt.digit(tmsArr[1]) + "-" + jeDt.digit(tmsArr[2]);
         } else {
             var initVal = jeDt.isValHtml(jeDt.elemCell) ? jeDt.val(jeDt.elemCell) : jeDt.text(jeDt.elemCell),
                 inVals = initVal.match(ymdMacth);
             if(ishhmm){
                 tmsArr = dateFormat == "hh-mm" ? [ inVals[0], inVals[1], date.getSeconds() ] :[ inVals[0], inVals[1], inVals[2] ];
-                jeDt.currDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                jeDt.currDate = new Date(date.getFullYear(), date.getMonth()-1, date.getDate());
             }else{
                 tmsArr = [ inVals[0], inVals[1], inVals[2], inVals[3], inVals[4], inVals[5] == undefined ? date.getSeconds() :inVals[5] ];
-                jeDt.currDate = new Date(inVals[0], inVals[1], inVals[2]);
+                jeDt.currDate = new Date(tmsArr[0], parseInt(tmsArr[1])-1,  tmsArr[2], tmsArr[3], tmsArr[4], tmsArr[5]);
                 jeDt.ymdDate = tmsArr[0] + "-" + jeDt.digit(tmsArr[1]) + "-" + jeDt.digit(tmsArr[2]);
             }
         }
-        if(!ishhmm) jeDt.currMonth = (jeDt.val(jeDt.elemCell) || jeDt.text(jeDt.elemCell)) == "" ? jeDt.currDate.getMonth() : jeDt.currDate.getMonth() - 1;
+        jeDt.currMonth = tmsArr[1], jeDt.currDays = tmsArr[2];
         //控件HMTL模板
         var datetopStr = '<div class="jedatetop">' + (!isYYMM ? '<div class="jedateym" style="width:50%;"><i class="prev triangle yearprev"></i><span class="jedateyy" ym="24"><em class="jedateyear"></em><em class="pndrop"></em></span><i class="next triangle yearnext"></i></div>' + '<div class="jedateym" style="width:50%;"><i class="prev triangle monthprev"></i><span class="jedatemm" ym="12"><em class="jedatemonth"></em><em class="pndrop"></em></span><i class="next triangle monthnext"></i></div>' :'<div class="jedateym" style="width:100%;"><i class="prev triangle ymprev"></i><span class="jedateyy"><em class="jedateyearmonth"></em></span><i class="next triangle ymnext"></i></div>') + "</div>";
         var dateymList = !isYYMM ? '<div class="jedatetopym" style="display: none;">' + '<ul class="ymdropul"></ul><p><span class="jedateymchle">&#8592;</span><span class="jedateymchri">&#8594;</span><span class="jedateymchok">关闭</span></p>' + "</div>" :(dateFormat == "YYYY" ? '<ul class="jedayy"></ul>' :　'<ul class="jedaym"></ul>');
@@ -360,7 +397,6 @@ window.console && (console = console || {log : function(){return;}});
             if (!isYYMM) jeDt.isShow(jeDt.find(".jedatebot .jedatehmsshde")[0], false);
             jeDt.find(".jedatebot .jedatebtn")[0].style.width = "100%";
         };
-
         //判断是否为年月类型
         if(/\YYYY-MM-DD/.test(dateFormat)){
             jeDt.each(jeDt.weeks, function(i, week) {
@@ -369,7 +405,7 @@ window.console && (console = console || {log : function(){return;}});
             jeDt.each(jeDt.find(".jedaol"), function(i, elem) {
                 jeDt.html(elem, weekHtml);
             });
-            jeDt.getDateStr(jeDt.currDate.getFullYear(), jeDt.currMonth);
+            jeDt.createDaysHtml(jeDt.currDate.getFullYear(), jeDt.currDate.getMonth()+1);
             jeDt.chooseYM();
         };
         if(isYYMM){
@@ -380,8 +416,8 @@ window.console && (console = console || {log : function(){return;}});
                 jeDt.html(jeDt.find(".jedayy")[0], jeDt.onlyYear(tmsArr[0]));
             }else{
                 jeDt.attr(monthCls, "data-onym",tmsArr[0]+"-"+jeDt.digit(tmsArr[1]));
-                jeDt.text(monthCls, tmsArr[0] + "年" + jeDt.digit(tmsArr[1]) + "月");
-                jeDt.html(jeDt.find(".jedaym")[0], jeDt.onlyYMStr(tmsArr[0], tmsArr[1]));
+                jeDt.text(monthCls, tmsArr[0] + "年" + parseInt(tmsArr[1])+1 + "月");
+                jeDt.html(jeDt.find(".jedaym")[0], jeDt.onlyYMStr(tmsArr[0], parseInt(tmsArr[1])+1));
             }
             jeDt.onlyYMevents(tmsArr);
         }
@@ -390,7 +426,69 @@ window.console && (console = console || {log : function(){return;}});
             jeDt.opts.success && jeDt.opts.success(jeDt.elemCell);
         }, 2);
         jeDt.events(tmsArr);
-    };
+    }
+    //循环生成日历
+    jeDt.createDaysHtml = function(ys, ms){
+        var year = parseInt(ys), month = parseInt(ms), dateHtml = "",count = 0;
+        var minArr = jeDt.minDate.match(ymdMacth), minNum = minArr[0] + minArr[1] + minArr[2],
+            maxArr = jeDt.maxDate.match(ymdMacth), maxNum = maxArr[0] + maxArr[1] + maxArr[2];
+        jeDt.html(jeDt.find(".jedaul")[0], ""); //切忌一定要把这个内容去掉，要不然会点一次翻页都在日历下面依次显示出来
+        var firstWeek = new Date(year, month - 1, 1).getDay() || 7,
+            daysNum = jeDt.getDaysNum(year, month), prevM = jeDt.getPrevMonth(year, month),
+            prevDaysNum = jeDt.getDaysNum(year, prevM.m), nextM = jeDt.getNextMonth(year, month),
+            currOne = jeDt.currDate.getFullYear() + "-" + jeDt.digit(jeDt.currDate.getMonth() + 1) + "-" + jeDt.digit(1),
+            thisOne = year + "-" + jeDt.digit(month) + "-" + jeDt.digit(1);
+        jeDt.attr(jeDt.find(".jedateyear")[0], "year", year), jeDt.text(jeDt.find(".jedateyear")[0], year + '年');
+        jeDt.attr(jeDt.find(".jedatemonth")[0], "month", month), jeDt.text(jeDt.find(".jedatemonth")[0], month + '月');
+        //设置时间标注
+        var mark = function (my, mm, md) {
+            var Marks = jeDt.opts.marks, contains = function(arr, obj) {
+                var len = arr.length;
+                while (len--) {
+                    if (arr[len] === obj) return true;
+                }
+                return false;
+            };
+            return jeDt.isType(Marks, "array") && Marks.length > 0 && contains(Marks, my + "-" + jeDt.digit(mm) + "-" + jeDt.digit(md)) ? '<i class="marks"></i>' :"";
+        }
+        //是否显示节日
+        var isfestival = function(fmd, fd) {
+            return jeDt.opts.festival ? jeDt.festival(fmd, fd) : fd;
+        };
+        //判断是否在限制的日期之中
+        var dateOfLimit = function(Y, M, D, isMonth){
+            var thatNum = (Y + "-" + jeDt.digit(M) + "-" + jeDt.digit(D)).replace(/\-/g, '');
+            if(isMonth){
+                if (parseInt(thatNum) >= parseInt(minNum) && parseInt(thatNum) <= parseInt(maxNum)) return true;
+            }else {
+                if (parseInt(minNum) > parseInt(thatNum) || parseInt(maxNum) < parseInt(thatNum)) return true;
+            }
+        }
+        //上一月剩余天数
+        for (var p = prevDaysNum - firstWeek + 1; p <= prevDaysNum; p++, count++) {
+            var pmark = mark(prevM.y,prevM.m,p), pCls = dateOfLimit(prevM.y, prevM.m, p, false) ? "disabled" : "other";
+            dateHtml += '<li year="'+prevM.y+'" month="'+prevM.m+'" day="'+p+'" class='+pCls+'>'+(isfestival(prevM.m+"."+p,p) + pmark)+'</li>';
+        }
+        //本月的天数
+        for(var b = 1; b <= daysNum; b++, count++){
+            var bCls = "", bmark = mark(year,month,b),
+                thisDate = (year + "-" + jeDt.digit(month) + "-" + jeDt.digit(b)); //本月当前日期
+            if(dateOfLimit(year, month, b, true)){
+                bCls = jeDt.ymdDate == thisDate ? "action" : (currOne != thisOne && thisOne == thisDate ? "action" : "")
+            }else{
+                bCls = "disabled";
+            }
+            dateHtml += '<li year="'+year+'" month="'+month+'" day="'+b+'" '+(bCls != "" ? "class="+bCls+"" : "")+'>'+(isfestival(month+"."+b,b) + bmark)+'</li>';
+        }
+        //下一月开始天数
+        for(var n = 1, nlen = 42 - count; n <= nlen; n++){
+            var nmark = mark(nextM.y,nextM.m,n), nCls = dateOfLimit(nextM.y, nextM.m, n, false) ? "disabled" : "other";
+            dateHtml += '<li year="'+nextM.y+'" month="'+nextM.m+'" day="'+n+'" class='+nCls+'>'+(isfestival(nextM.m+"."+n,n) + nmark)+'</li>';
+        }
+        //把日期拼接起来并插入
+        jeDt.html(jeDt.find(".jedaul")[0],dateHtml);
+        jeDt.chooseDays();
+    }
     //循环生成年月（YYYY-MM）
     jeDt.onlyYMStr = function(y, m) {
         var onlyYM = "";
@@ -410,116 +508,15 @@ window.console && (console = console || {log : function(){return;}});
         var onlyStr = "";   jeDt.yearArr = new Array(15);
         jeDt.each(jeDt.yearArr, function(i) {
             var minArr = jeDt.parseMatch(jeDt.minDate), maxArr = jeDt.parseMatch(jeDt.maxDate),
-                minTime = minArr[0], maxTime = maxArr[0], yyi = YY - 7 + i,
+                minY = minArr[0], maxY = maxArr[0], yyi = YY - 7 + i,
                 getyear = jeDt.attr(jeDt.find(".jedateym .jedateyearmonth")[0], "data-onyy");
-            if (yyi < minTime || yyi > maxTime) {
+            if (yyi < minY || yyi > maxY) {
                 onlyStr += "<li class='disabled' yy='" + yyi + "'>" + yyi + "年</li>";
             } else {
                 onlyStr += "<li "+(getyear == yyi ? 'class="action"' : "")+" yy='" + yyi + "'>" + yyi + "年</li>";
             }
         });
         return onlyStr;
-    };
-    //仅年月情况下的点击
-    jeDt.onlyYMevents = function(tmsArr) {
-        var ymVal, ymPre = jeDt.find(".jedateym .ymprev"), ymNext = jeDt.find(".jedateym .ymnext"), ony = parseInt(tmsArr[0]), onm = parseFloat(tmsArr[1]);
-        jeDt.each([ ymPre, ymNext ], function(i, cls) {
-            jeDt.bind(cls, "click", function(ev) {
-                jeDt.stopmp(ev);
-                if(jeDt.checkFormat(jeDt.format) == "YYYY"){
-                    ymVal = cls == ymPre ? jeDt.attr(jeDt.find(".jedayy li")[0], "yy") : jeDt.attr(jeDt.find(".jedayy li")[jeDt.yearArr.length-1], "yy");
-                    jeDt.html(jeDt.find(".jedayy")[0], jeDt.onlyYear(parseInt(ymVal)));
-                }else{
-                    ymVal = cls == ymPre ? ony -= 1 :ony += 1;
-                    jeDt.html(jeDt.find(".jedaym")[0], jeDt.onlyYMStr(ymVal, onm));
-                }
-                jeDt.ymPremNextEvents();
-            });
-        });
-    };
-    //循环生成日历
-    jeDt.getDateStr = function(y, m) {
-        var minArr = jeDt.minDate.match(/\w+|d+/g), minNum = minArr[0] + minArr[1] + minArr[2], maxArr = jeDt.maxDate.match(/\w+|d+/g), maxNum = maxArr[0] + maxArr[1] + maxArr[2];
-        jeDt.html(jeDt.find(".jedaul")[0], ""); //切忌一定要把这个内容去掉，要不然会点一次翻页都在日历下面依次显示出来
-        var activeDate = new Date(y, m, 1); //外面传进来的不断变化的日期对象
-        var year = activeDate.getFullYear(), month = activeDate.getMonth(); //把当前的月份保存下来只是为了给title获取月份
-        jeDt.attr(jeDt.find(".jedateyear")[0], "year", month > 11 ? year + 1 : year), jeDt.text(jeDt.find(".jedateyear")[0], (month > 11 ? year + 1 : year) + '年');
-        jeDt.attr(jeDt.find(".jedatemonth")[0], "month", jeDt.digit(month + 1)), jeDt.text(jeDt.find(".jedatemonth")[0], jeDt.digit(month + 1) + '月');
-        //设置时间标注
-        var mark = function (my, mm, md) {
-            var Marks = jeDt.opts.marks, contains = function(arr, obj) {
-                var len = arr.length;
-                while (len--) {
-                    if (arr[len] === obj) return true;
-                }
-                return false;
-            };
-            return jeDt.isType(Marks, "array") && Marks.length > 0 && contains(Marks, my + "-" + mm + "-" + md) ? '<i class="marks"></i>' :"";
-        }
-        //是否显示节日
-        var isfestival = function(day, n) {
-            return jeDt.opts.festival ? jeDt.festival(day, n) :n;
-        };
-        //创建日历上面的日期行数
-        var line = 1 - activeDate.getDay();
-        if (line == 1) line = -6; //为了日历更友好的显示三个月，让用户看的更明白。
-        activeDate.setDate(line); //如果n为负数，则减少月份.在用这个月最后一天减去这个值就可以获得日历从哪天开始的。
-        for (var i = 0; i < 42; i++) {
-            var cLis = document.createElement('li');
-            var actYear = activeDate.getFullYear(), actMonth = activeDate.getMonth(), actDays = activeDate.getDate(), //返回日期1-31号
-                newMonth = month > actMonth ? 0 == actMonth ? 1 : month : actMonth == month ? month + 1 : 11 == actMonth ? 12 : month + 2,
-                newYear = actYear == year ? year : actYear > year ? year + 1 : year - 1;
-            jeDt.find(".jedaul")[0].appendChild(cLis);
-            jeDt.html(cLis, isfestival(jeDt.digit(newMonth) + "." + jeDt.digit(actDays), jeDt.digit(actDays)) + mark(newYear,jeDt.digit(newMonth),jeDt.digit(actDays)));
-            jeDt.attr(cLis, "year", newYear).attr(cLis, "month", jeDt.digit(newMonth)).attr(cLis, "day", jeDt.digit(actDays));
-            //这里必须是 actMonth + 1 ，不能用m+1。因为这个是一直变化的。要不然日历不管点哪天都是属于当前月份的。
-            cLis.dateVals = year + "-" + jeDt.digit(actMonth + 1) + "-" + jeDt.digit(actDays);
-            var thatNum = (newYear + "-" + jeDt.digit(newMonth) + "-" + jeDt.digit(actDays)).replace(/\-/g, ''),
-                newOne = newYear + "-" + jeDt.digit(newMonth) + "-" + jeDt.digit(1), actOne = year + "-" + jeDt.digit(actMonth + 1) + "-" + jeDt.digit(1);
-            if (actMonth != month) {
-                jeDt.addClass(cLis, "other"); //不是本月的天数颜色变成浅色
-            }
-            //判断是否在限制的日期之中，如果在限制中可以选择
-            if (parseInt(thatNum) >= parseInt(minNum) && parseInt(thatNum) <= parseInt(maxNum) && actMonth == month) {
-                if ((jeDt.val(jeDt.elemCell) || jeDt.text(jeDt.elemCell)) == "") {
-                    var thatOne = jeDt.currDate.getFullYear() + "-" + jeDt.digit(jeDt.currDate.getMonth() + 1) + "-" + jeDt.digit(1);
-                    if (jeDt.ymdDate == cLis.dateVals && (jeDt.currDate.getMonth() + 1 == actMonth + 1)) {
-                        jeDt.addClass(cLis, "action");
-                    } else if (thatOne != actOne) {
-                        if (newOne == cLis.dateVals) jeDt.addClass(cLis, "action");
-                    }
-                } else {
-                    var thisOne = jeDt.currDate.getFullYear() + "-" + jeDt.digit(jeDt.currDate.getMonth()) + "-" + jeDt.digit(1);
-                    if (jeDt.ymdDate == cLis.dateVals && (jeDt.currDate.getMonth() == actMonth + 1)) {
-                        jeDt.addClass(cLis, "action");
-                    } else if (thisOne != actOne) {
-                        if (newOne == cLis.dateVals) jeDt.addClass(cLis, "action");
-                    }
-                }
-            }
-            if (parseInt(minNum) > parseInt(thatNum) || parseInt(maxNum) < parseInt(thatNum)) {
-                jeDt.addClass(cLis, "disabled");
-            }
-            //切忌下面这个增加天数语句，一定要判断完上面是不是本月的天数，然后在添加这条增加语句，要不然会出现错误。
-            activeDate.setDate(actDays + 1); //如果超出该月份应有的天数则增加月份
-        };
-        jeDt.chooseDays();
-    };
-    //选择日期
-    jeDt.chooseDays = function() {
-        jeDt.bind(jeDt.find(".jedaul li"), "click", function(ev) {
-            var that = this, liTms = [], valcell = jeDt.elemCell;
-            if (jeDt.hasClass(that, "disabled")) return;
-            jeDt.stopmp(ev);
-            jeDt.each(jeDt.find(".jedatehms input"), function(i, val) {
-                liTms.push(jeDt.val(val));
-            });
-            var aty = parseInt(jeDt.attr(that, "year")), atm = parseFloat(jeDt.attr(that, "month")), atd = parseFloat(jeDt.attr(that, "day")),
-                getDateVal = jeDt.parse([ aty, atm, atd ], [ liTms[0], liTms[1], liTms[2] ], jeDt.format);
-            jeDt.isValHtml(valcell) ? jeDt.val(valcell, getDateVal) :jeDt.text(valcell, getDateVal);
-            jeDt.dateClose();
-            if (jeDt.isType(jeDt.opts.choosefun, "function") || jeDt.opts.choosefun != null) jeDt.opts.choosefun&&jeDt.opts.choosefun(jeDt.elemCell,getDateVal);
-        });
     };
     //生成定位时分秒
     jeDt.setStrhms = function() {
@@ -559,9 +556,38 @@ window.console && (console = console || {log : function(){return;}});
         });
         return hmsArr;
     };
-    //关闭层
-    jeDt.dateClose = function() {
-        doc.body.removeChild(QD(jeDt.boxCell)[0]);
+    //仅年月情况下的点击
+    jeDt.onlyYMevents = function(tmsArr) {
+        var ymVal, ymPre = jeDt.find(".jedateym .ymprev"), ymNext = jeDt.find(".jedateym .ymnext"), ony = parseInt(tmsArr[0]), onm = parseFloat(tmsArr[1]);
+        jeDt.each([ ymPre, ymNext ], function(i, cls) {
+            jeDt.bind(cls, "click", function(ev) {
+                jeDt.stopmp(ev);
+                if(jeDt.checkFormat(jeDt.format) == "YYYY"){
+                    ymVal = cls == ymPre ? jeDt.attr(jeDt.find(".jedayy li")[0], "yy") : jeDt.attr(jeDt.find(".jedayy li")[jeDt.yearArr.length-1], "yy");
+                    jeDt.html(jeDt.find(".jedayy")[0], jeDt.onlyYear(parseInt(ymVal)));
+                }else{
+                    ymVal = cls == ymPre ? ony -= 1 :ony += 1;
+                    jeDt.html(jeDt.find(".jedaym")[0], jeDt.onlyYMStr(ymVal, onm));
+                }
+                jeDt.ymPremNextEvents();
+            });
+        });
+    };
+    //选择日期
+    jeDt.chooseDays = function() {
+        jeDt.bind(jeDt.find(".jedaul li"), "click", function(ev) {
+            var that = this, liTms = [], valcell = jeDt.elemCell;
+            if (jeDt.hasClass(that, "disabled")) return;
+            jeDt.stopmp(ev);
+            jeDt.each(jeDt.find(".jedatehms input"), function(i, val) {
+                liTms.push(jeDt.val(val));
+            });
+            var aty = parseInt(jeDt.attr(that, "year")), atm = parseFloat(jeDt.attr(that, "month")), atd = parseFloat(jeDt.attr(that, "day")),
+                getDateVal = jeDt.parse([ aty, atm, atd ], [ liTms[0], liTms[1], liTms[2] ], jeDt.format);
+            jeDt.isValHtml(valcell) ? jeDt.val(valcell, getDateVal) :jeDt.text(valcell, getDateVal);
+            jeDt.dateClose();
+            if (jeDt.isType(jeDt.opts.choosefun, "function") || jeDt.opts.choosefun != null) jeDt.opts.choosefun&&jeDt.opts.choosefun(jeDt.elemCell,getDateVal);
+        });
     };
     //下拉选择年和月
     jeDt.chooseYM = function() {
@@ -604,11 +630,11 @@ window.console && (console = console || {log : function(){return;}});
         }
         function clickLiYears(year) {
             jeDt.bind(jeDt.find(".ymdropul li"), "click", function(ev) {
-                var Years = jeDt.attr(this, "yy"), Months = parseInt(jeDt.attr(jedatemonth[0], "month")) - 1;
+                var Years = jeDt.attr(this, "yy"), Months = parseInt(jeDt.attr(jedatemonth[0], "month"));
                 jeDt.attr(year, "year", Years);
                 jeDt.html(year, Years + '年');
                 jeDt.isShow(jetopym[0], false);
-                jeDt.getDateStr(Years, Months);
+                jeDt.createDaysHtml(Years, Months);
             });
         }
         //下拉选择年
@@ -622,11 +648,11 @@ window.console && (console = console || {log : function(){return;}});
             var YMlen = parseInt(jeDt.attr(this, "ym")), yearAttr = parseInt(jeDt.attr(jedateyear[0], "year"));
             eachYearMonth(yearAttr, YMlen);
             jeDt.bind(jeDt.find(".ymdropul li"), "click", function(ev) {
-                var Years = jeDt.attr(jedateyear[0], "year"), Months = parseInt(jeDt.attr(this, "mm")) - 1;
+                var Years = jeDt.attr(jedateyear[0], "year"), Months = parseInt(jeDt.attr(this, "mm"));
                 jeDt.attr(jedatemonth[0], "month", Months);
                 jeDt.html(jedatemonth[0], Months + '月');
                 jeDt.isShow(jetopym[0], false);
-                jeDt.getDateStr(Years, Months);
+                jeDt.createDaysHtml(Years, Months);
             });
         });
         //关闭下拉选择
@@ -653,7 +679,7 @@ window.console && (console = console || {log : function(){return;}});
             var that = this;
             if (jeDt.hasClass(that, "disabled")) return;    //判断是否为禁选状态
             jeDt.stopmp(ev);
-            var atYM =  isYY ? jeDt.attr(that, "yy").match(/\w+|d+/g) : jeDt.attr(that, "ym").match(/\w+|d+/g),
+            var atYM =  isYY ? jeDt.attr(that, "yy").match(ymdMacth) : jeDt.attr(that, "ym").match(ymdMacth),
                 getYMDate = isYY ? jeDt.parse([atYM[0], newDate.getMonth() + 1, 1], [0, 0, 0], jeDt.format) : jeDt.parse([atYM[0], atYM[1], 1], [0, 0, 0], jeDt.format);
             jeDt.isValHtml(valcell) ? jeDt.val(valcell, getYMDate) : jeDt.text(valcell, getYMDate);
             jeDt.dateClose();
@@ -672,16 +698,18 @@ window.console && (console = console || {log : function(){return;}});
             !ishhmmss && jeDt.each([ yPre, yNext ], function(i, cls) {
                 jeDt.bind(cls, "click", function(ev) {
                     jeDt.stopmp(ev);
-                    var year = parseInt(jeDt.attr(jeDt.find(".jedateyear")[0], "year"));
-                    cls == yPre ? jeDt.getDateStr(--year, jeDt.currMonth) : jeDt.getDateStr(++year, jeDt.currMonth);
+                    var year = parseInt(jeDt.attr(jedateyear[0], "year")), month = parseInt(jeDt.attr(jedatemonth[0], "month")),
+                        pnYear = cls == yPre ? --year : ++year, PrevYM = jeDt.getPrevMonth(pnYear, month), NextYM = jeDt.getNextMonth(pnYear, month);
+                    cls == yPre ? jeDt.createDaysHtml(PrevYM.y, month) : jeDt.createDaysHtml(NextYM.y, month);
                 });
             });
             //切换月
             !ishhmmss && jeDt.each([ mPre, mNext ], function(i, cls) {
                 jeDt.bind(cls, "click", function(ev) {
                     jeDt.stopmp(ev);
-                    var year = parseInt(jeDt.currDate.getFullYear());
-                    cls == mPre ?jeDt.getDateStr(year, --jeDt.currMonth) : jeDt.getDateStr(year, ++jeDt.currMonth);
+                    var year = parseInt(jeDt.attr(jedateyear[0], "year")), month = parseInt(jeDt.attr(jedatemonth[0], "month")),
+                        PrevYM = jeDt.getPrevMonth(year, month), NextYM = jeDt.getNextMonth(year, month);
+                    cls == mPre ? jeDt.createDaysHtml(PrevYM.y, PrevYM.m) : jeDt.createDaysHtml(NextYM.y, NextYM.m);
                 });
             });
             //时分秒事件绑定
@@ -729,7 +757,7 @@ window.console && (console = console || {log : function(){return;}});
                 var toTime = [ newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate(), newDate.getHours(), newDate.getMinutes(), newDate.getSeconds() ],
                     gettoDate = jeDt.parse([ toTime[0], toTime[1], toTime[2] ], [ toTime[3], toTime[4], toTime[5] ], jeDt.format),
                     valcell = jeDt.elemCell;
-                jeDt.getDateStr(toTime[0], toTime[1], toTime[2]);
+                jeDt.createDaysHtml(toTime[0], toTime[1]);
                 jeDt.isValHtml(valcell) ? jeDt.val(valcell, gettoDate) :jeDt.text(valcell, gettoDate);
                 jeDt.dateClose();
                 if (jeDt.isType(jeDt.opts.choosefun, "function") || jeDt.opts.choosefun != null) jeDt.opts.choosefun(jeDt.elemCell,gettoDate);
@@ -747,11 +775,12 @@ window.console && (console = console || {log : function(){return;}});
                 jeDt.dateClose();
                 if (jeDt.isType(jeDt.opts.choosefun, "function") || jeDt.opts.choosefun != null) jeDt.opts.choosefun(jeDt.elemCell,YMDate);
             });
-        };
+        }
         //检查时间输入值，并对应到相应位置
         jeDt.bind(jeDt.find(".jedatehms input"), "keyup", function() {
             var that = this, thatval = that.value, hmsVal = parseInt(jeDt.attr(that, "numval")), thatitem = parseInt(jeDt.attr(that, "item"));
             jeDt.val(that, thatval.replace(/\D/g,""));
+            //判断输入值是否大于所设值
             if(that.value > hmsVal){
                 jeDt.val(that, hmsVal);
                 alert("输入值不能大于"+hmsVal);
@@ -765,7 +794,7 @@ window.console && (console = console || {log : function(){return;}});
                 var hmsCls = jeDt.find(".jedateprop" + hms), achmsCls = jeDt.find(".jedateprop" + hms + " .action");
                 hmsCls[0].scrollTop = achmsCls[0].offsetTop - 118;
             });
-        })
+        });
         //清空按钮清空日期时间
         jeDt.bind(jeDt.find(".jedatebot .jedateclear"), "click", function(ev) {
             jeDt.stopmp(ev);
@@ -784,7 +813,7 @@ window.console && (console = console || {log : function(){return;}});
         jeDt.bind(jeDt.find(".jedatebot .jedateok"), "click", function(ev) {
             jeDt.stopmp(ev);
             var valcell = jeDt.elemCell, isValtext = (jeDt.val(valcell) || jeDt.text(valcell)) != "", isYYYY = jeDt.checkFormat(jeDt.format) == "YYYY", okVal = "",
-                //获取时分秒的数组
+            //获取时分秒的数组
                 eachhmsem = function() {
                     var hmsArr = [];
                     jeDt.each(jeDt.find(".jedatehms input"), function(l, emval) {
@@ -793,31 +822,30 @@ window.console && (console = console || {log : function(){return;}});
                     return hmsArr;
                 };
             if (isValtext) {
-                var btnokVal = jeDt.isValHtml(valcell) ? jeDt.val(valcell) :jeDt.text(valcell), oktms = btnokVal.match(/\w+|d+/g);
+                var btnokVal = jeDt.isValHtml(valcell) ? jeDt.val(valcell) :jeDt.text(valcell), oktms = btnokVal.match(ymdMacth);
                 if (!isYYMM) {
                     var okTimeArr = eachhmsem(), okTime = [ parseInt(jeDt.attr(jedateyear[0], "year")), parseInt(jeDt.attr(jedatemonth[0], "month")), oktms[2] ];
                     okVal = isValtext ? jeDt.parse([ okTime[0], okTime[1], okTime[2] ], [ okTimeArr[0], okTimeArr[1], okTimeArr[2] ], jeDt.format) :"";
-                    if(!ishhmmss)jeDt.getDateStr(okTime[0], okTime[1]);
+                    if(!ishhmmss)jeDt.createDaysHtml(okTime[0], okTime[1]);
                     jeDt.chooseDays();
                 } else {
                     var ymactCls = isYYYY ? jeDt.find(".jedayy .action")[0] : jeDt.find(".jedaym .action")[0];
                     //判断是否为（YYYY或YYYY-MM）类型
                     if(isYYYY){
-                        var okDate = ymactCls ? jeDt.attr(ymactCls, "yy").match(/\w+|d+/g) : oktms;
+                        var okDate = ymactCls ? jeDt.attr(ymactCls, "yy").match(ymdMacth) : oktms;
                         okVal = jeDt.parse([parseInt(okDate[0]), newDate.getMonth() + 1, 1], [0, 0, 0], jeDt.format);
                     }else {
-                        var jedYM = ymactCls ? jeDt.attr(ymactCls, "ym").match(/\w+|d+/g) : oktms;
+                        var jedYM = ymactCls ? jeDt.attr(ymactCls, "ym").match(ymdMacth) : oktms;
                         okVal = jeDt.parse([parseInt(jedYM[0]), parseInt(jedYM[1]), 1], [0, 0, 0], jeDt.format);
                     }
                 }
             } else {
-                var okArr = eachhmsem(), monthCls = jeDt.find(".jedateyearmonth")[0];
+                var okArr = eachhmsem(), monthCls = jeDt.find(".jedateyearmonth")[0], okDate = "";
                 if (ishhmmss) {
                     okVal = jeDt.parse([ tmsArr[0], tmsArr[1], tmsArr[2] ], [ okArr[0], okArr[1], okArr[2] ], jeDt.format);
                 } else {
-                    var okDate;
                     if(isYYMM){
-                        okDate = jeDt.checkFormat(jeDt.format) == "YYYY" ? jeDt.attr(monthCls, "data-onyy").match(/\w+|d+/g) : jeDt.attr(monthCls, "data-onym").match(/\w+|d+/g);
+                        okDate = jeDt.checkFormat(jeDt.format) == "YYYY" ? jeDt.attr(monthCls, "data-onyy").match(ymdMacth) : jeDt.attr(monthCls, "data-onym").match(ymdMacth);
                     }else{
                         okDate = [ newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate()];
                     }
@@ -838,8 +866,7 @@ window.console && (console = console || {log : function(){return;}});
         jeDt.bind(QD(jeDt.boxCell), "mouseup", function(ev) {
             jeDt.stopmp(ev);
         });
-    };
-
+    }
     //核心部分
     var jeDate = function(options) {
         try {
@@ -848,7 +875,7 @@ window.console && (console = console || {log : function(){return;}});
         return new jeDt.initDate(options || {});
     };
     //版本
-    jeDate.version = "3.2";
+    jeDate.version = "3.3";
     //返回指定日期
     jeDate.now = function(num) {
         return jeDt.nowDate(num);
