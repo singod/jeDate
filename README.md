@@ -38,14 +38,15 @@ jeDate除了包含 日历可以直接显示与点击显示、日期标注点、�
        format:"YYYY-MM-DD hh:mm:ss",         //日期格式
        minDate:"1900-01-01 00:00:00",        //最小日期
        maxDate:"2099-12-31 23:59:59",        //最大日期
-       startMin:默认今天,                     //清除日期后返回到预设的最小日期
-       startMax:"2099-12-31 23:59:59",       //清除日期后返回到预设的最大日期
+       startMin:"",                          //清除日期后返回到预设的最小日期
+       startMax:"",                          //清除日期后返回到预设的最大日期
        isinitVal:false,                      //是否初始化时间，默认不初始化时间
        initAddVal:[0],                       //初始化时间，加减 天 时 分
        isTime:true,                          //是否开启时间选择
        ishmsLimit:false,                     //时分秒限制
        ishmsVal:true,                        //是否限制时分秒输入框输入，默认可以直接输入时间
        isClear:true,                         //是否显示清空
+       isToday:true,                         //是否显示今天或本月
        clearRestore:true,                    //清空输入框，返回预设日期，输入框非空的情况下有效
        festival:false,                       //是否显示节日
        fixed:true,                           //是否静止定位，为true时定位在输入框，为false时居中定位
