@@ -50,7 +50,7 @@ jeDate除了包含 日历可以直接显示与点击显示、日期标注点、�
        clearRestore:true,                    //清空输入框，返回预设日期，输入框非空的情况下有效
        festival:false,                       //是否显示节日
        fixed:true,                           //是否静止定位，为true时定位在输入框，为false时居中定位
-       zIndex:999,                           //弹出层的层级高度
+       zIndex:2099,                           //弹出层的层级高度
        marks:null,                           //给日期做标注
        choosefun:function(elem, val) {},     //选中日期后的回调, elem当前输入框ID, val当前选择的值
        clearfun:function(elem, val) {},      //清除日期后的回调, elem当前输入框ID, val当前选择的值
