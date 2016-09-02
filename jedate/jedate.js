@@ -348,7 +348,7 @@ window.console && (console = console || {log : function(){return;}});
                 tmsArr = dateFormat == "hh-mm" ? [ inVals[0], inVals[1], date.getSeconds() ] :[ inVals[0], inVals[1], inVals[2] ];
                 jeDt.currDate = new Date(date.getFullYear(), date.getMonth()-1, date.getDate());
             }else{
-                tmsArr = [ inVals[0], inVals[1], inVals[2], inVals[3], inVals[4], inVals[5] == undefined ? date.getSeconds() :inVals[5] ];
+                tmsArr = [ inVals[0], inVals[1], inVals[2], inVals[3] == undefined ? date.getHours() : inVals[3], inVals[4] == undefined ? date.getMinutes() : inVals[4], inVals[5] == undefined ? date.getSeconds() :inVals[5] ];
                 jeDt.currDate = new Date(tmsArr[0], parseInt(tmsArr[1])-1,  tmsArr[2], tmsArr[3], tmsArr[4], tmsArr[5]);
                 jeDt.ymdDate = tmsArr[0] + "-" + jeDt.digit(tmsArr[1]) + "-" + jeDt.digit(tmsArr[2]);
             }
@@ -416,8 +416,8 @@ window.console && (console = console || {log : function(){return;}});
                 jeDt.html(jeDt.find(".jedayy")[0], jeDt.onlyYear(tmsArr[0]));
             }else{
                 jeDt.attr(monthCls, "data-onym",tmsArr[0]+"-"+jeDt.digit(tmsArr[1]));
-                jeDt.text(monthCls, tmsArr[0] + "年" + parseInt(tmsArr[1])+1 + "月");
-                jeDt.html(jeDt.find(".jedaym")[0], jeDt.onlyYMStr(tmsArr[0], parseInt(tmsArr[1])+1));
+                jeDt.text(monthCls, tmsArr[0] + "年" + parseInt(tmsArr[1]) + "月");
+                jeDt.html(jeDt.find(".jedaym")[0], jeDt.onlyYMStr(tmsArr[0], parseInt(tmsArr[1])));
             }
             jeDt.onlyYMevents(tmsArr);
         }
