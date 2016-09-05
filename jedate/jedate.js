@@ -612,7 +612,8 @@ window.console && (console = console || {log : function(){return;}});
             var ymStr = "";
             if (ymlen == 12) {
                 jeDt.each(jeDt.montharr, function(i, val) {
-                    var getmonth = jeDt.attr(jedatemonth[0], "month"), val = jeDt.digit(val);
+                    var getmonth = jeDt.attr(jedatemonth[0], "month"), val = jeDt.digit(val)  + "";
+                    val = val.replace(/\b(0+)/gi,"")/1;
                     ymStr += "<li " + (getmonth == val ? 'class="action"' :"") + ' mm="' + val + '">' + val + "月</li>";
                 });
                 jeDt.each([ mchri, mchle ], function(c, cls) {
