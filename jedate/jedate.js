@@ -1,7 +1,7 @@
 /**
  @Name : jeDate v3.3 日期控件
  @Author: chen guojun
- @Date: 2016-9-1
+ @Date: 2016-9-5
  @QQ群：516754269
  @官网：http://www.jayui.com/jedate/ 或 https://github.com/singod/jeDate
  */
@@ -245,6 +245,7 @@ window.console && (console = console || {log : function(){return;}});
         return str;
     };
     var config = {
+        skinCell:"jedateblue",
         initAddVal:[0],
         format:"YYYY-MM-DD hh:mm:ss", //日期格式
         minDate:"1900-01-01 00:00:00", //最小日期
@@ -278,7 +279,7 @@ window.console && (console = console || {log : function(){return;}});
                 jeDt.minDate = minTime, jeDt.maxDate = maxTime;
             }
             var dateDiv = doc.createElement("div"), zIndex = opts.zIndex == undefined ? 2099 : opts.zIndex;
-            dateDiv.className = "jedatebox";
+            dateDiv.className = "jedatebox "+(jeDt.opts.skinCell || config.skinCell);
             dateDiv.id = jeDt.boxCell.replace(/\#/g,"");
             jeDt.attr(dateDiv, "author","chen guojun--www.jayui.com--version:"+jeDate.version+"");
             if(opts.isDisplay) jeDt.attr(dateDiv, "date", true);
@@ -356,7 +357,7 @@ window.console && (console = console || {log : function(){return;}});
         jeDt.currMonth = tmsArr[1], jeDt.currDays = tmsArr[2];
         //控件HMTL模板
         var datetopStr = '<div class="jedatetop">' + (!isYYMM ? '<div class="jedateym" style="width:50%;"><i class="prev triangle yearprev"></i><span class="jedateyy" ym="24"><em class="jedateyear"></em><em class="pndrop"></em></span><i class="next triangle yearnext"></i></div>' + '<div class="jedateym" style="width:50%;"><i class="prev triangle monthprev"></i><span class="jedatemm" ym="12"><em class="jedatemonth"></em><em class="pndrop"></em></span><i class="next triangle monthnext"></i></div>' :'<div class="jedateym" style="width:100%;"><i class="prev triangle ymprev"></i><span class="jedateyy"><em class="jedateyearmonth"></em></span><i class="next triangle ymnext"></i></div>') + "</div>";
-        var dateymList = !isYYMM ? '<div class="jedatetopym" style="display: none;">' + '<ul class="ymdropul"></ul><p><span class="jedateymchle">&#8592;</span><span class="jedateymchri">&#8594;</span><span class="jedateymchok">关闭</span></p>' + "</div>" :(dateFormat == "YYYY" ? '<ul class="jedayy"></ul>' :　'<ul class="jedaym"></ul>');
+        var dateymList = !isYYMM ? '<div class="jedatetopym" style="display: none;">' + '<ul class="ymdropul"></ul><p><span class="jedateymchle">&lt;&lt;</span><span class="jedateymchri">&gt;&gt;</span><span class="jedateymchok">关闭</span></p>' + "</div>" :(dateFormat == "YYYY" ? '<ul class="jedayy"></ul>' :　'<ul class="jedaym"></ul>');
         var dateriList = '<ol class="jedaol"></ol><ul class="jedaul"></ul>';
         var bothmsStr = !isYYMM ? '<div class="botflex jedatehmsshde"><ul class="jedatehms"><li><input type="text" /></li><i>:</i><li><input type="text" /></li><i>:</i><li><input type="text" /></li></ul></div>' + '<div class="botflex jedatebtn"><span class="jedateok">确认</span><span class="jedatetodaymonth">今天</span><span class="jedateclear">清空</span></div>' :(dateFormat == "YYYY" ? '<div class="botflex jedatebtn"><span class="jedateok" style="width:47.8%">确认</span><span class="jedateclear" style="width:47.8%">清空</span></div>' : '<div class="botflex jedatebtn"><span class="jedateok">确认</span><span class="jedatetodaymonth">本月</span><span class="jedateclear">清空</span></div>');
         var datebotStr = '<div class="jedatebot">' + bothmsStr + "</div>";
@@ -613,7 +614,7 @@ window.console && (console = console || {log : function(){return;}});
             if (ymlen == 12) {
                 jeDt.each(jeDt.montharr, function(i, val) {
                     var getmonth = jeDt.attr(jedatemonth[0], "month"), val = jeDt.digit(val);
-                    ymStr += "<li " + (getmonth == val ? 'class="action"' :"") + ' mm="' + val + '">' + val + "月</li>";
+                    ymStr += "<li " + (jeDt.digit(getmonth) == val ? 'class="action"' :"") + ' mm="' + val + '">' + val + "月</li>";
                 });
                 jeDt.each([ mchri, mchle ], function(c, cls) {
                     jeDt.isShow(cls[0], false);
