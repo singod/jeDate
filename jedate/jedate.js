@@ -262,7 +262,9 @@ window.console && (console = console || {log : function(){return;}});
     jeDt.find = function(tagName){ return QD(jeDt.boxCell + " " +tagName); };
     jeDt.isBool = function(obj){  return (obj == undefined || obj == true ?  true : false); };
     jeDt.addDateTime = function(time,num,type,format){
-        var tarr = time.match(ymdMacth), date = new Date(),
+        var ishhmm = jeDt.checkFormat(format).substring(0, 5) == "hh-mm" ? true :false;
+        var nocharDate = ishhmm ? time.replace(/^(\d{2})(?=\d)/g,"$1,") : time.substr(0,4).replace(/^(\d{4})/g,"$1,") + time.substr(4).replace(/^(\d{2})(?=\d)/g,"$1,");
+        var tarr = jeDt.IsNum(time) ? nocharDate.match(ymdMacth) : time.match(ymdMacth), date = new Date(),
             tm0 = parseInt(tarr[0]),  tm1 = tarr[1] == undefined ? date.getMonth() + 1 : parseInt(tarr[1]), tm2 = tarr[2] == undefined ? date.getDate() : parseInt(tarr[2]),
             tm3 = tarr[3] == undefined ? date.getHours() : parseInt(tarr[3]), tm4 = tarr[4] == undefined ? date.getMinutes() : parseInt(tarr[4]), tm5 = tarr[5] == undefined ? date.getMinutes() : parseInt(tarr[5]);
         var newDate = new Date(tm0,jeDt.digit(tm1)-1,(type == "DD" ? tm2 + num : tm2),(type == "hh" ? tm3 + num : tm3),(type == "mm" ? tm4 + num : tm4),jeDt.digit(tm5));
