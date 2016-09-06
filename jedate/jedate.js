@@ -1,7 +1,7 @@
 /**
- @Name : jeDate v3.3 日期控件
+ @Name : jeDate v3.4 日期控件
  @Author: chen guojun
- @Date: 2016-9-5
+ @Date: 2016-9-6
  @QQ群：516754269
  @官网：http://www.jayui.com/jedate/ 或 https://github.com/singod/jeDate
  */
@@ -164,6 +164,10 @@ window.console && (console = console || {log : function(){return;}});
     jeDt.digit = function(num) {
         return num < 10 ? "0" + (num | 0) :num;
     };
+    //判断是否为数字
+    jeDt.IsNum = function(str){
+        return (str!=null && str!="") ? !isNaN(str) : false;
+    }
     //转换日期格式
     jeDt.parse = function(ymd, hms, format) {
         ymd = ymd.concat(hms);
@@ -335,7 +339,7 @@ window.console && (console = console || {log : function(){return;}});
         doc.body.removeChild(QD(jeDt.boxCell)[0]);
     };
     //布局控件骨架
-    jeDt.setHtml = function(){
+    jeDt.setHtml = function(){   //console.log("20160906".substr(4))   //console.log("20160906".replace(/^(\d{2})(?=\d)/g,"$1,"))
         var weekHtml = "", tmsArr = "", date = new Date(),  dateFormat = jeDt.checkFormat(jeDt.format),
             isYYMM = (dateFormat == "YYYY-MM" || dateFormat == "YYYY") ? true :false,  ishhmm = dateFormat.substring(0, 5) == "hh-mm" ? true :false;
         if ((jeDt.val(jeDt.elemCell) || jeDt.text(jeDt.elemCell)) == "") {
@@ -343,8 +347,11 @@ window.console && (console = console || {log : function(){return;}});
             jeDt.currDate = new Date(tmsArr[0], parseInt(tmsArr[1])-1, tmsArr[2], tmsArr[3], tmsArr[4], tmsArr[5]);
             jeDt.ymdDate = tmsArr[0] + "-" + jeDt.digit(tmsArr[1]) + "-" + jeDt.digit(tmsArr[2]);
         } else {
-            var initVal = jeDt.isValHtml(jeDt.elemCell) ? jeDt.val(jeDt.elemCell) : jeDt.text(jeDt.elemCell),
-                inVals = initVal.match(ymdMacth);
+            var initVal = jeDt.isValHtml(jeDt.elemCell) ? jeDt.val(jeDt.elemCell) : jeDt.text(jeDt.elemCell);
+            //对获取到日期的进行替换
+            var nocharDate = ishhmm ? initVal.replace(/^(\d{2})(?=\d)/g,"$1,") : initVal.substr(0,4).replace(/^(\d{4})/g,"$1,") + initVal.substr(4).replace(/^(\d{2})(?=\d)/g,"$1,");
+            //判断是否为数字类型，并分割
+            var inVals = jeDt.IsNum(initVal) ? nocharDate.match(ymdMacth) : initVal.match(ymdMacth);
             if(ishhmm){
                 tmsArr = dateFormat == "hh-mm" ? [ inVals[0], inVals[1], date.getSeconds() ] :[ inVals[0], inVals[1], inVals[2] ];
                 jeDt.currDate = new Date(date.getFullYear(), date.getMonth()-1, date.getDate());
@@ -876,7 +883,7 @@ window.console && (console = console || {log : function(){return;}});
         return new jeDt.initDate(options || {});
     };
     //版本
-    jeDate.version = "3.3";
+    jeDate.version = "3.4";
     //返回指定日期
     jeDate.now = function(num) {
         return jeDt.nowDate(num);
