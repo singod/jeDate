@@ -504,11 +504,12 @@ window.console && (console = console || {log : function(){return;}});
         var onlyYM = "";
         jeDt.each(jeDt.montharr, function(i, val) {
             var minArr = jeDt.parseMatch(jeDt.minDate), maxArr = jeDt.parseMatch(jeDt.maxDate),
-                thisDate = new Date(y, jeDt.digit(val), "01"), minTime = new Date(minArr[0], minArr[1], minArr[2]), maxTime = new Date(maxArr[0], maxArr[1], maxArr[2]);
+                thisDate = new Date(y, jeDt.digit(val), "01"), minTime = new Date(minArr[0], minArr[1], minArr[2]), maxTime = new Date(maxArr[0], maxArr[1], maxArr[2]),
+                getyear = jeDt.attr(jeDt.find(".jedateym .jedateyearmonth ")[0],"data-onym").split("-")[0];
             if (thisDate < minTime || thisDate > maxTime) {
                 onlyYM += "<li class='disabled' ym='" + y + "-" + jeDt.digit(val) + "'>" + y + "年" + jeDt.digit(val) + "月</li>";
             } else {
-                onlyYM += "<li " + (m == val ? 'class="action"' :"") + ' ym="' + y + "-" + jeDt.digit(val) + '">' + y + "年" + jeDt.digit(val) + "月</li>";
+                onlyYM += "<li " + (m == val && y == getyear ? 'class="action"' :"") + ' ym="' + y + "-" + jeDt.digit(val) + '">' + y + "年" + jeDt.digit(val) + "月</li>";
             }
         });
         return onlyYM;
