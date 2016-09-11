@@ -373,6 +373,8 @@ window.console && (console = console || {log : function(){return;}});
         var datehmschoose = '<div class="jedateprophms ' + (ishhmm ? "jedatepropfix" :"jedateproppos") + '"><div class="jedatepropcon"><div class="jedatehmstitle">时间选择<div class="jedatehmsclose">&times;</div></div><div class="jedateproptext">小时</div><div class="jedateproptext">分钟</div><div class="jedateproptext">秒数</div><div class="jedatehmscon jedateprophours"></div><div class="jedatehmscon jedatepropminutes"></div><div class="jedatehmscon jedatepropseconds"></div></div></div>';
         var dateHtmStr = isYYMM ? datetopStr + dateymList + datebotStr :ishhmm ? datetopStr + datehmschoose + datebotStr :datetopStr + dateymList + dateriList + datehmschoose + datebotStr;
         jeDt.html(QD(jeDt.boxCell)[0], dateHtmStr);
+        //是否显示确认按钮
+        jeDt.isBool(jeDt.opts.isOk) ? "" : jeDt.isShow(jeDt.find(".jedatebot .jedateok")[0], false);
         //是否显示清除按钮
         jeDt.isBool(jeDt.opts.isClear) ? "" : jeDt.isShow(jeDt.find(".jedatebot .jedateclear")[0], false);
         //是否显示今天按钮
