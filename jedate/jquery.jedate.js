@@ -504,7 +504,7 @@ window.console && (console = console || {log : function(){return;}});
 			//鼠标进入提示框出现
 			boxCell.find(".jedaul li").on("mouseover", function () {
 				var _this = $(this), aty = parseInt(_this.attr("year")), atm = parseFloat(_this.attr("month")), atd = parseFloat(_this.attr("day")),
-					tipDiv = $("<div/>",{id:"jedatetipscon",class:"jedatetipscon"}), lunar = jeLunar(aty, atm - 1, atd);
+					tipDiv = $("<div/>",{"id":"jedatetipscon","class":"jedatetipscon"}), lunar = jeLunar(aty, atm - 1, atd);
 				var tiphtml = '<p>' + lunar.solarYear + '年' + lunar.solarMonth + '月' + lunar.solarDate + '日 ' + lunar.inWeekDays + '</p><p class="red">农历：' + lunar.shengxiao + '年 ' + lunar.lnongMonth + '月' + lunar.lnongDate + '</p><p>' + lunar.ganzhiYear + '年 ' + lunar.ganzhiMonth + '月 ' + lunar.ganzhiDate + '日</p>';
 				var Fesjieri = (lunar.solarFestival || lunar.lunarFestival) != "" ? '<p class="red">' + ("节日："+lunar.solarFestival + lunar.lunarFestival) + '</p>' : "";
 				var Fesjieqi = lunar.jieqi != "" ? '<p class="red">'+(lunar.jieqi != "" ? "节气："+lunar.jieqi : "") + '</p>': "";
