@@ -1,7 +1,7 @@
 /**
- @Name : jeDate v3.5 日期控件
+ @Name : jeDate v3.6 日期控件
  @Author: chen guojun
- @Date: 2016-10-25
+ @Date: 2016-18-8
  @QQ群：516754269
  @官网：http://www.jayui.com/jedate/ 或 https://github.com/singod/jeDate
  */
@@ -464,7 +464,7 @@ window.console && (console = console || {log : function(){return;}});
 			cls.on("click", function(ev) {
 				ev.stopPropagation();
 				if(jet.checkFormat(jet.format) == "YYYY"){
-					ymVal = cls == ymPre ? boxCell.find(".jedayy li").attr("yy") : boxCell.eq(jet.yearArr.length-1).find(".jedayy li").attr("yy");
+					ymVal = cls == ymPre ? boxCell.find(".jedayy li").attr("yy") : boxCell.find(".jedayy li").eq(jet.yearArr.length-1).attr("yy");
 					boxCell.find(".jedayy").html(that.onlyYear(parseInt(ymVal)));
 				}else{
 					ymVal = cls == ymPre ? ony -= 1 :ony += 1;
@@ -818,7 +818,7 @@ window.console && (console = console || {log : function(){return;}});
 	};
 
 	//日期控件版本
-	$.dateVer = "3.5";
+	$.dateVer = "3.6";
 	//返回指定日期
 	$.nowDate = function(num) {
 		return jet.initDates(num);
