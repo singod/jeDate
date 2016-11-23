@@ -1,7 +1,7 @@
 /**
- @Name : jeDate v3.6 日期控件
+ @Name : jeDate v3.7 日期控件
  @Author: chen guojun
- @Date: 2016-18-8
+ @Date: 2016-11-23
  @QQ群：516754269
  @官网：http://www.jayui.com/jedate/ 或 https://github.com/singod/jeDate
  */
@@ -188,7 +188,7 @@ window.console && (console = console || {log : function(){return;}});
 		if (jet.isBool(opts.insTrigger)) {
 			that.valCell.on("click", function (ev) {
 				ev.stopPropagation();
-				if ($(jet.boxCell).size() > 0) return;
+				if ($(jet.boxCell).length > 0) return;
 				jet.format = opts.format || config.format;
 				jet.minDate = opts.minDate || config.minDate;
 				jet.maxDate = opts.maxDate || config.maxDate;
@@ -225,6 +225,7 @@ window.console && (console = console || {log : function(){return;}});
 		var that = this, elemCell = that.valCell, boxCell = $(jet.boxCell);
 		var weekHtml = "", tmsArr = "", date = new Date(),  dateFormat = jet.checkFormat(jet.format),
 			isYYMM = (dateFormat == "YYYY-MM" || dateFormat == "YYYY") ? true :false,  ishhmm = dateFormat.substring(0, 5) == "hh-mm" ? true :false;
+		jet.formatType = dateFormat;
 		if ((elemCell.val() || elemCell.text()) == "") {
 			tmsArr = [ date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds() ];
 			jet.currDate = new Date(tmsArr[0], parseInt(tmsArr[1])-1, tmsArr[2], tmsArr[3], tmsArr[4], tmsArr[5]);
@@ -516,7 +517,7 @@ window.console && (console = console || {log : function(){return;}});
 				var tipPos = jedfn.nongliorien(tipDiv, _this);
 				tipDiv.css({"z-index":  (opts.zIndex == undefined ? 2099 + 5 : opts.zIndex + 5),top:tipPos.top,left:tipPos.left,position:"absolute",display:"block"});
 			}).on( "mouseout", function () { //鼠标移除提示框消失
-				if($("#jedatetipscon").size() > 0) $("#jedatetipscon").remove();
+				if($("#jedatetipscon").length > 0) $("#jedatetipscon").remove();
 			});
 		}
 	};
@@ -772,7 +773,7 @@ window.console && (console = console || {log : function(){return;}});
 					var isokTime = (parseInt(okTimeNum) >= parseInt(minNum) && parseInt(okTimeNum) <= parseInt(maxNum)) ? true : false;
 					okVal = isValtext && isokTime ? jet.parse([ okTime[0], okTime[1], okTime[2] ], [ okTimeArr[0], okTimeArr[1], okTimeArr[2] ], jet.format) :
 						jet.parse([ oktms[0], oktms[1], oktms[2] ], [ okTimeArr[0], okTimeArr[1], okTimeArr[2] ], jet.format);
-					if(!ishhmmss) that.createDaysHtml(okTime[0], okTime[1], opts);   console.log(okVal)
+					if(!ishhmmss) that.createDaysHtml(okTime[0], okTime[1], opts);
 					that.chooseDays(opts);
 				} else {
 					var ymactCls = isYYYY ? boxCell.find(".jedayy .action") : boxCell.find(".jedaym .action");
@@ -818,10 +819,28 @@ window.console && (console = console || {log : function(){return;}});
 	};
 
 	//日期控件版本
-	$.dateVer = "3.6";
+	$.dateVer = "3.7";
 	//返回指定日期
 	$.nowDate = function(num) {
 		return jet.initDates(num);
+	};
+	//获取年月日星期
+	$.getLunar = function(time){
+		if(/\YYYY-MM-DD/.test(jet.formatType)){
+			//如果为数字类型的日期对获取到日期的进行替换
+			var nocharDate = time.substr(0,4).replace(/^(\d{4})/g,"$1,") + time.substr(4).replace(/^(\d{2})(?=\d)/g,"$1,"),
+			    warr = jet.IsNum(time) ? nocharDate.match(ymdMacth) : time.match(ymdMacth),
+				lunars = jeLunar(warr[0], warr[1] - 1, warr[2]);
+			return{
+				nMonth: lunars.lnongMonth,             //农历月
+			    nDays: lunars.lnongDate,               //农历日
+				yYear: parseInt(lunars.solarYear),     //阳历年
+				yMonth: parseInt(lunars.solarMonth),   //阳历月
+				yDays: parseInt(lunars.solarDate),     //阳历日
+				cWeek: lunars.inWeekDays,              //汉字星期几
+				nWeek: lunars.solarWeekDay             //数字星期几
+		    };
+		}
 	};
 	//为当前获取到的日期加减天数，这里只能控制到天数，不能控制时分秒加减
 	$.addDate = function(time,num,type) {
@@ -1027,4 +1046,3 @@ window.console && (console = console || {log : function(){return;}});
 	};
 	return jeLunar;
 });
-
