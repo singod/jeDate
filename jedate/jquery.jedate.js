@@ -261,6 +261,8 @@ window.console && (console = console || {log : function(){return;}});
 		if(!isYYMM){
 			jet.isBool(opts.isToday) ? "" : jet.isShow(boxCell.find(".jedatebot .jedatetodaymonth"), false);
 		};
+		//是否显示确认按钮
+		jet.isBool(opts.isOk) ? "" : jet.isShow(boxCell.find(".jedatebot .jedateok")[0], false);
 		//判断是否有时分秒
 		if(/\hh-mm/.test(dateFormat)){
 			var isTimehms = function(bool) {
@@ -318,7 +320,7 @@ window.console && (console = console || {log : function(){return;}});
 	};
 	//循环生成日历
 	jedfn.createDaysHtml = function(ys, ms, opts){
-		var that = this, elemCell = that.valCell, boxCell = $(jet.boxCell);
+		var that = this, boxCell = $(jet.boxCell);
 		var year = parseInt(ys), month = parseInt(ms), dateHtml = "",count = 0;
 		var minArr = jet.minDate.match(ymdMacth), minNum = minArr[0] + minArr[1] + minArr[2],
 			maxArr = jet.maxDate.match(ymdMacth), maxNum = maxArr[0] + maxArr[1] + maxArr[2];
@@ -641,8 +643,8 @@ window.console && (console = console || {log : function(){return;}});
 					if(boxCell.find(".jedatetopym").css("display") == "block") return;
 					ev.stopPropagation();
 					var year = parseInt(jedateyear.attr("year")), month = parseInt(jedatemonth.attr("month")),
-						pnYear = cls == yPre ? --year : ++year, PrevYM = jet.getPrevMonth(pnYear, month), NextYM = jet.getNextMonth(pnYear, month);
-					cls == yPre ? that.createDaysHtml(PrevYM.y, month, opts) : that.createDaysHtml(NextYM.y, month, opts);
+						pnYear = cls == yPre ? --year : ++year;
+					cls == that.createDaysHtml(pnYear, month, opts);
 				});
 			});
 			//切换月
