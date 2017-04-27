@@ -4,7 +4,7 @@ jeDate除了包含 日历可以直接显示与点击显示、日期标注点、�
 
 **使用方法**
 
-* [点击查看详细日期API（http://www.jayui.com/jedate/）](http://www.jayui.com/jedate/) 
+* [点击查看详细日期API（http://www.jemui.com/uidoc/jedate.html）](http://www.jemui.com/uidoc/jedate.html) 
 
 
 # 快速上手
@@ -19,8 +19,5 @@ jeDate除了包含 日历可以直接显示与点击显示、日期标注点、�
 
 * [查看演示](http://singod.github.io/jeDate/)   
 
-**下载**
-
-* [jedate.js](https://github.com/singod/jeDate/blob/gh-pages/jedate/jedate.js)
 
 ============
