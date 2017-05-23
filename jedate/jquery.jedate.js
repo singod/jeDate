@@ -728,6 +728,9 @@
         //点击空白处隐藏
         $(document).on("mouseup scroll", function(ev) {
             ev.stopPropagation();
+            if (ev.type === 'scroll' && !jet.isBool(opts.hideByScroll)) {
+                return;
+            }
             if (jet.boxelem == "#jedatebox"){
                 var box = $(jet.boxelem);
                 if (box && box.css("display") !== "none")  box.remove();
