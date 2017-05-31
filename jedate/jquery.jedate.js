@@ -158,9 +158,11 @@
             myDate = darr.length > 0 ? new Date(darr[0],darr[1],(darr[2]||00),(darr[3]||00),(darr[4]||00),(darr[5]||00)) : new Date(),
             myMM = myDate.getMonth(), myDD = myDate.getDate(),
             narr = [myDate.getFullYear(), myMM, myDD, myDate.getHours(), myDate.getMinutes(), myDate.getSeconds()];
+
         $.each(regymd.split("|"),function (i,val) {
             sparr.push(obj[val]||"");
         });
+
         var mday = jet.getDaysNum(narr[0], narr[1]+1),
             isDay31 = mday == 31 && jet.digit(new Date().getDate()) == 31,
             parnaVal = narr[2]+parseInt(sparr[2]||00), gday, reday;
@@ -171,6 +173,7 @@
         reday = isDay31 ? jet.digit(parseInt(setdate.getDate())+1) : jet.digit(setdate.getDate());
         //获取重新设置后的日期
         var reDate = jet.parse([ setdate.getFullYear(), parseInt(setdate.getMonth())+1, reday ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
+
         return reDate;
     };
     //判断元素类型
@@ -940,13 +943,16 @@
     $.nowDate = function (str,format,date) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
         date = date || [];
+        if (typeof(str) === 'number') {
+            str = {DD: str};
+        }
         return jet.returnDate(str, format, date);
     };
     $.timeStampDate = function (date,bool,format) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
         if(bool == true){  //将时间戳转换成日期
             var setdate = new Date(parseInt(date.substring(0,10)) * 1e3);
-            return jet.parse([ setdate.getFullYear(), jet.digit(setdate.getMonth()), jet.digit(setdate.getDate()) ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
+            return jet.parse([ setdate.getFullYear(), jet.digit(setdate.getMonth() + 1), jet.digit(setdate.getDate()) ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
         }else {  //将日期转换成时间戳
             var tmsArr = jet.reMacth(date),
                 newdate = new Date(tmsArr[0],tmsArr[1],tmsArr[2],tmsArr[3],tmsArr[4],tmsArr[5]),
