@@ -156,13 +156,14 @@ window.console && (console = console || {log : function(){return;}});
         format = format || 'YYYY-MM-DD hh:mm:ss';
         var undate = (dateval == undefined || dateval == "" || dateval == []), darr = undate ? [] : jet.reMacth(dateval), sparr = [],
             myDate = darr.length > 0 ? new Date(darr[0],darr[1],(darr[2]||00),(darr[3]||00),(darr[4]||00),(darr[5]||00)) : new Date(),
-            myMM = undate ? myDate.getMonth()+1 : myDate.getMonth(), myDD = myDate.getDate(),
+            myMM = myDate.getMonth(), myDD = myDate.getDate(),
             narr = [myDate.getFullYear(), myMM, myDD, myDate.getHours(), myDate.getMinutes(), myDate.getSeconds()];
+
         $.each(regymd.split("|"),function (i,val) {
             sparr.push(obj[val]||"");
         });
         var setdate = new Date(narr[0]+parseInt(sparr[0]||00), narr[1]+parseInt(sparr[1]||00), narr[2]+parseInt(sparr[2]||00), narr[3]+parseInt(sparr[3]||00), narr[4]+parseInt(sparr[4]||00), narr[5]+parseInt(sparr[4]||00)),
-            reDate = jet.parse([ setdate.getFullYear(), jet.digit(setdate.getMonth()), jet.digit(setdate.getDate()) ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
+            reDate = jet.parse([ setdate.getFullYear(), jet.digit(setdate.getMonth() + 1), jet.digit(setdate.getDate()) ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
         return reDate;
     };
     //判断元素类型
@@ -932,13 +933,16 @@ window.console && (console = console || {log : function(){return;}});
     $.nowDate = function (str,format,date) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
         date = date || [];
+        if (typeof(str) === 'number') {
+            str = {DD: str};
+        }
         return jet.returnDate(str, format, date);
     };
     $.timeStampDate = function (date,bool,format) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
         if(bool == true){  //将时间戳转换成日期
             var setdate = new Date(parseInt(date.substring(0,10)) * 1e3);
-            return jet.parse([ setdate.getFullYear(), jet.digit(setdate.getMonth()), jet.digit(setdate.getDate()) ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
+            return jet.parse([ setdate.getFullYear(), jet.digit(setdate.getMonth() + 1), jet.digit(setdate.getDate()) ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
         }else {  //将日期转换成时间戳
             var tmsArr = jet.reMacth(date),
                 newdate = new Date(tmsArr[0],tmsArr[1],tmsArr[2],tmsArr[3],tmsArr[4],tmsArr[5]),
