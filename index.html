@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link type="text/css" rel="stylesheet" href="jedate/skin/jedate.css">
     <script type="text/javascript" src="jedate/jquery-1.7.2.js"></script>
-    <script type="text/javascript" src="jedate/jquery.jedate.js"></script>
+    <script type="text/javascript" src="jedate/jquery.jedate.min.js"></script>
     <style>
     	.warpbox{width:1000px;margin:0 auto;padding:40px 0 0 0;}
     	.bodys{ padding:50px 0 0 50px;}
@@ -53,7 +53,8 @@
 var start = {
     format: 'YYYY-MM-DD hh:mm:ss',
     minDate: '2014-06-16 23:59:59', //设定最小日期为当前日期
-    festival:true,
+    // festival:true,
+    hideByScroll: false,
     //isinitVal:true,
     maxDate: $.nowDate(0), //最大日期
     choosefun: function(elem,datas){
@@ -63,7 +64,7 @@ var start = {
 var end = {
     format: 'YYYY年MM月DD日 hh:mm:ss',
     minDate: $.nowDate(0), //设定最小日期为当前日期
-    festival:true,
+    // festival:true,
     //isinitVal:true,
     maxDate: '2099-06-16 23:59:59', //最大日期
     choosefun: function(elem,datas){
