@@ -155,7 +155,7 @@
     jet.returnDate = function(obj, format, dateval) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
         var undate = (dateval == undefined || dateval == "" || dateval == []), darr = undate ? [] : jet.reMacth(dateval), sparr = [],
-            myDate = darr.length > 0 ? new Date(darr[0],darr[1],(darr[2]||00),(darr[3]||00),(darr[4]||00),(darr[5]||00)) : new Date(),
+            myDate = darr.length > 0 ? new Date(darr[0], parseInt(darr[1] || 1) - 1, (darr[2]||00),(darr[3]||00),(darr[4]||00),(darr[5]||00)) : new Date(),
             myMM = myDate.getMonth(), myDD = myDate.getDate(),
             narr = [myDate.getFullYear(), myMM, myDD, myDate.getHours(), myDate.getMinutes(), myDate.getSeconds()];
 
