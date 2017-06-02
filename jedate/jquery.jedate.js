@@ -1,11 +1,11 @@
 /**
- @Name : jeDate v3.8.2 日期控件
+ @Name : jeDate v3.8.3 日期控件
  @Author: chen guojun
- @Date: 2017-04-28
+ @Date: 2017-06-01
  @QQ群：516754269
- @官网：http://www.jemui.com/jedate/ 或 https://github.com/singod/jeDate
+ @官网：http://www.jemui.com/ 或 https://github.com/singod/jeDate
  */
-window.console && (console = console || {log : function(){return;}});
+
 ;(function(root, factory) {
     //amd
     if (typeof define === 'function' && define.amd) {
@@ -156,13 +156,21 @@ window.console && (console = console || {log : function(){return;}});
         format = format || 'YYYY-MM-DD hh:mm:ss';
         var undate = (dateval == undefined || dateval == "" || dateval == []), darr = undate ? [] : jet.reMacth(dateval), sparr = [],
             myDate = darr.length > 0 ? new Date(darr[0],darr[1],(darr[2]||00),(darr[3]||00),(darr[4]||00),(darr[5]||00)) : new Date(),
-            myMM = undate ? myDate.getMonth()+1 : myDate.getMonth(), myDD = myDate.getDate(),
+            myMM = myDate.getMonth(), myDD = myDate.getDate(),
             narr = [myDate.getFullYear(), myMM, myDD, myDate.getHours(), myDate.getMinutes(), myDate.getSeconds()];
         $.each(regymd.split("|"),function (i,val) {
             sparr.push(obj[val]||"");
         });
-        var setdate = new Date(narr[0]+parseInt(sparr[0]||00), narr[1]+parseInt(sparr[1]||00), narr[2]+parseInt(sparr[2]||00), narr[3]+parseInt(sparr[3]||00), narr[4]+parseInt(sparr[4]||00), narr[5]+parseInt(sparr[4]||00)),
-            reDate = jet.parse([ setdate.getFullYear(), jet.digit(setdate.getMonth()), jet.digit(setdate.getDate()) ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
+        var mday = jet.getDaysNum(narr[0], narr[1]+1),
+            isDay31 = mday == 31 && jet.digit(new Date().getDate()) == 31,
+            parnaVal = narr[2]+parseInt(sparr[2]||00), gday, reday;
+        //判断今天是否为31号
+        gday = isDay31 ? (parnaVal - 1) : parnaVal;
+        //重新设置日期，必须要用new Date来设置，否则就会有问题
+        var setdate = new Date(narr[0]+parseInt(sparr[0]||00), narr[1]+parseInt(sparr[1]||00), gday, narr[3]+parseInt(sparr[3]||00), narr[4]+parseInt(sparr[4]||00), narr[5]+parseInt(sparr[4]||00));
+        reday = isDay31 ? jet.digit(parseInt(setdate.getDate())+1) : jet.digit(setdate.getDate());
+        //获取重新设置后的日期
+        var reDate = jet.parse([ setdate.getFullYear(), parseInt(setdate.getMonth())+1, reday ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
         return reDate;
     };
     //判断元素类型
@@ -942,6 +950,14 @@ window.console && (console = console || {log : function(){return;}});
                 timeStr = newdate.getTime().toString();
             return timeStr.substr(0, 10);
         }
+    };
+    //分解时间
+    $.splitDate = function (str) {
+        var sdate = str.match(/\w+|d+/g);
+        return {
+            YYYY:parseInt(sdate[0]),MM:parseInt(sdate[1])||00,DD:parseInt(sdate[2])||00,
+            hh:parseInt(sdate[3])||00,mm:parseInt(sdate[4])||00,ss:parseInt(sdate[5])||00
+        };
     };
     //获取年月日星期
     $.getLunar = function(time){
