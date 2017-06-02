@@ -932,7 +932,7 @@
         });
     };
     //日期控件版本
-    $.dateVer = "3.8.2";
+    $.dateVer = "3.8.3";
     //返回指定日期
     $.nowDate = function (str,format,date) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
