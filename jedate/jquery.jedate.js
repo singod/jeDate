@@ -509,24 +509,56 @@
     };
     jedfn.eachStrhms = function(opts,boxCell) {
         var that = this, hmsArr = [],
-            mins = jet.minDate.split(" ")[1] == undefined ? "00:00:00" : jet.minDate.split(" ")[1],
-            maxs = jet.maxDate.split(" ")[1] == undefined ? "00:00:00" : jet.maxDate.split(" ")[1],
+            minDates = jet.minDate.split(" "),
+            maxDates = jet.maxDate.split(" "),
+            mins = minDates[1] == undefined ? "00:00:00" : minDates[1],
+            minDate = minDates[0],
+            maxs = maxDates[1] == undefined ? "00:00:00" : maxDates[1],
+            maxDate = maxDates[0],
             minhms = jet.reMacth(mins), maxhms = jet.reMacth(maxs);
+
         //生成时分秒
         $.each([ 24, 60, 60 ], function(i, len) {
             var hmsStr = "", hmsCls = "", hmsarr = that.isContainhh(jet.format),
-                textem = boxCell.find(".jedatehms input").eq(i).val();
+                inputs = boxCell.find(".jedatehms input"),
+                textem = inputs.eq(i).val();
+
             for (var h = 0; h < len; h++) {
                 h = jet.digit(h);
                 if (jet.isBool(opts.hmsLimit)) {
-                    hmsCls = (hmsarr.length != 0 && (hmsarr[i] == undefined || hmsarr[i] == "zz")) ? "disabled" : (textem == h ? "action" : "");
-                }else {
+                    if (hmsarr.length != 0 && (hmsarr[i] == undefined || hmsarr[i] == "zz")) {
+                        hmsCls = "disabled";
+                    } else {
+                        var current = jet.ymdDate + ' ',
+                            min = minDate + ' ',
+                            max = maxDate + ' ';
+
+                        for (var j = 0; j <= i; j++) {
+                            if (j == i) {
+                                current += (h + ':');
+                            } else {
+                                current += (inputs.eq(j).val() + ':');
+                            }
+                            min += (minhms[j] + ':');
+                            max += (maxhms[j] + ':');
+                        }
+
+                        current = new Date(current);
+                        min = new Date(min);
+                        max = new Date(max);
+                        if (current < min || current > max) {
+                            hmsCls = h == textem ? "disabled action": "disabled";
+                        } else {
+                            hmsCls = h == textem ? "action": "";
+                        }
+                    }
+                } else {
                     //判断限制时间范围的状态
                     if (h < minhms[i] || h > maxhms[i]){
-                        hmsCls = h == textem ? "disabled action" : "disabled";
-                    }else {
-                        hmsCls = h == textem ? "action" :"";
-                    };
+                        hmsCls = h == textem ? "disabled action": "disabled";
+                    } else {
+                        hmsCls = h == textem ? "action": "";
+                    }
                 }
                 hmsStr += '<p class="' + hmsCls + '">' + h + "</p>";
             }
@@ -620,7 +652,9 @@
                 var hmsStr = that.eachStrhms(opts, boxCell), hmsarr = that.isContainhh(jet.format);
                 prophms.css("display","block");
                 $.each([ hsCls, msCls, ssCls ], function(i, hmsCls) {
-                    if (hmsCls.html() == "") hmsCls.html(hmsStr[i]);
+                    if (jet.isBool(jet.hmsLimit)) {
+                        hmsCls.html(hmsStr[i]);
+                    }
                 });
                 //计算当前时分秒的位置
                 $.each([ "hours", "minutes", "seconds" ], function(i, hms) {
