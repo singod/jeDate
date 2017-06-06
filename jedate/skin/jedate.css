@@ -96,6 +96,7 @@
 .jedateblue .jedateh p.action,.jedateblue .jedatems p.action{background: #00A1CB;color:#fff;}
 .jedateblue .jedatehmsclose{width:30px; height:30px; line-height:26px; text-align:center;position: absolute;top:50%;right:4px; margin-top:-15px;z-index:150;font-size:24px;}
 
+.jedateblue .jedatenotice{display: inline-block; z-index: 1000; width: 100%; background-color: #00A1CB; color: lightblue; text-align: center; line-height: 20px;}
 
 /* 绿色风格 */
 .jedategreen{border:1px #78BA32 solid;background-color:#fff;}
@@ -176,6 +177,7 @@
 .jedategreen .jedateh p.action,.jedategreen .jedatems p.action{background: #78BA32;color:#fff;}
 .jedategreen .jedatehmsclose{width:30px; height:30px; line-height:26px; text-align:center;position: absolute;top:50%;right:4px; margin-top:-15px;z-index:150;font-size:24px;}
 
+.jedategreen .jedatenotice{display: inline-block; z-index: 1000; width: 100%; background-color: #78BA32; color: lightblue; text-align: center; line-height: 20px;}
 
 /* 红色风格 */
 .jedatered{border:1px #D91600 solid;background-color:#fff;}
@@ -239,6 +241,8 @@
 .jedatered .jedatebot .botflex i{width:12px;float:left;height:26px;line-height:24px;font-style:normal;display:block;text-align: center;background: #f2f2f2; }
 .jedatered .jedatebot .jedatebtn{text-align:center;font-size: 12px;}
 .jedatered .jedatebot .jedatebtn span{width:31%;float:right; margin:0 1.1%;background-color: #D91600;color: #fff;display: block;height:28px;line-height:28px; border-radius:4px;text-align:center;}
+
+.jedatered .jedatenotice{display: inline-block; z-index: 1000; width: 100%; background-color: #D91600; color: lightblue; text-align: center; line-height: 20px;}
 
 .jedatered .jedateprophms{width: 100%;background: #FFF;}
 .jedatered .jedateproppos{position:absolute;left:0; top:0px; padding-top:0px; display:none;}

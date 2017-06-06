@@ -278,7 +278,8 @@
             '<div class="jedatetopym" style="display: none;"><ul class="ymdropul"></ul></div>' +
             '<ol class="jedaol"></ol><ul class="'+((isYYMM || isYY) ? (isYY ? "jedayy":"jedaym"):"jedaul")+'"></ul>' +
             '<div class="jedateprophms"></div>' +
-            '<div class="jedatebot"></div>';
+            '<div class="jedatebot"></div>' +
+            '<div class="jedatenotice"></div>';
         boxCell.empty().append(doudStrHtml);
         that.generateHtml(opts,boxCell);
     };
@@ -482,7 +483,11 @@
             }else{
                 bCls = "disabled";
             }
-            if (bCls == "action") boxCell.children("ul").attr("dateval",year+'-'+month+'-'+b);
+            if (bCls == "action") {
+                boxCell.children("ul").attr("dateval",year+'-'+month+'-'+b);
+            } else {
+                boxCell.children("ul").attr("dateval", jet.minDate);
+            }
             dateHtml += '<li data-ymd="'+year+'-'+month+'-'+b+'" class='+(bCls != "" ? bCls : "")+'>'+(isfestival(year,month,b) + bmark)+'</li>';
         }
         //下一月开始天数
@@ -630,6 +635,15 @@
             $(jet.boxelem).remove();
         }
     };
+    // 提示层
+    jedfn.notice = function(text, boxCell) {
+        var container = boxCell.find('.jedatenotice');
+        container.html(text);
+        container.show();
+        setTimeout(function() {
+            container.hide();
+        }, 2000);
+    };
     //为日期绑定各类事件
     jedfn.eventsDate = function(opts,boxCell) {
         var that = this, elemCell = that.valCell, lang = opts.language || config.language,
@@ -733,6 +747,13 @@
             var newDate = new Date(), toTime = [ newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate(), newDate.getHours(), newDate.getMinutes(), newDate.getSeconds() ],
                 gettoDate = jet.parse([ toTime[0], toTime[1], toTime[2] ], [ toTime[3], toTime[4], toTime[5] ], jet.format),
                 toDate = newDate.getFullYear()+"-"+jet.digit(newDate.getMonth() + 1)+"-"+jet.digit(newDate.getDate())+" "+jet.digit(newDate.getHours())+":"+jet.digit(newDate.getMinutes())+":"+jet.digit(newDate.getSeconds());
+
+            if (toDate > jet.maxDate) {
+                return that.notice('今天大于了最大日期', boxCell);
+            }
+            if (toDate < jet.minDate) {
+                return that.notice('今天小于了最小日期', boxCell);
+            }
             jet.isValHtml(elemCell) ? elemCell.val(gettoDate) :jet.text(gettoDate);
             if($(boxCell.attr(jefix)).length > 0){
                 var fixCell = "#"+boxCell.attr("id");
@@ -757,6 +778,13 @@
                 okformat = $($(jet.boxelem).attr(jefix)).length > 0 ? boxCell.attr("jeformat") : jet.format,
                 okVal = jet.parse([parseInt(okymd[0]), parseInt(okymd[1]), parseInt(okymd[2])], [okhms[0]||00, okhms[1]||00, okhms[2]||00], okformat),
                 okdate = (okymd[0]||date.getFullYear())+"-"+jet.digit(okymd[1]||date.getMonth() + 1)+"-"+jet.digit(okymd[2]||date.getDate())+" "+jet.digit(okhms[0]||00)+":"+jet.digit(okhms[1]||00)+":"+jet.digit(okhms[2]||00);
+
+            if (okdate > jet.maxDate) {
+                return that.notice('当前日期不能大于最大日期', boxCell);
+            }
+            if (okdate < jet.minDate) {
+                return that.notice('当前日期不能小于最小日期', boxCell);
+            }
 
             jet.isValHtml(elemCell) ? elemCell.val(okVal) :elemCell.text(okVal);
             that.dateClose();
