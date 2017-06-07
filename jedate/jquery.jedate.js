@@ -485,8 +485,6 @@
             }
             if (bCls == "action") {
                 boxCell.children("ul").attr("dateval",year+'-'+month+'-'+b);
-            } else {
-                boxCell.children("ul").attr("dateval", jet.minDate);
             }
             dateHtml += '<li data-ymd="'+year+'-'+month+'-'+b+'" class='+(bCls != "" ? bCls : "")+'>'+(isfestival(year,month,b) + bmark)+'</li>';
         }
@@ -773,8 +771,12 @@
                         if(typeof(disattr) == "undefined") hmsArr.push($(this).val());
                     });
                     return hmsArr;
-                })();
-            var okymd = ishhmat ? [date.getFullYear(),date.getMonth() + 1,date.getDate()] : jet.reMacth(boxCell.children("ul").attr("dateval")),
+                })(),
+                dateval = boxCell.children("ul").attr("dateval")
+            if (!dateval) {
+                return that.notice('请先选择日期', boxCell);
+            }
+            var okymd = ishhmat ? [date.getFullYear(),date.getMonth() + 1,date.getDate()] : jet.reMacth(dateval),
                 okformat = $($(jet.boxelem).attr(jefix)).length > 0 ? boxCell.attr("jeformat") : jet.format,
                 okVal = jet.parse([parseInt(okymd[0]), parseInt(okymd[1]), parseInt(okymd[2])], [okhms[0]||00, okhms[1]||00, okhms[2]||00], okformat),
                 okdate = (okymd[0]||date.getFullYear())+"-"+jet.digit(okymd[1]||date.getMonth() + 1)+"-"+jet.digit(okymd[2]||date.getDate())+" "+jet.digit(okhms[0]||00)+":"+jet.digit(okhms[1]||00)+":"+jet.digit(okhms[2]||00);
