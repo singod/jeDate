@@ -52,10 +52,12 @@
 <script type="text/javascript">
 var start = {
     format: 'YYYY-MM-DD hh:mm:ss',
-    minDate: '2014-06-16 23:59:59', //设定最小日期为当前日期
-    festival:true,
+    minDate: $.nowDate(0), //设定最小日期为当前日期
+    // festival:true,
+    hideByScroll: false,
     //isinitVal:true,
-    maxDate: $.nowDate(0), //最大日期
+    minDate: $.nowDate(1),
+    maxDate: $.nowDate(2), //最大日期
     choosefun: function(elem,datas){
         end.minDate = datas; //开始日选好后，重置结束日的最小日期
     }
@@ -63,7 +65,7 @@ var start = {
 var end = {
     format: 'YYYY年MM月DD日 hh:mm:ss',
     minDate: $.nowDate(0), //设定最小日期为当前日期
-    festival:true,
+    // festival:true,
     //isinitVal:true,
     maxDate: '2099-06-16 23:59:59', //最大日期
     choosefun: function(elem,datas){
