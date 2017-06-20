@@ -1,7 +1,7 @@
 /**
- @Name : jeDate v3.8.3 日期控件
+ @Name : jeDate v3.8.5 日期控件
  @Author: chen guojun
- @Date: 2017-06-01
+ @Date: 2017-06-18
  @QQ群：516754269
  @官网：http://www.jemui.com/ 或 https://github.com/singod/jeDate
  */
@@ -155,10 +155,10 @@
     jet.returnDate = function(obj, format, dateval) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
         var undate = (dateval == undefined || dateval == "" || dateval == []), darr = undate ? [] : jet.reMacth(dateval), sparr = [];
-		if(!undate){
-			darr[1] -= 1;
-			darr[1] = darr[1] == -1 ? 12 : darr[1];
-		}
+        if(!undate){
+            darr[1] -= 1;
+            darr[1] = darr[1] == -1 ? 12 : darr[1];
+        }
         var myDate = darr.length > 0 ? new Date(darr[0],darr[1],(darr[2]||00),(darr[3]||00),(darr[4]||00),(darr[5]||00)) : new Date(),
             myMM = myDate.getMonth(), myDD = myDate.getDate(),
             narr = [myDate.getFullYear(), myMM, myDD, myDate.getHours(), myDate.getMinutes(), myDate.getSeconds()];
@@ -510,17 +510,43 @@
     };
     jedfn.eachStrhms = function(opts,boxCell) {
         var that = this, hmsArr = [],
-            mins = jet.minDate.split(" ")[1] == undefined ? "00:00:00" : jet.minDate.split(" ")[1],
-            maxs = jet.maxDate.split(" ")[1] == undefined ? "00:00:00" : jet.maxDate.split(" ")[1],
+            minDates = jet.minDate.split(" "), maxDates = jet.maxDate.split(" "),
+            mins = minDates[1] == undefined ? "00:00:00" : minDates[1],
+            maxs = maxDates[1] == undefined ? "00:00:00" : maxDates[1],
+            minDate = minDates[0], maxDate = maxDates[0],
             minhms = jet.reMacth(mins), maxhms = jet.reMacth(maxs);
         //生成时分秒
         $.each([ 24, 60, 60 ], function(i, len) {
             var hmsStr = "", hmsCls = "", hmsarr = that.isContainhh(jet.format),
-                textem = boxCell.find(".jedatehms input").eq(i).val();
+                inputs = boxCell.find(".jedatehms input"),
+                textem = inputs.eq(i).val();
             for (var h = 0; h < len; h++) {
                 h = jet.digit(h);
                 if (jet.isBool(opts.hmsLimit)) {
                     hmsCls = (hmsarr.length != 0 && (hmsarr[i] == undefined || hmsarr[i] == "zz")) ? "disabled" : (textem == h ? "action" : "");
+                    if (hmsarr.length != 0 && (hmsarr[i] == undefined || hmsarr[i] == "zz")) {
+                        hmsCls = "disabled";
+                    }else {
+                        var current = jet.ymdDate + " ", min = minDate + " ", max = maxDate + " ";
+                        for (var j = 0; j <= i; j++) {
+                            if (j == i) {
+                                current += h + ":";
+                            } else {
+                                current += inputs.eq(j).val() + ":";
+                            }
+                            min += minhms[j] + ":";
+                            max += maxhms[j] + ":";
+                        }
+                        current = new Date(current);
+                        min = new Date(min);
+                        max = new Date(max);
+
+                        if (current < min || current > max) {
+                            hmsCls = h == textem ? "disabled action" :"disabled";
+                        } else {
+                            hmsCls = h == textem ? "action" :"";
+                        }
+                    }
                 }else {
                     //判断限制时间范围的状态
                     if (h < minhms[i] || h > maxhms[i]){
@@ -598,6 +624,15 @@
         if($($(jet.boxelem).attr(jefix)).length == 0) {
             $(jet.boxelem).remove();
         }
+    };
+    // 提示层
+    jedfn.notice = function(text, boxCell) {
+        var container = boxCell.find('.jedatenotice');
+        container.html(text);
+        container.show();
+        setTimeout(function() {
+            container.hide();
+        }, 2000);
     };
     //为日期绑定各类事件
     jedfn.eventsDate = function(opts,boxCell) {
@@ -700,6 +735,7 @@
             var newDate = new Date(), toTime = [ newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate(), newDate.getHours(), newDate.getMinutes(), newDate.getSeconds() ],
                 gettoDate = jet.parse([ toTime[0], toTime[1], toTime[2] ], [ toTime[3], toTime[4], toTime[5] ], jet.format),
                 toDate = newDate.getFullYear()+"-"+jet.digit(newDate.getMonth() + 1)+"-"+jet.digit(newDate.getDate())+" "+jet.digit(newDate.getHours())+":"+jet.digit(newDate.getMinutes())+":"+jet.digit(newDate.getSeconds());
+
             jet.isValHtml(elemCell) ? elemCell.val(gettoDate) :jet.text(gettoDate);
             if($(boxCell.attr(jefix)).length > 0){
                 var fixCell = "#"+boxCell.attr("id");
@@ -719,8 +755,9 @@
                         if(typeof(disattr) == "undefined") hmsArr.push($(this).val());
                     });
                     return hmsArr;
-                })();
-            var okymd = ishhmat ? [date.getFullYear(),date.getMonth() + 1,date.getDate()] : jet.reMacth(boxCell.children("ul").attr("dateval")),
+                })(),
+                datevalue = boxCell.children("ul").attr("dateval");
+            var okymd = ishhmat ? [date.getFullYear(),date.getMonth() + 1,date.getDate()] : jet.reMacth(datevalue),
                 okformat = $($(jet.boxelem).attr(jefix)).length > 0 ? boxCell.attr("jeformat") : jet.format,
                 okVal = jet.parse([parseInt(okymd[0]), parseInt(okymd[1]), parseInt(okymd[2])], [okhms[0]||00, okhms[1]||00, okhms[2]||00], okformat),
                 okdate = (okymd[0]||date.getFullYear())+"-"+jet.digit(okymd[1]||date.getMonth() + 1)+"-"+jet.digit(okymd[2]||date.getDate())+" "+jet.digit(okhms[0]||00)+":"+jet.digit(okhms[1]||00)+":"+jet.digit(okhms[2]||00);
@@ -732,6 +769,7 @@
         //点击空白处隐藏
         $(document).on("mouseup scroll", function(ev) {
             ev.stopPropagation();
+            if (ev.type === 'scroll' && !jet.isBool(opts.isdocScroll)) return;
             if (jet.boxelem == "#jedatebox"){
                 var box = $(jet.boxelem);
                 if (box && box.css("display") !== "none")  box.remove();
@@ -936,18 +974,21 @@
         });
     };
     //日期控件版本
-    $.dateVer = "3.8.3";
+    $.dateVer = "3.8.5";
     //返回指定日期
     $.nowDate = function (str,format,date) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
         date = date || [];
+        if (typeof(str) === 'number') {
+            str = {DD: str};
+        }
         return jet.returnDate(str, format, date);
     };
     $.timeStampDate = function (date,bool,format) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
         if(bool == true){  //将时间戳转换成日期
             var setdate = new Date(parseInt(date.substring(0,10)) * 1e3);
-            return jet.parse([ setdate.getFullYear(), jet.digit(setdate.getMonth()), jet.digit(setdate.getDate()) ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
+            return jet.parse([ setdate.getFullYear(), jet.digit(setdate.getMonth() + 1), jet.digit(setdate.getDate()) ], [ jet.digit(setdate.getHours()), jet.digit(setdate.getMinutes()), jet.digit(setdate.getSeconds()) ], format);
         }else {  //将日期转换成时间戳
             var tmsArr = jet.reMacth(date),
                 newdate = new Date(tmsArr[0],tmsArr[1],tmsArr[2],tmsArr[3],tmsArr[4],tmsArr[5]),
