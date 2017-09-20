@@ -20,4 +20,6 @@ jeDate除了包含 多语言、日历固定、有效无效日期、日期时间�
 * [查看演示](http://singod.github.io/jeDate/)   
 
 
-============
+## License
+
+[MIT License](https://github.com/singod/jeDate/blob/gh-pages/LICENSE)
