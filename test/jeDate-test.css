@@ -1,0 +1,34 @@
+html,body{min-height:100%;}
+html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
+body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin: 0;padding: 0;border: 0;outline: 0;-webkit-tap-highlight-color:transparent;}
+article,aside,header,footer,nav,section,figure,figcaption,hgroup,progress,canvas{display:block}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+body{font-size:14px;font-family:'PingFangSC-Light','PingFang SC','Segoe UI','Lucida Grande','NotoSansHans-Light','Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', STHeiti, 'WenQuanYi Micro Hei', SimSun, sans-serif;text-rendering:geometricPrecision;color:#333333;background:#FFFFFF;}
+
+a:active,a:hover{outline:0}
+img{display:inline-block;border:0}
+li{list-style:none}
+table{border-collapse:collapse;border-spacing:0}
+h1,h2,h3{font-size:14px;font-weight:400}
+h4,h5,h6{font-size:100%;font-weight:400}
+button,input,optgroup,option,select,textarea{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;outline:0;margin: 0px;padding: 0px;}
+pre{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}
+
+hr{height:1px;margin:10px 0;border:0;background-color:#e2e2e2;clear:both}
+a{color:#333;text-decoration:none}
+a:hover{color:#777}
+.gray{background-color: #f5f5f5;}
+
+.icons{background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAASAgMAAAA1aVZ3AAAACVBMVEUAAAD///9nyrNdI4MmAAAAAXRSTlMAQObYZgAAAChJREFUCNdjWAUCCxjg9DQgtTKBAUN8aigQJGCho6KiYDSJ8ggaYR8Ao74zAKjm+cYAAAAASUVORK5CYII="); background-repeat:no-repeat; }
+.jequote{max-width: 1140px;margin-bottom: 10px;padding: 15px;line-height: 22px;border: 4px solid #00A080;border-radius: 4px;background-color: #f5f5f5;font-size: 15px;}
+.jebody{max-width: 1140px;margin: 40px auto;position: relative;}
+.jewarp{width:100%;margin: 15px 0; }
+.jewarp h3{position: relative;left: 0;height: 40px;line-height:40px;padding-left:10px;white-space: nowrap;border-radius: 4px 4px 0 0;font-size: 16px;color:#00A080;text-align: left;}
+.jewarp .content{border: 1px solid #ededed;border-radius:0 0 4px 4px;padding: 20px 10px 10px 10px;overflow: hidden;}
+.jeitem{margin:0 10px 8px 0;position: relative;float: left;}
+.jelabel{width: 130px;float: left;display: block;padding: 9px 10px;font-weight: 400;text-align: right; color:#555;}
+.jeinpbox{float: left;width: 190px;margin-right: 10px;display: inline-block;vertical-align: middle;position: relative;}
+.jeinput{display: block;width: 100%;padding-left: 10px; height: 36px;line-height: 34px\9;border: 1px solid #e6e6e6;background-color: #fff;border-radius: 3px;}
+.jebtns{width: 35px;margin-left: 10px; height: 36px;line-height: 36px\9;border: 1px solid #e6e6e6;background-color: #fff;border-radius: 3px;background-position:right center;float: left;cursor: pointer;}
+
+

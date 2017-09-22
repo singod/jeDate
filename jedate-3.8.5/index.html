@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>jeDate日期选择插件</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link type="text/css" rel="stylesheet" href="jedate/skin/jedate.css">
+    <script type="text/javascript" src="jedate/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="jedate/jquery.jedate.js"></script>
+    <style>
+    	.warpbox{width:1000px;margin:0 auto;padding:40px 0 0 0;}
+    	.bodys{ padding:50px 0 0 50px;}
+.datainp{ width:200px; height:30px; border:1px #A5D2EC solid;}
+.datep{ margin-bottom:40px; line-height:24px; margin-right:15px;}
+.wicon{background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAQCAYAAADj5tSrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNi8xNS8xNGnF/oAAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAAoElEQVQ4jWPceOnNfwYqAz9dYRQ+E7UtwAaGjyUsDAyYYUgJ2HT5LXZLcEmSCnA6duOlN///////H0bDALl8dPH/////Z8FuNW6Qtvw2nL3lyjsGBgYGhlmRqnj1kGwJuqHIlhJlCXq8EOITEsdqCXLEbbr8FisfFkTo+vBZRFZwERNEFFkCiw90nxJtCalxQmzegltCzVyP1RJq5HZ8AABuNZr0628DMwAAAABJRU5ErkJggg=="); background-repeat:no-repeat; background-position:right center;}
+    </style>
+  </head>
+  <body style="background:#f7f7f7;">
+  <section class="page-header">
+      <h1 class="project-name fmy" style="margin-bottom:15px;">jeDate日期选择插件--演示</h1>
+      <a href="https://github.com/singod/jeDate" class="btn">View on GitHub</a>
+      <a href="https://codeload.github.com/singod/jeDate/zip/gh-pages" class="btn">Download .zip</a>
+  </section>
+
+  <div class="warpbox fmy" style="min-height:500px;">
+<ul>
+<li class="datep"><a href="http://www.jayui.com/jedate/">详细日期控件API</a></li>
+<li class="datep" style="width:700px;">jeDate除了包含初始化日期加减N、日期标注点、输入框可以直接输入时间、设定年月（YYYY-MM）、日期范围限制、开始日期设定、自定义日期格式、时间戳转换、当天的前后若干天返回、时分秒选择、智能响应、自动纠错、节日识别，操作等常规功能外，根据不同的日期格式，显示不同内容，还拥有更多趋近完美的解决方案。<br/><span style="color: green">您可以免费将她用于任何个人项目。但是不能去除头部信息。</span>  QQ群：516754269</li>
+<li><span style="color: red">jeDate从3.5版本开始改为jquery版本的日期控件</span><br/><br/>
+<span style="color: red">此为部分个例展示，更多请看</span> <a href="http://www.jayui.com/jedate/">详细日期控件API</a>。<br/><br/>
+</li>
+    <li class="datep"><input class="datainp wicon" id="inpstart" type="text" placeholder="开始日期" value=""  readonly></li>
+    <li class="datep"><input class="datainp wicon" id="inpend" type="text" placeholder="结束日期"   readonly></li>
+    <li class="datep"><input class="datainp wicon" id="date01" type="text" placeholder="YYYY-MM-DD hh:mm:ss" value=""  readonly></li>
+    <li class="datep"><input class="datainp wicon" id="date02" type="text" placeholder="YYYY-MM-DD hh:mm" value=""  readonly></li>
+    <li class="datep"><input class="datainp wicon" id="date03" type="text" placeholder="YYYY-MM-DD"  readonly></li>
+    <li class="datep"><input class="datainp wicon" id="date04" type="text" placeholder="YYYY-MM"  readonly></li>
+    <li class="datep"><input class="datainp wicon" id="date05" type="text" placeholder="hh:mm:ss"  readonly></li>
+    <li class="datep"><input class="datainp wicon" id="test"  type="text" placeholder="hh:mm" onclick="testShow(this)"  readonly></li>
+</ul>
+<div class="discls" style="float:left;margin-right:5px;"></div>
+<div class="discls" style="float:left;margin-right:5px;"></div>
+  </div>
+  
+<script type="text/javascript">
+var start = {
+    format: 'YYYY-MM-DD hh:mm:ss',
+    minDate: '2014-06-16 23:59:59', //设定最小日期为当前日期
+    festival:true,
+    //isinitVal:true,
+    maxDate: $.nowDate(0), //最大日期
+    choosefun: function(elem,datas){
+        end.minDate = datas; //开始日选好后，重置结束日的最小日期
+    }
+};
+var end = {
+    format: 'YYYY年MM月DD日 hh:mm:ss',
+    minDate: $.nowDate(0), //设定最小日期为当前日期
+    festival:true,
+    //isinitVal:true,
+    maxDate: '2099-06-16 23:59:59', //最大日期
+    choosefun: function(elem,datas){
+        start.maxDate = datas; //将结束日的初始值设定为开始日的最大日期
+    }
+};
+$("#inpstart").jeDate(start);
+$("#inpend").jeDate(end);
+
+
+$("#date01").jeDate({
+    isinitVal:true,
+    festival:true,
+    ishmsVal:false,
+    minDate: '2016-06-16 23:59:59',
+    maxDate: $.nowDate(0),
+    format:"YYYY-MM-DD hh:mm:ss",
+    zIndex:3000,
+})
+$("#date02").jeDate({
+    isinitVal:true,
+    festival:true,
+    ishmsVal:false,
+    minDate: '2016-06-16 23:59:59',
+    maxDate: $.nowDate(0),
+    format:"YYYY-MM-DD hh:mm",
+    zIndex:3000,
+})
+$("#date03").jeDate({
+    isinitVal:true,
+    festival:true,
+    ishmsVal:false,
+    minDate: '2016-06-16 23:59:59',
+    maxDate: $.nowDate(0),
+    format:"YYYY-MM-DD",
+    zIndex:3000,
+})
+$("#date04").jeDate({
+    isinitVal:true,
+    festival:true,
+    ishmsVal:false,
+    minDate: '2016-06-16 23:59:59',
+    maxDate: $.nowDate(0),
+    format:"YYYY-MM",
+    zIndex:3000,
+})
+$("#date05").jeDate({
+    isinitVal:true,
+    festival:true,
+    ishmsVal:false,
+    minDate: '2016-06-16 23:59:59',
+    maxDate: $.nowDate(0),
+    format:"hh:mm:ss",
+    zIndex:3000,
+})
+
+
+    function testShow(elem){
+        $.jeDate(elem,{
+            insTrigger:false,
+            isinitVal:true,
+            festival:true,
+            ishmsVal:false,
+            minDate: '2016-06-16 23:59:59',
+            maxDate: $.nowDate(0),
+            format:"hh:mm",
+            zIndex:3000,
+        })
+    }
+
+</script>
+  </body>
+</html>
