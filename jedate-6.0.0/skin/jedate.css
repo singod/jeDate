@@ -59,7 +59,7 @@
 .jedateblue .daybox .arthead p{width: 100%;line-height:40px;float: left;text-align:center;font-size: 14px;}
 .jedateblue .daybox .arthead .ymbtn{padding: 8px 10px;color:#fff;border-radius: 4px;cursor:pointer;}
 .jedateblue .daybox .arthead .ymbtn:hover{background-color:#00C1AA;color:#fff;}
-.jedateblue .daybox .artcont{overflow: hidden;position: relative;border: 1px #cecece solid;border-top: none;}
+.jedateblue .daybox .artcont{overflow: hidden;position: relative;border: 1px #cecece solid;border-top: none;float: left;}
 .jedateblue .daybox .artcont.spaer:after{width: 1px;background-color:#ddd;position: absolute;top: 0;bottom: 0;left:50%;content: "";}
 .jedateblue .daybox .contlist{width: 234px;float: left;padding:8px;overflow:hidden;}
 .jedateblue .daysul{width: 100%;border-collapse: collapse;border-spacing: 0;border: 1px solid #fff;}
