@@ -31,7 +31,7 @@
                 yes   : "确定",
                 close : "关闭"
             },
-            range:false, 
+            range:false,
             trigger:"click",
             format:"YYYY-MM-DD hh:mm:ss", //日期格式
             minDate:"1900-01-01 00:00:00", //最小日期
@@ -158,7 +158,7 @@
     };
     //返回日期
     jet.reSetDate = function (obj,date,format) {
-        date = date || {};  format = format || 'YYYY-MM-DD hh:mm:ss'; 
+        date = date || {};  format = format || 'YYYY-MM-DD hh:mm:ss';
         var ndate = new Date(), narr = [], matArr = {YYYY:"FullYear",MM:"Month",DD:"Date",hh:"Hours",mm:"Minutes",ss:"Seconds"},
             dateY = date.YYYY == undefined ? ndate.getFullYear():date.YYYY,dateM = date.MM == undefined ? ndate.getMonth()+1:date.MM,
             dateD = date.DD == undefined ? ndate.getDate():date.DD, timeh = date.hh == undefined ? ndate.getHours():date.hh,
@@ -169,7 +169,7 @@
         };
         $.each(["ss","mm","hh","DD","MM","YYYY"],function (i,mat) {
             $.each(narr,function (n,val) {
-                isDay31 = newDate["get"+matArr[mat]]() == 31; 
+                isDay31 = newDate["get"+matArr[mat]]() == 31;
                 var gval = isDay31 ? (newDate["get"+matArr[mat]]() - 1) : newDate["get"+matArr[mat]](),
                     oVal = parseInt(obj[mat]),nval;
                 if (mat == 'MM'){
@@ -258,7 +258,7 @@
         return jet.parse(ymdhms,format);
     };
     //转换日期值
-    jedfn.parseValue = function (fnStr,matStr) {   
+    jedfn.parseValue = function (fnStr,matStr) {
         var that = this, valArr=[],opts = that.opts, setVal = "",elm = $(jet.boxelem),
             formats = matStr == undefined ? ($(elm.attr(jefix)).length > 0 ? elm.attr("jeformat") : that.format) : matStr,
             dateStr = $.isFunction(fnStr) ? fnStr() : fnStr;
@@ -282,12 +282,12 @@
     };
     //设置日期值
     jedfn.setValue = function (fnStr,matStr,bool) {
-        var that = this, elCell = that.valCell,strVal; 
-        if((typeof fnStr=='string')&&fnStr!=''&&that.opts.range == false){   
-            var reVal = jet.reMatch(fnStr), inObj={};  
+        var that = this, elCell = that.valCell,strVal;
+        if((typeof fnStr=='string')&&fnStr!=''&&that.opts.range == false){
+            var reVal = jet.reMatch(fnStr), inObj={};
             $.each(jet.reMatch(that.format),function (r,val) {
                 inObj[val] = parseInt(reVal[r]);
-            });  
+            });
             strVal = inObj;
         }else {
             strVal = fnStr;
@@ -299,7 +299,7 @@
     };
     //获取日期值
     jedfn.getValue = function (valobj) {
-        var that = this, objCell = that.valCell, 
+        var that = this, objCell = that.valCell,
             opts = that.opts, date = new Date(), reObj,
             dateY = date.getFullYear(),dateM = date.getMonth(),dateD = date.getDate(),
             timeh = date.getHours(),timem = date.getMinutes(),times = date.getSeconds();
@@ -310,9 +310,9 @@
             var isValShow = jet.isBool(opts.isShow) ? (that.getValue() == "") : !jet.isBool(opts.isShow),
                 objarr = $.extend({YYYY:null,MM:null,DD:null},valobj||{}),
                 ranMat = [],newArr = new Array(2),unObj = function (obj) {
-                return [(objarr[obj] == undefined || objarr[obj] == null),objarr[obj]]
-            }, defObj = [{ YYYY:dateY,MM:dateM,DD:dateD, hh:timeh,mm:timem,ss:times,zz:00},
-                { YYYY:dateY,MM:dateM,DD:dateD, hh:timeh,mm:timem,ss:times,zz:00}];
+                    return [(objarr[obj] == undefined || objarr[obj] == null),objarr[obj]]
+                }, defObj = [{ YYYY:dateY,MM:dateM,DD:dateD, hh:timeh,mm:timem,ss:times,zz:00},
+                    { YYYY:dateY,MM:dateM,DD:dateD, hh:timeh,mm:timem,ss:times,zz:00}];
             if (isValShow) {
                 //目标为空值则获取当前日期时间
                 $.each(newArr,function (i) {
@@ -329,12 +329,12 @@
                     var inObj = {}, reVal = isunRange ? jet.reMatch(spVal[i]) : jet.reMatch(initVal);
                     $.each(reMat,function (r,val) {
                         inObj[val] = parseInt(reVal[r]);
-                    }); 
+                    });
                     var exVal = $.extend(inObj,valobj||{});
-                    ranMat.push($.extend(defObj[i],exVal)); 
+                    ranMat.push($.extend(defObj[i],exVal));
                 });
             }
-            reObj = ranMat; 
+            reObj = ranMat;
         }
         return reObj;
     };
@@ -344,9 +344,9 @@
             lang = opts.language || config.language,
             isrange = opts.range != false,
             isShow = jet.isBool(opts.isShow);
-        var minTime = jet.minDate.replace(/\s+/g," ").split(" "), 
+        var minTime = jet.minDate.replace(/\s+/g," ").split(" "),
             maxTime = jet.maxDate.replace(/\s+/g," ").split(" "),
-            allvals = that.getValue({YYYY:ys,MM:ms,DD:ds}), 
+            allvals = that.getValue({YYYY:ys,MM:ms,DD:ds}),
             vals = allvals[0], valx = allvals[1];
         that.format = isShow ? that.format : boxCell.attr("jeformat");
         var mlens = jet.mlen(that.format), testhh = /\hh/.test(that.format);
@@ -364,14 +364,14 @@
                 return isrange ? emStr +"<span> ~ </span>"+ emStr : emStr;
             },
             btnStr = '<span class="clear">'+clearTxt+'</span><span class="today">'+lang.today+'</span><span class="setok">'+lang.yes+'</span>',
-            timeDiv = $("<div/>",{"class":"timecon"}).append(timeStr()), 
-            btnsDiv = $("<div/>",{"class":"btnscon"}).append(btnStr); 
+            timeDiv = $("<div/>",{"class":"timecon"}).append(timeStr()),
+            btnsDiv = $("<div/>",{"class":"btnscon"}).append(btnStr);
         footer.append(timeDiv).append(btnsDiv);
         boxCell.append($("<div/>",{"class":"jedate-tips"}).hide());
         that.maincon = function (elem,is) { return boxCell.find(elem+" > "+(is == 0 ? ".arthead":".artcont")); };
         //设置时分秒
         if (testhh) {
-            var minVal = /\s/.test(jet.minDate) ? minTime[1] : minTime[0], 
+            var minVal = /\s/.test(jet.minDate) ? minTime[1] : minTime[0],
                 maxVal = /\s/.test(jet.maxDate) ? maxTime[1] : maxTime[0];
             var rehms = jet.reMatch(minVal), vehms = [vals.hh, vals.mm, vals.ss], hms = [];
             if (isrange) {
@@ -417,7 +417,7 @@
                     boxCell.find(".daybox").show();
                     that.dateOrien(boxCell, that.valCell);
                 });
-                
+
                 timeDiv.css({"cursor":"pointer"});
             }
             //将所有子元素用一个生成的div将所有段落包裹起来
@@ -444,7 +444,7 @@
     };
     jedfn.createYMHtml = function(ys, ms, opts){
         var year = parseInt(ys), month = parseInt(ms), headCls = this.maincon(".daybox",0);
-        var ymCls = $("<p/>").css({"width":jet.isBool(opts.multiPane) ? '':'50%'}), 
+        var ymCls = $("<p/>").css({"width":jet.isBool(opts.multiPane) ? '':'50%'}),
             ymText = "<span class='ymbtn'>"+month+"\u6708 "+year+"\u5e74</span>";
         headCls.append(ymCls.html(ymText));
         return year+"-"+month;
@@ -456,7 +456,7 @@
             multiPane = jet.isBool(opts.multiPane), mlens = jet.mlen(that.format),
             ymarr = that.getValue({}),testhh = /\hh/.test(that.format),
             formatYY = mlens == 1;
-        
+
         if(ymscon.find(".ymcon").length > 0) ymscon.find(".ymcon").remove();
         $.each(new Array(multiPane ? 1 : 2),function (s) {
             var retSetCls = function (sym,gym,eym) {
@@ -497,7 +497,7 @@
                     } else {
                         seCls = retSetCls(year.toString(),getyear.toString(),ymarr[1].YYYY.toString());
                         ymArr.push({style:seCls,ym: year,idx:n});
-                    } 
+                    }
                 } else {
                     var minArr = jet.splMatch(jet.minDate), maxArr = jet.splMatch(jet.maxDate),
                         thisDate = parseInt(ym+""+jet.digit(val)+""+"01"),
@@ -512,7 +512,7 @@
                         ymArr.push({style:seCls,ym: ym + "-" + jet.digit(val),idx:n});
                     }
                 }
-                
+
             });
             var table = $('<table/>',{"class":formatYY ?"yul":"ymul"});
             //生成表格主体
@@ -528,7 +528,7 @@
                 table.find("td").eq(i).addClass(val.style).attr({idx:val.idx,"je-val":val.ym}).html(val.ym)
             });
             ymscon.append(ymDiv.append(table));
-            
+
         });
         var contd = ymscon.find("td"),ymstit = that.maincon(".ymsbox",0),
             eqNum = formatYY ? (multiPane ? 15-1:15*2-1):(multiPane ? 12-1:12*2-1),
@@ -588,7 +588,7 @@
         var isfestival = function(y, m ,d) {
             var festivalStr;
             if(opts.festival == true && lang.name == "cn"){
-                var lunar = jeLunar(y, m - 1, d), feslunar = (lunar.solarFestival || lunar.lunarFestival),
+                var lunar = that.jeLunar(y, m - 1, d), feslunar = (lunar.solarFestival || lunar.lunarFestival),
                     lunartext = (feslunar && lunar.jieqi) != "" ? feslunar : (lunar.jieqi || lunar.showInLunar);
                 festivalStr = '<p><span class="solar">' + d + '</span><span class="lunar">' + lunartext + '</span></p>';
             }else{
@@ -605,17 +605,17 @@
                 if (minNum > thatNum || maxNum < thatNum) return true;
             }
         };
-        
+
         var eachDays = function (yd,md) {
             var count = 0, daysArr = [],
                 firstWeek = new Date(yd, md - 1, 1).getDay() || 7,
                 daysNum = jet.getDaysNum(yd, md), didx = 0,
                 prevM = jet.prevMonth(yd, md),
-                prevDaysNum = jet.getDaysNum(yd, prevM.m), 
+                prevDaysNum = jet.getDaysNum(yd, prevM.m),
                 nextM = jet.nextMonth(yd, md);
             //上一月剩余天数
             for (var p = prevDaysNum - firstWeek + 1; p <= prevDaysNum; p++, count++) {
-                var pmark = setMark(prevM.y,prevM.m,p); 
+                var pmark = setMark(prevM.y,prevM.m,p);
                 var cls = dateLimit(prevM.y, prevM.m, p, false) ? "disabled" : "other";
                 daysArr.push({style:cls,ymd:prevM.y+'-'+prevM.m+'-'+p,day:p,d:(isfestival(prevM.y,prevM.m,p) + pmark),idx:didx++});
             }
@@ -651,7 +651,7 @@
                 daysArr.push({style:cls,ymd:nextM.y+'-'+nextM.m+'-'+n,day:n,d:(isfestival(nextM.y,nextM.m,n) + nmark),idx:didx++});
             }
             //将星期与日期拼接起来
-            return daysArr; 
+            return daysArr;
         };
         var valdigit = function (val) {
             var spval = jet.reMatch(val) , rearr = [];
@@ -662,11 +662,11 @@
         };
         var moreArr = new Array(multiPane ? 1 : 2), isDec = (month + 1 > 12),ymarr = [];
         $.each(moreArr,function (d,val) {
-            var table = $('<table/>',{"class":"daysul"}) ,thead = $('<thead/>'), 
+            var table = $('<table/>',{"class":"daysul"}) ,thead = $('<thead/>'),
                 tbody = $('<tbody/>'), t= d == 1 ? 42:0;
             table.append(thead).append(tbody);
             //生成表格主体
-            $.each(new Array(7), function(i){ 
+            $.each(new Array(7), function(i){
                 var tr = $('<tr/>');
                 $.each(new Array(7), function(){
                     var th = $("<th/>"), td = $("<td/>");
@@ -677,13 +677,13 @@
             var nian = (isDec && d == 1) ? year+1 : year,
                 yue = (isDec && d == 1) ? 1 : (d == 1 ? month+1 : month);
             var arrDay = eachDays(nian,yue);
-            var moreCls = $("<div/>",{'class':'contlist'});  
+            var moreCls = $("<div/>",{'class':'contlist'});
             //赋值星期
             $.each(lang.weeks,function (i,val) {
                 table.find("th").eq(i).text(val);
             });
             ymarr.push(that.createYMHtml(nian,yue, opts));
-            $.each(arrDay,function (i,val) {  
+            $.each(arrDay,function (i,val) {
                 var clsVal = val.style;
                 if(endval.length > 0 && endval[0]!=""){
                     if(/\%/g.test(endval[0])){
@@ -698,7 +698,7 @@
                         clsVal = jet.isBool(endval[1]) ? (regday ? "disabled" : val.style) : (regday ? val.style : "disabled")
                     }
                 }
-                table.find("td").eq(i).addClass(clsVal).attr("je-val",valdigit(val.ymd)).html(val.d); 
+                table.find("td").eq(i).addClass(clsVal).attr("je-val",valdigit(val.ymd)).html(val.d);
             });
             that.maincon(".daybox",1).append(moreCls.append(table)).addClass(d == 1 ? "spaer" : "");
         });
@@ -714,20 +714,20 @@
             maxTime = jet.maxDate.replace(/\s+/g," ").split(" "),
             isymdh = /YYYY-MM-DD/g.test(jet.isparmat(that.format)) && /\hh/.test(that.format);
         var minhms = jet.reMatch(minTime[1]),
-            maxhms = jet.reMatch(maxTime[1]); 
+            maxhms = jet.reMatch(maxTime[1]);
         var hmsCell = that.maincon(".timebox",1),
             clas = ["action","disabled"],inputs = boxCell.find(".mainfoot .timecon em");
-            //conhms = isymdh ? hmsCell.parent() : hmsCell;
-        var date = new Date(), timeh = date.getHours(), 
+        //conhms = isymdh ? hmsCell.parent() : hmsCell;
+        var date = new Date(), timeh = date.getHours(),
             timem = date.getMinutes(),times = date.getSeconds();
-        var minVal = [gval[0].hh||timeh,gval[0].mm||timem,gval[0].ss||times], 
+        var minVal = [gval[0].hh||timeh,gval[0].mm||timem,gval[0].ss||times],
             maxVal = [gval[1].hh||timeh,gval[1].mm||timem,gval[1].ss||times];
         if (opts.range == false && boxCell.find(".timelist").length > 0) return;
         $.each(new Array(ranges ? 1 : 2),function (m) {
             var timeList = $("<div/>",{"class":"timelist"}).css({width:ranges ? "100%":"50%",float:ranges ? "":"left"}),
                 timeDiv = $("<div/>",{"class":"contime"}), textDiv = $("<div/>",{"class":"textbox"});
             var timetxt = textDiv.append('<p>'+lang.times[0]+'</p><p>'+lang.times[1]+'</p><p>'+lang.times[2]+'</p>');
-            
+
             timeList.append(timetxt);
             hmsCell.addClass(m==1 ? "spaer":"");
             $.each([24, 60, 60],function (i,lens) {
@@ -836,7 +836,7 @@
             ydPre = ymdhead.find(".yprev"), ydNext = ymdhead.find(".ynext"),
             mdPre = ymdhead.find(".mprev"), mdNext = ymdhead.find(".mnext"),
             mlens = jet.mlen(that.format),isYYMM = mlens == 2, isYY = mlens == 1;
-        var carr = ["actdate","contain"],ymDate = new Date();   
+        var carr = ["actdate","contain"],ymDate = new Date();
         var clickYmSelected = function () {
             var ulCell = that.maincon(".ymsbox",1).find(".ymcon"), tdCell = ulCell.find("td");
             tdCell.on("click",function () {
@@ -873,7 +873,7 @@
                         that.areaVal.push(thisdate);
                         that.areaStart = true;
                     }
-                    
+
                 }
             });
         };
@@ -973,7 +973,7 @@
             });
             aloneSelym();
         }
-        
+
     };
     jedfn.gethmsVal = function(boxCell) {
         var hmsArr = {};
@@ -989,10 +989,10 @@
             ulCls = boxCell.find(".daysul"), tdCls = ulCls.find("td"),
             lang = opts.language || config.language,
             carr = ["actdate","contain"];
-        
+
         //点击绑定日期事件
         tdCls.on("click", function(ev) {
-            var lithis = $(this), thisdate = lithis.attr(valStr), 
+            var lithis = $(this), thisdate = lithis.attr(valStr),
                 ymdArr = jet.reMatch(thisdate), dayArr = [];
             if (lithis.hasClass("disabled")) return;
             ev.stopPropagation();
@@ -1062,7 +1062,7 @@
                 if($("#jedatetipscon").length > 0) $("#jedatetipscon").remove();
                 var _this = $(this), atlunar = jet.reMatch(_this.attr(valStr)),
                     tipDiv = $("<div/>",{"id":"jedatetipscon","class":"jedatetipscon"}),
-                    lunar = jeLunar(parseInt(atlunar[0]), parseInt(atlunar[1]) - 1, parseInt(atlunar[2]));
+                    lunar = that.jeLunar(parseInt(atlunar[0]), parseInt(atlunar[1]) - 1, parseInt(atlunar[2]));
                 var tiphtml = '<p>' + lunar.solarYear + '\u5E74' + lunar.solarMonth + '\u6708' + lunar.solarDate + '\u65E5 ' + lunar.inWeekDays + '</p><p class="red">\u519C\u5386：' + lunar.shengxiao + '\u5E74 ' + lunar.lnongMonth + '\u6708' + lunar.lnongDate + '</p><p>' + lunar.ganzhiYear + '\u5E74 ' + lunar.ganzhiMonth + '\u6708 ' + lunar.ganzhiDate + '\u65E5</p>';
                 var Fesjieri = (lunar.solarFestival || lunar.lunarFestival) != "" ? '<p class="red">' + ("\u8282\u65E5："+lunar.solarFestival + lunar.lunarFestival) + '</p>' : "";
                 var Fesjieqi = lunar.jieqi != "" ? '<p class="red">'+(lunar.jieqi != "" ? "\u8282\u6C14："+lunar.jieqi : "") + '</p>': "";
@@ -1109,11 +1109,11 @@
         //今天（现在）按钮设置日期时间
         if(opts.range != false) boxCell.find(".today").hide();
         boxCell.on("click",".today", function() {
-            var xDate = new Date(), 
-            objVal = {
-                YYYY:xDate.getFullYear(), MM:jet.digit(xDate.getMonth() + 1), DD:jet.digit(xDate.getDate()),
-                hh:jet.digit(xDate.getHours()), mm:jet.digit(xDate.getMinutes()), ss:jet.digit(xDate.getSeconds())
-            };
+            var xDate = new Date(),
+                objVal = {
+                    YYYY:xDate.getFullYear(), MM:jet.digit(xDate.getMonth() + 1), DD:jet.digit(xDate.getDate()),
+                    hh:jet.digit(xDate.getHours()), mm:jet.digit(xDate.getMinutes()), ss:jet.digit(xDate.getSeconds())
+                };
             var thisdate = that.setValue(objVal);
             that.dateClose();
             if ($.isFunction(opts.okfun) || opts.okfun != null) opts.okfun({elem:elemCell,val:thisdate,date:objVal});
@@ -1124,23 +1124,23 @@
             var  sDate = new Date(),okVal,valdate,objVal;
             if(opts.range == false){
                 var hmsVal = that.gethmsVal(boxCell),
-                dateVal = function () {
-                    var ymdObj = {}, ymday = (isYYMM || isYY) ? ".ymcon":".daysul",
-                        spval = jet.reMatch(boxCell.find(ymday).find("td.actdate").attr("je-val"));
-                    $.each(spval,function (i,val) {
-                        ymdObj[matArr[i]] = val;
-                    });
-                    var objVal = /\hh/.test(that.format) ? $.extend(ymdObj,hmsVal) : ymdObj;
-                    return objVal;
-                };    
+                    dateVal = function () {
+                        var ymdObj = {}, ymday = (isYYMM || isYY) ? ".ymcon":".daysul",
+                            spval = jet.reMatch(boxCell.find(ymday).find("td.actdate").attr("je-val"));
+                        $.each(spval,function (i,val) {
+                            ymdObj[matArr[i]] = val;
+                        });
+                        var objVal = /\hh/.test(that.format) ? $.extend(ymdObj,hmsVal) : ymdObj;
+                        return objVal;
+                    };
                 okVal = ishhmat ? hmsVal : dateVal();
             }else {
                 var newobj = {}, newarea = [], hmsArr=[[],[]];
-                boxCell.find(".timecon em").each(function(i) {   
+                boxCell.find(".timecon em").each(function(i) {
                     var disab = $(this).attr('disabled');
                     if(disab == undefined){
                         hmsArr[i>2 ? 1 : 0].push($(this).text());
-                    } 
+                    }
                 });
                 if (jet.mlen(that.format) == 7){
                     if (opts.range != false){
@@ -1189,7 +1189,7 @@
     jedfn.clickTime = function (opts,boxCell) {
         var that = this;
         if(/\hh/.test(that.format)){
-            var timeUl = that.maincon(".timebox",1).find("ul"); 
+            var timeUl = that.maincon(".timebox",1).find("ul");
             timeUl.on("click","li",function () {
                 var lithis = $(this);
                 var ulidx = lithis.parent().attr("idx"),
@@ -1208,7 +1208,7 @@
             var hmsCls = $(this), achmsCls = hmsCls.find(".action");
             var acNUm = (achmsCls.length > 0) ? (achmsCls[0].offsetTop - 114):0;
             hmsCls[0].scrollTop = acNUm;
-        }); 
+        });
     };
     //农历方位辨别
     jedfn.lunarOrien = function(obj, self, pos) {
@@ -1267,6 +1267,197 @@
         delete this.areaEnd;
         this.areaVal = [];
     };
+    //农历数据
+    jedfn.jeLunar = function (ly,lm,ld) {
+        var lunarInfo=[19416,19168,42352,21717,53856,55632,91476,22176,39632,21970,19168,42422,42192,53840,119381,46400,54944,44450,38320,84343,18800,42160,46261,27216,27968,109396,11104,38256,21234,18800,25958,54432,59984,28309,23248,11104,100067,37600,116951,51536,54432,120998,46416,22176,107956,9680,37584,53938,43344,46423,27808,46416,86869,19872,42448,83315,21200,43432,59728,27296,44710,43856,19296,43748,42352,21088,62051,55632,23383,22176,38608,19925,19152,42192,54484,53840,54616,46400,46496,103846,38320,18864,43380,42160,45690,27216,27968,44870,43872,38256,19189,18800,25776,29859,59984,27480,21952,43872,38613,37600,51552,55636,54432,55888,30034,22176,43959,9680,37584,51893,43344,46240,47780,44368,21977,19360,42416,86390,21168,43312,31060,27296,44368,23378,19296,42726,42208,53856,60005,54576,23200,30371,38608,19415,19152,42192,118966,53840,54560,56645,46496,22224,21938,18864,42359,42160,43600,111189,27936,44448],
+            sTermInfo = [ 0, 21208, 43467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758 ];
+        var Gan = "甲乙丙丁戊己庚辛壬癸", Zhi = "子丑寅卯辰巳午未申酉戌亥", Animals = "鼠牛虎兔龙蛇马羊猴鸡狗猪";
+        var solarTerm = [ "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满",
+            "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至" ];
+        var nStr1 = "日一二三四五六七八九十", nStr2 = "初十廿卅", nStr3 = [ "正", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "腊"],
+            sFtv1 = {
+                "0101" : "*1元旦节",         "0202" : "湿地日",
+                "0214" : "情人节",           "0308" : "妇女节",
+                "0312" : "植树节",           "0315" : "消费者权益日",
+                "0401" : "愚人节",           "0422" : "地球日",
+                "0501" : "*1劳动节",         "0504" : "青年节",
+                "0512" : "护士节",           "0518" : "博物馆日",
+                "0520" : "母亲节",           "0601" : "儿童节",
+                "0623" : "奥林匹克日",       "0630" : "父亲节",
+                "0701" : "建党节",           "0801" : "建军节",
+                "0903" : "抗战胜利日",       "0910" : "教师节",
+                "1001" : "*3国庆节",         "1201" : "艾滋病日",
+                "1224" : "平安夜",           "1225" : "圣诞节"
+            },
+            sFtv2 = {
+                "0100" : "除夕",             "0101" : "*2春节",
+                "0115" : "元宵节",           "0505" : "*1端午节",
+                "0707" : "七夕节",           "0715" : "中元节",
+                "0815" : "*1中秋节",         "0909" : "*1重阳节",
+                "1015" : "下元节",           "1208" : "腊八节",
+                "1223" : "小年"
+
+            };
+        function flunar(Y) {
+            var sTerm = function (j, i) {
+                    var h = new Date((31556925974.7 * (j - 1900) + sTermInfo[i] * 60000) + Date.UTC(1900, 0, 6, 2, 5));
+                    return (h.getUTCDate())
+                },
+                d = function (k) {
+                    var h, j = 348;
+                    for (h = 32768; h > 8; h >>= 1) {
+                        j += (lunarInfo[k - 1900] & h) ? 1 : 0;
+                    }
+                    return (j + b(k))
+                },
+                ymdCyl = function (h) {
+                    return (Gan.charAt(h % 10) + Zhi.charAt(h % 12))
+                },
+                b =function (h) {
+                    var islp = (g(h)) ? ((lunarInfo[h - 1900] & 65536) ? 30 : 29) : (0);
+                    return islp
+                },
+                g = function (h) {
+                    return (lunarInfo[h - 1900] & 15)
+                },
+                e = function (i, h) {
+                    return ((lunarInfo[i - 1900] & (65536 >> h)) ? 30 : 29)
+                },
+                newymd = function (m) {
+                    var k, j = 0, h = 0, l = new Date(1900, 0, 31), n = (m - l) / 86400000;
+                    this.dayCyl = n + 40;
+                    this.monCyl = 14;
+                    for (k = 1900; k<2050&&n>0; k++) {
+                        h = d(k); n -= h;
+                        this.monCyl += 12;
+                    }
+                    if (n < 0) {
+                        n += h; k--;
+                        this.monCyl -= 12;
+                    }
+                    this.year = k;
+                    this.yearCyl = k - 1864;
+                    j = g(k);
+                    this.isLeap = false;
+                    for (k = 1; k<13&&n>0; k++) {
+                        if (j > 0 && k == (j + 1) && this.isLeap == false) {
+                            --k;
+                            this.isLeap = true;
+                            h = b(this.year);
+                        } else {
+                            h = e(this.year, k);
+                        }
+                        if (this.isLeap == true && k == (j + 1)) {
+                            this.isLeap = false;
+                        }
+                        n -= h;
+                        if (this.isLeap == false) this.monCyl++;
+                    }
+                    if (n == 0 && j > 0 && k == j + 1) {
+                        if (this.isLeap) {
+                            this.isLeap = false;
+                        } else {
+                            this.isLeap = true;
+                            --k;
+                            --this.monCyl;
+                        }
+                    }
+                    if (n < 0) {
+                        n += h; --k;
+                        --this.monCyl
+                    }
+                    this.month = k;
+                    this.day = n + 1;
+                },
+                digit = function (num) {
+                    return num < 10 ? "0" + (num | 0) :num;
+                },
+                reymd = function (i, j) {
+                    var h = i;
+                    return j.replace(/dd?d?d?|MM?M?M?|yy?y?y?/g, function(k) {
+                        switch (k) {
+                            case "yyyy":
+                                var l = "000" + h.getFullYear();
+                                return l.substring(l.length - 4);
+                            case "dd": return digit(h.getDate());
+                            case "d": return h.getDate().toString();
+                            case "MM": return digit((h.getMonth() + 1));
+                            case "M": return h.getMonth() + 1;
+                        }
+                    })
+                },
+                lunarMD = function (i, h) {
+                    var j;
+                    switch (i, h) {
+                        case 10: j = "初十"; break;
+                        case 20: j = "二十"; break;
+                        case 30: j = "三十"; break;
+                        default:
+                            j = nStr2.charAt(Math.floor(h / 10));
+                            j += nStr1.charAt(h % 10);
+                    }
+                    return (j)
+                };
+            this.isToday = false;
+            this.isRestDay = false;
+            this.solarYear = reymd(Y, "yyyy");
+            this.solarMonth = reymd(Y, "M");
+            this.solarDate = reymd(Y, "d");
+            this.solarWeekDay = Y.getDay();
+            this.inWeekDays = "星期" + nStr1.charAt(this.solarWeekDay);
+            var X = new newymd(Y);
+            this.lunarYear = X.year;
+            this.shengxiao = Animals.charAt((this.lunarYear - 4) % 12);
+            this.lunarMonth = X.month;
+            this.lunarIsLeapMonth = X.isLeap;
+            this.lnongMonth = this.lunarIsLeapMonth ? "闰" + nStr3[X.month - 1] : nStr3[X.month - 1];
+            this.lunarDate = X.day;
+            this.showInLunar = this.lnongDate = lunarMD(this.lunarMonth, this.lunarDate);
+            if (this.lunarDate == 1) {
+                this.showInLunar = this.lnongMonth + "月";
+            }
+            this.ganzhiYear = ymdCyl(X.yearCyl);
+            this.ganzhiMonth = ymdCyl(X.monCyl);
+            this.ganzhiDate = ymdCyl(X.dayCyl++);
+            this.jieqi = "";
+            this.restDays = 0;
+            if (sTerm(this.solarYear, (this.solarMonth - 1) * 2) == reymd(Y, "d")) {
+                this.showInLunar = this.jieqi = solarTerm[(this.solarMonth - 1) * 2];
+            }
+            if (sTerm(this.solarYear, (this.solarMonth - 1) * 2 + 1) == reymd(Y, "d")) {
+                this.showInLunar = this.jieqi = solarTerm[(this.solarMonth - 1) * 2 + 1];
+            }
+            if (this.showInLunar == "清明") {
+                this.showInLunar = "清明节";
+                this.restDays = 1;
+            }
+            this.solarFestival = sFtv1[reymd(Y, "MM") + reymd(Y, "dd")];
+            if (typeof this.solarFestival == "undefined") {
+                this.solarFestival = "";
+            } else {
+                if (/\*(\d)/.test(this.solarFestival)) {
+                    this.restDays = parseInt(RegExp.$1);
+                    this.solarFestival = this.solarFestival.replace(/\*\d/, "");
+                }
+            }
+            this.showInLunar = (this.solarFestival == "") ? this.showInLunar : this.solarFestival;
+            this.lunarFestival = sFtv2[this.lunarIsLeapMonth ? "00" : digit(this.lunarMonth) + digit(this.lunarDate)];
+            if (typeof this.lunarFestival == "undefined") {
+                this.lunarFestival = "";
+            } else {
+                if (/\*(\d)/.test(this.lunarFestival)) {
+                    this.restDays = (this.restDays > parseInt(RegExp.$1)) ? this.restDays : parseInt(RegExp.$1);
+                    this.lunarFestival = this.lunarFestival.replace(/\*\d/, "");
+                }
+            }
+            if (this.lunarMonth == 12  && this.lunarDate == e(this.lunarYear, 12)) {
+                this.lunarFestival = sFtv2["0100"];
+                this.restDays = 1;
+            }
+            this.showInLunar = (this.lunarFestival == "") ? this.showInLunar : this.lunarFestival;
+        }
+        return new flunar(new Date(ly,lm,ld));
+    };
     //日期控件版本
     $.dateVer = "6.0.0";
     //返回指定日期
@@ -1296,7 +1487,7 @@
             }
             var setdate = new Date(vdate);
             return jet.parse({YYYY:setdate.getFullYear(), MM:jet.digit(setdate.getMonth()+1), DD:jet.digit(setdate.getDate()) , hh:jet.digit(setdate.getHours()), mm:jet.digit(setdate.getMinutes()), ss:jet.digit(setdate.getSeconds()) }, format);
-        }else {  
+        }else {
             //将日期转换成时间戳
             var arrs = jet.reMatch(date),
                 newdate = new Date(arrs[0],parseInt(arrs[1])-1,arrs[2],arrs[3]||0,arrs[4]||0,arrs[5]||0),
@@ -1314,12 +1505,13 @@
     };
     //获取年月日星期
     $.getLunar = function(date,format){
+        var that = this;
         format = format || 'YYYY-MM-DD hh:mm:ss';
         if(/YYYY-MM-DD/g.test(jet.isparmat(format))){
             //如果为数字类型的日期对获取到日期的进行替换
             var charDate = date.substr(0,4).replace(/^(\d{4})/g,"$1,") + date.substr(4).replace(/(.{2})/g,"$1,"),
                 reArr = jet.isNum(date) ? jet.reMatch(charDate) : jet.reMatch(date),
-                lunars = jeLunar(reArr[0], reArr[1] - 1, reArr[2]);
+                lunars = that.jeLunar(reArr[0], reArr[1] - 1, reArr[2]);
             return{
                 nMonth: lunars.lnongMonth,             //农历月
                 nDays: lunars.lnongDate,               //农历日
@@ -1332,201 +1524,4 @@
         }
     };
     return jeDate;
-});
-
-//农历数据
-;(function(root, factory) {
-    root.jeLunar = factory(root.jeLunar);
-})(this, function(jeLunar) {
-    var lunarInfo=[19416,19168,42352,21717,53856,55632,91476,22176,39632,21970,19168,42422,42192,53840,119381,46400,54944,44450,38320,84343,18800,42160,46261,27216,27968,109396,11104,38256,21234,18800,25958,54432,59984,28309,23248,11104,100067,37600,116951,51536,54432,120998,46416,22176,107956,9680,37584,53938,43344,46423,27808,46416,86869,19872,42448,83315,21200,43432,59728,27296,44710,43856,19296,43748,42352,21088,62051,55632,23383,22176,38608,19925,19152,42192,54484,53840,54616,46400,46496,103846,38320,18864,43380,42160,45690,27216,27968,44870,43872,38256,19189,18800,25776,29859,59984,27480,21952,43872,38613,37600,51552,55636,54432,55888,30034,22176,43959,9680,37584,51893,43344,46240,47780,44368,21977,19360,42416,86390,21168,43312,31060,27296,44368,23378,19296,42726,42208,53856,60005,54576,23200,30371,38608,19415,19152,42192,118966,53840,54560,56645,46496,22224,21938,18864,42359,42160,43600,111189,27936,44448],
-        sTermInfo = [ 0, 21208, 43467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758 ];
-    var Gan = "甲乙丙丁戊己庚辛壬癸", Zhi = "子丑寅卯辰巳午未申酉戌亥", Animals = "鼠牛虎兔龙蛇马羊猴鸡狗猪";
-    var solarTerm = [ "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满",
-        "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至" ];
-    var nStr1 = "日一二三四五六七八九十", nStr2 = "初十廿卅", nStr3 = [ "正", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "腊"],
-        sFtv1 = {
-            "0101" : "*1元旦节",         "0202" : "湿地日",
-            "0214" : "情人节",           "0308" : "妇女节",
-            "0312" : "植树节",           "0315" : "消费者权益日",
-            "0401" : "愚人节",           "0422" : "地球日",
-            "0501" : "*1劳动节",         "0504" : "青年节",
-            "0512" : "护士节",           "0518" : "博物馆日",
-            "0520" : "母亲节",           "0601" : "儿童节",
-            "0623" : "奥林匹克日",       "0630" : "父亲节",
-            "0701" : "建党节",           "0801" : "建军节",
-            "0903" : "抗战胜利日",       "0910" : "教师节",
-            "1001" : "*3国庆节",         "1201" : "艾滋病日",
-            "1224" : "平安夜",           "1225" : "圣诞节"
-        },
-        sFtv2 = {
-            "0100" : "除夕",             "0101" : "*2春节",
-            "0115" : "元宵节",           "0505" : "*1端午节",
-            "0707" : "七夕节",           "0715" : "中元节",
-            "0815" : "*1中秋节",         "0909" : "*1重阳节",
-            "1015" : "下元节",           "1208" : "腊八节",
-            "1223" : "小年"
-
-        };
-    function flunar(Y) {
-        var sTerm = function (j, i) {
-                var h = new Date((31556925974.7 * (j - 1900) + sTermInfo[i] * 60000) + Date.UTC(1900, 0, 6, 2, 5));
-                return (h.getUTCDate())
-            },
-            d = function (k) {
-                var h, j = 348;
-                for (h = 32768; h > 8; h >>= 1) {
-                    j += (lunarInfo[k - 1900] & h) ? 1 : 0;
-                }
-                return (j + b(k))
-            },
-            ymdCyl = function (h) {
-                return (Gan.charAt(h % 10) + Zhi.charAt(h % 12))
-            },
-            b =function (h) {
-                var islp = (g(h)) ? ((lunarInfo[h - 1900] & 65536) ? 30 : 29) : (0);
-                return islp
-            },
-            g = function (h) {
-                return (lunarInfo[h - 1900] & 15)
-            },
-            e = function (i, h) {
-                return ((lunarInfo[i - 1900] & (65536 >> h)) ? 30 : 29)
-            },
-            newymd = function (m) {
-                var k, j = 0, h = 0, l = new Date(1900, 0, 31), n = (m - l) / 86400000;
-                this.dayCyl = n + 40;
-                this.monCyl = 14;
-                for (k = 1900; k<2050&&n>0; k++) {
-                    h = d(k); n -= h;
-                    this.monCyl += 12;
-                }
-                if (n < 0) {
-                    n += h; k--;
-                    this.monCyl -= 12;
-                }
-                this.year = k;
-                this.yearCyl = k - 1864;
-                j = g(k);
-                this.isLeap = false;
-                for (k = 1; k<13&&n>0; k++) {
-                    if (j > 0 && k == (j + 1) && this.isLeap == false) {
-                        --k;
-                        this.isLeap = true;
-                        h = b(this.year);
-                    } else {
-                        h = e(this.year, k);
-                    }
-                    if (this.isLeap == true && k == (j + 1)) {
-                        this.isLeap = false;
-                    }
-                    n -= h;
-                    if (this.isLeap == false) this.monCyl++;
-                }
-                if (n == 0 && j > 0 && k == j + 1) {
-                    if (this.isLeap) {
-                        this.isLeap = false;
-                    } else {
-                        this.isLeap = true;
-                        --k;
-                        --this.monCyl;
-                    }
-                }
-                if (n < 0) {
-                    n += h; --k;
-                    --this.monCyl
-                }
-                this.month = k;
-                this.day = n + 1;
-            },
-            digit = function (num) {
-                return num < 10 ? "0" + (num | 0) :num;
-            },
-            reymd = function (i, j) {
-                var h = i;
-                return j.replace(/dd?d?d?|MM?M?M?|yy?y?y?/g, function(k) {
-                    switch (k) {
-                        case "yyyy":
-                            var l = "000" + h.getFullYear();
-                            return l.substring(l.length - 4);
-                        case "dd": return digit(h.getDate());
-                        case "d": return h.getDate().toString();
-                        case "MM": return digit((h.getMonth() + 1));
-                        case "M": return h.getMonth() + 1;
-                    }
-                })
-            },
-            lunarMD = function (i, h) {
-                var j;
-                switch (i, h) {
-                    case 10: j = "初十"; break;
-                    case 20: j = "二十"; break;
-                    case 30: j = "三十"; break;
-                    default:
-                        j = nStr2.charAt(Math.floor(h / 10));
-                        j += nStr1.charAt(h % 10);
-                }
-                return (j)
-            };
-        this.isToday = false;
-        this.isRestDay = false;
-        this.solarYear = reymd(Y, "yyyy");
-        this.solarMonth = reymd(Y, "M");
-        this.solarDate = reymd(Y, "d");
-        this.solarWeekDay = Y.getDay();
-        this.inWeekDays = "星期" + nStr1.charAt(this.solarWeekDay);
-        var X = new newymd(Y);
-        this.lunarYear = X.year;
-        this.shengxiao = Animals.charAt((this.lunarYear - 4) % 12);
-        this.lunarMonth = X.month;
-        this.lunarIsLeapMonth = X.isLeap;
-        this.lnongMonth = this.lunarIsLeapMonth ? "闰" + nStr3[X.month - 1] : nStr3[X.month - 1];
-        this.lunarDate = X.day;
-        this.showInLunar = this.lnongDate = lunarMD(this.lunarMonth, this.lunarDate);
-        if (this.lunarDate == 1) {
-            this.showInLunar = this.lnongMonth + "月";
-        }
-        this.ganzhiYear = ymdCyl(X.yearCyl);
-        this.ganzhiMonth = ymdCyl(X.monCyl);
-        this.ganzhiDate = ymdCyl(X.dayCyl++);
-        this.jieqi = "";
-        this.restDays = 0;
-        if (sTerm(this.solarYear, (this.solarMonth - 1) * 2) == reymd(Y, "d")) {
-            this.showInLunar = this.jieqi = solarTerm[(this.solarMonth - 1) * 2];
-        }
-        if (sTerm(this.solarYear, (this.solarMonth - 1) * 2 + 1) == reymd(Y, "d")) {
-            this.showInLunar = this.jieqi = solarTerm[(this.solarMonth - 1) * 2 + 1];
-        }
-        if (this.showInLunar == "清明") {
-            this.showInLunar = "清明节";
-            this.restDays = 1;
-        }
-        this.solarFestival = sFtv1[reymd(Y, "MM") + reymd(Y, "dd")];
-        if (typeof this.solarFestival == "undefined") {
-            this.solarFestival = "";
-        } else {
-            if (/\*(\d)/.test(this.solarFestival)) {
-                this.restDays = parseInt(RegExp.$1);
-                this.solarFestival = this.solarFestival.replace(/\*\d/, "");
-            }
-        }
-        this.showInLunar = (this.solarFestival == "") ? this.showInLunar : this.solarFestival;
-        this.lunarFestival = sFtv2[this.lunarIsLeapMonth ? "00" : digit(this.lunarMonth) + digit(this.lunarDate)];
-        if (typeof this.lunarFestival == "undefined") {
-            this.lunarFestival = "";
-        } else {
-            if (/\*(\d)/.test(this.lunarFestival)) {
-                this.restDays = (this.restDays > parseInt(RegExp.$1)) ? this.restDays : parseInt(RegExp.$1);
-                this.lunarFestival = this.lunarFestival.replace(/\*\d/, "");
-            }
-        }
-        if (this.lunarMonth == 12  && this.lunarDate == e(this.lunarYear, 12)) {
-            this.lunarFestival = sFtv2["0100"];
-            this.restDays = 1;
-        }
-        this.showInLunar = (this.lunarFestival == "") ? this.showInLunar : this.lunarFestival;
-    }
-    var jeLunar = function(y,m,d) {
-        return new flunar(new Date(y,m,d));
-    };
-    return jeLunar;
 });
