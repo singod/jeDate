@@ -204,10 +204,10 @@
         
         var result = new DateTime().reDate();
         $.each(["ss","mm","hh","DD","MM","YYYY"],function (i,mat) {
-            if (!jet.isNum(objVal[mat])) return null;
+            if (!jet.isNum(parseInt(objVal[mat]))) return null;
             var reVal = result.GetValue();
-            if (objVal[mat] || objVal[mat] == 0){
-                reVal["set"+matArr[mat]](result["Get"+matArr[mat]]() + (mat == "MM" ? -1 : 0) + objVal[mat]);
+            if (parseInt(objVal[mat]) || parseInt(objVal[mat]) == 0){
+                reVal["set"+matArr[mat]](result["Get"+matArr[mat]]() + (mat == "MM" ? -1 : 0) + parseInt(objVal[mat]));
             }
         });
         //获取格式化后的日期
@@ -333,9 +333,9 @@
     //获取日期值
     jedfn.getValue = function (valobj) {
         var that = this, objCell = that.valCell,
-            opts = that.opts, date = new Date(), reObj,
-            dateY = date.getFullYear(),dateM = date.getMonth(),dateD = date.getDate(),
-            timeh = date.getHours(),timem = date.getMinutes(),times = date.getSeconds();
+            opts = that.opts, reObj, result = new DateTime().reDate(),
+            dateY = result.GetFullYear(),dateM = result.GetMonth(),dateD = result.GetDate(),
+            timeh = result.GetHours(),timem = result.GetMinutes(),times = result.GetSeconds();
         if (valobj == undefined && jet.isBool(opts.isShow)){
             var type = jet.isValHtml(objCell) ? "val" : "text";
             reObj = objCell[type]();
@@ -351,7 +351,7 @@
                 $.each(newArr,function (i) {
                     var inObj = {};
                     $.each(matArr, function (r, val) {
-                        inObj[val] = parseInt(unObj(val)[0] ? (val == "MM" ? defObj[i][val] + 1 : defObj[i][val]) : unObj(val)[1]);
+                        inObj[val] = parseInt(unObj(val)[0] ? defObj[i][val] : unObj(val)[1]);
                     });
                     ranMat.push($.extend(defObj[i], inObj));
                 });
