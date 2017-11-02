@@ -1492,7 +1492,7 @@
         return new flunar(new Date(ly,lm,ld));
     };
     //日期控件版本
-    $.dateVer = "6.0.0";
+    $.dateVer = "6.0.2";
     //返回指定日期
     $.nowDate = function (str,format) {
         format = format || 'YYYY-MM-DD hh:mm:ss';
