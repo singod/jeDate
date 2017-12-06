@@ -12,7 +12,11 @@ jeDate是一款大众化的日期控件，她身兼多职，虽不是万能的�
 **使用NPM安装**
 
     npm install jquery.jedate
+    
+**使用Git安装**
 
+    git clone git://github.com/singod/jeDate.git
+    
 **使用对象**
 
     <input class="datainp" id="indate" type="text" placeholder="请选择"  readonly>
