@@ -17,19 +17,18 @@ pre{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-s
 hr{height:1px;margin:10px 0;border:0;background-color:#e2e2e2;clear:both}
 a{color:#333;text-decoration:none}
 a:hover{color:#777}
-.gray{background-color: #f2f2f2;}
+.gray{background-color: #f5f5f5;}
 
-.icons{background-image: url("jedate.png"); background-repeat:no-repeat; }
-.jequote{max-width: 1200px;margin-bottom: 10px;padding: 15px;line-height: 22px;border: 4px solid #00A080;border-radius: 4px;background-color: #f5f5f5;font-size: 15px;}
-.jebody{max-width: 1200px;margin: 40px auto 100px auto;position: relative;}
+.icons{background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAASAgMAAAA1aVZ3AAAACVBMVEUAAAD///9nyrNdI4MmAAAAAXRSTlMAQObYZgAAAChJREFUCNdjWAUCCxjg9DQgtTKBAUN8aigQJGCho6KiYDSJ8ggaYR8Ao74zAKjm+cYAAAAASUVORK5CYII="); background-repeat:no-repeat; }
+.jequote{max-width: 1140px;margin-bottom: 10px;padding: 15px;line-height: 22px;border: 4px solid #00A080;border-radius: 4px;background-color: #f5f5f5;font-size: 15px;}
+.jebody{max-width: 1140px;margin: 40px auto;position: relative;}
 .jewarp{width:100%;margin: 15px 0; }
-.jewarp h3{position: relative;left: 0;height: 40px;line-height:40px;padding-left:10px;white-space: nowrap;border-radius: 4px 4px 0 0;font-size: 16px;color:#00A080;text-align: left;border: 1px solid #ededed;border-bottom: none;}
-.jewarp .content{border: 1px solid #ededed;border-radius:0 0 4px 4px;padding: 25px 10px 10px 10px;overflow: hidden;}
-.jeitem{width:33.33%;margin:0 0px 15px 0;position: relative;float: left;}
-.jelabel{width: 120px;float: left;display: block;padding: 9px 10px;font-weight: 400;text-align: right; color:#555;}
-.jeinpbox{width: 230px;margin-right: 10px;float: left;vertical-align: middle;position: relative;}
-.jeinput{display: block;width: 100%;padding-left: 10px; height: 36px;line-height: 34px\9;border: 1px solid #e6e6e6;background-color: #fff;border-radius: 3px;background-color: #fcfcfc;}
-.jeindiv{display: block;width: 100%;padding-left: 10px; height: 36px;line-height: 36px;border-bottom: 1px solid #e6e6e6;background-color: #fff;background-color: #fcfcfc;}
-.jebtns{width: 35px;margin-left: 10px; height: 36px;line-height: 36px\9;border: 1px solid #e6e6e6;background-color: #fff;border-radius: 3px;background-position:right center;float: left;cursor: pointer;position: absolute;top:0;right:-12px;}
-.jefixeitem{width:25%;margin:0 0px 15px 0;position: relative;float: left; text-align: center;}
+.jewarp h3{position: relative;left: 0;height: 40px;line-height:40px;padding-left:10px;white-space: nowrap;border-radius: 4px 4px 0 0;font-size: 16px;color:#00A080;text-align: left;}
+.jewarp .content{border: 1px solid #ededed;border-radius:0 0 4px 4px;padding: 20px 10px 10px 10px;overflow: hidden;}
+.jeitem{margin:0 10px 8px 0;position: relative;float: left;}
+.jelabel{width: 130px;float: left;display: block;padding: 9px 10px;font-weight: 400;text-align: right; color:#555;}
+.jeinpbox{float: left;width: 190px;margin-right: 10px;display: inline-block;vertical-align: middle;position: relative;}
+.jeinput{display: block;width: 100%;padding-left: 10px; height: 36px;line-height: 34px\9;border: 1px solid #e6e6e6;background-color: #fff;border-radius: 3px;}
+.jebtns{width: 35px;margin-left: 10px; height: 36px;line-height: 36px\9;border: 1px solid #e6e6e6;background-color: #fff;border-radius: 3px;background-position:right center;float: left;cursor: pointer;}
+
 

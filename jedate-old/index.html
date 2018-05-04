@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>jeDate日期控件(原生JS) - 演示</title>
+    <title>jeDate日期控件 - 演示</title>
     <link type="text/css" rel="stylesheet" href="test/jeDate-test.css">
-    <link type="text/css" rel="stylesheet" href="skin/jedate.css">
-    <script type="text/javascript" src="src/jedate.js"></script>
+    <link type="text/css" rel="stylesheet" href="jedate-6.0.2/skin/jedate.css">
+    <script type="text/javascript" src="jedate-6.0.2/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="jedate-6.0.2/jquery.jedate.js"></script>
+    <script type="text/javascript" src="test/jedate-test.js"></script>
 </head>
 <body>
 <div class="jebody">
     <blockquote class="jequote">
-        <p style="text-align: center;font-size:24px;padding-bottom: 15px;">jeDate日期控件 - (原生JS)</p>
-        jeDate6.5.0是一款原生JS开发的<span style="color: red">不依赖任何第三方库</span>大众化的日期控件，她身兼多职，虽不是万能的，但是她却是功能强大多样的美少女，她除了包含 单双面板、区域选择、 多语言、日历固定、有效无效日期、日期时间戳转换、日期加减、限制时分秒、初始化日期加减N、日期标注点、设定年月（YYYY-MM）、日期范围限制、开始日期设定、自定义日期格式、当天的前后若干天返回、时分秒选择、智能响应、自动纠错、节日识别，操作等常规功能外，根据不同的日期格式，显示不同内容，还拥有更多趋近完美的解决方案。更多的是需要你与她的亲密接触与呵护！</span> <br/> 
-        jeDate群01：516754269（已满） &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  jeDate群02：73371254<br/><br/>
+        <p style="text-align: center;font-size:24px;padding-bottom: 15px;">jeDate日期控件</p>
+        jeDate是一款大众化的日期控件，她身兼多职，虽不是万能的，但是她却是功能强大多样的美少女，她除了包含 单双面板、区域选择、 多语言、日历固定、有效无效日期、日期时间戳转换、日期加减、限制时分秒、初始化日期加减N、日期标注点、设定年月（YYYY-MM）、日期范围限制、开始日期设定、自定义日期格式、当天的前后若干天返回、时分秒选择、智能响应、自动纠错、节日识别，操作等常规功能外，根据不同的日期格式，显示不同内容，还拥有更多趋近完美的解决方案。更多的是需要你与她的亲密接触与呵护！</span>  QQ群：516754269<br/><br/>
         <span style="color: red">此为部分个例展示，更多请看</span>&nbsp;&nbsp; <a href="http://www.jemui.com" style="color:#0a60d6;text-decoration:underline;">详细日期控件API</a>。<br/><br/>
     </blockquote>
     <div class="jewarp">
@@ -42,42 +43,6 @@
         </div>
     </div>
     <div class="jewarp">
-        <h3 class="gray">英文语言</h3>
-        <div class="content">
-            <div class="jeitem">
-                <label class="jelabel">年月日选择</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="enYMD" placeholder="YYYY-MM-DD"></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">年月日时分秒</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="enYMDhms" placeholder="YYYY-MM-DD hh:mm:ss"></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">时分秒选择</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="enhms" placeholder="hh:mm:ss"></div>
-            </div>
-            
-        </div>
-    </div>
-    <div class="jewarp">
-        <h3 class="gray">自定义主题色</h3>
-        <div class="content">
-            <div class="jeitem">
-                <label class="jelabel">蓝色主题</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="testblue" placeholder="YYYY-MM-DD hh:mm:ss"></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">绿色主题</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="testgray" placeholder="YYYY-MM-DD hh:mm:ss"></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">红色主题</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="testred" placeholder="YYYY-MM-DD hh:mm:ss"></div>
-            </div>
-            
-        </div>
-    </div>
-    <div class="jewarp">
         <h3 class="gray">区域范围选择</h3>
         <div class="content">
             <div class="jeitem">
@@ -92,7 +57,6 @@
                 <label class="jelabel">日范围选择</label>
                 <div class="jeinpbox"><input type="text" class="jeinput" id="test08" placeholder="YYYY-MM-DD"></div>
             </div>
-            
         </div>
     </div>
     <div class="jewarp">
@@ -109,18 +73,6 @@
             <div class="jeitem">
                 <label class="jelabel">日范围选择</label>
                 <div class="jeinpbox"><input type="text" class="jeinput" id="test11" placeholder="YYYY-MM-DD"></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">日时分秒范围选择</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="test11A" placeholder="YYYY-MM-DD hh:mm:ss"></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">时分秒范围选择</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="test11B" placeholder="hh:mm:ss"></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">时分范围选择</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="test11C" placeholder="hh:mm"></div>
             </div>
         </div>
     </div>
@@ -145,59 +97,13 @@
         <h3 class="gray">一次绑定多个选择</h3>
         <div class="content">
             <div class="jeitem">
-                <label class="jelabel">第一个</label>
                 <div class="jeinpbox"><input type="text" class="jeinput moredate" placeholder="YYYY年MM月DD日"></div>
             </div>
             <div class="jeitem">
-                <label class="jelabel">第二个</label>
                 <div class="jeinpbox"><input type="text" class="jeinput moredate" placeholder="YYYY-MM-DD"></div>
             </div>
             <div class="jeitem">
-                <label class="jelabel">第三个</label>
                 <div class="jeinpbox"><input type="text" class="jeinput moredate" placeholder="YYYY/MM/DD"></div>
-            </div>
-        </div>
-    </div>
-    <div class="jewarp">
-        <h3 class="gray">DIV元素选择</h3>
-        <div class="content">
-            <div class="jeitem">
-                <label class="jelabel">第一个</label>
-                <div class="jeinpbox"><div class="jeindiv divmore" placeholder="YYYY年MM月DD日"></div></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">第二个</label>
-                <div class="jeinpbox"><div class="jeindiv divmore" placeholder="YYYY-MM-DD"></div></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">第三个</label>
-                <div class="jeinpbox"><div class="jeindiv divmore" placeholder="YYYY/MM/DD"></div></div>
-            </div>
-        </div>
-    </div>
-    <div class="jewarp">
-        <h3 class="gray">左边多类选择</h3>
-        <div class="content">
-            <div class="jeitem">
-                <label class="jelabel">单面板选择</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="short" placeholder="YYYY年MM月DD日"></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">双面板选择</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="shortboth" placeholder="YYYY年MM月DD日"></div>
-            </div>
-        </div>
-    </div>
-    <div class="jewarp">
-        <h3 class="gray">YYYYMMDD格式</h3>
-        <div class="content">
-            <div class="jeitem">
-                <label class="jelabel">单面板选择</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="dateymd" placeholder="YYYYMMDD"></div>
-            </div>
-            <div class="jeitem">
-                <label class="jelabel">双面板选择</label>
-                <div class="jeinpbox"><input type="text" class="jeinput" id="dateymdboth" placeholder="YYYYMMDD"></div>
             </div>
         </div>
     </div>
@@ -226,11 +132,8 @@
             </div>
             <div class="jeitem">
                 <label class="jelabel">点击图标</label>
-                <div class="jeinpbox">
-                    <input type="text" class="jeinput" id="testico" placeholder="YYYY-MM-DD">
-                    <div class="icons jebtns" onclick="jeDate('#testico',{trigger:false,format: 'YYYY-MM-DD'})"></div>
-                </div>
-                
+                <div class="jeinpbox" style="width: 145px;"><input type="text" class="jeinput" id="testico" placeholder="YYYY-MM-DD"></div>
+                <div class="icons jebtns" onclick="$.jeDate('#testico',{trigger:false,format: 'YYYY-MM-DD'})"></div>
             </div>
         </div>
     </div>
@@ -266,13 +169,12 @@
     <div class="jewarp">
         <h3 class="gray">直接展示日历</h3>
         <div class="content">
-            <div class="jefixeitem" id="show01"></div>
-            <div class="jefixeitem" id="show02"></div>
-            <div class="jefixeitem" id="show03"></div>
-            <div class="jefixeitem" id="show04"></div>
+            <div class="jeitem" id="show01"></div>
+            <div class="jeitem" id="show02"></div>
+            <div class="jeitem" id="show03"></div>
+            <div class="jeitem" id="show04"></div>
         </div>
     </div>
 </div>
-<script type="text/javascript" src="test/demo.js"></script>
 </body>
 </html>
