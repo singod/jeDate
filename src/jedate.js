@@ -967,6 +967,7 @@
                     jet.valText(that.valCell,"");
                     that.selectDate = [jet.parse(jet.getDateTime({}),"YYYY-MM-DD hh:mm:ss")];
                     that.closeDate();
+                    opts.clearfun && opts.clearfun.call(that); 
                 },
                 //现在按钮函数
                 nowBtn:function () {
