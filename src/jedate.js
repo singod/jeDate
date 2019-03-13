@@ -421,7 +421,7 @@
             var getCurrValue = function () {
                 var mats = jet.reMatch(that.format), isEmpty = that.getValue() != "",curVal = [],
                     parmat = that.dlen == 7 ? "hh:mm:ss" : "YYYY-MM"+ (that.dlen <= 2 ? "":"-DD");
-                that.selectValue = [jet.parse(jet.getDateTime({}), parmat)];
+                that.selectValue = that.selectValue && that.selectValue.length > 0 ? that.selectValue :  [jet.parse(jet.getDateTime({}), parmat)];
                 if(isEmpty && isShow){
                     var getVal = that.getValue().split(range);
                     jet.each(new Array(range ? 2 : 1),function (a) {
