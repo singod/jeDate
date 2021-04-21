@@ -811,6 +811,8 @@
                         gval = jet.getDateTime(evobj),tmval = that.selectTime;
                     that.selectValue = [jet.parse(gval,"YYYY-MM-DD")];
                     that.selectDate = [{YYYY:gval.YYYY,MM:gval.MM,DD:gval.DD}];
+                    that.selectTime = [{ hh: gval.hh, mm: gval.mm, ss: gval.ss }]
+                    tmval = that.selectTime;
                     if(opts.onClose){
                         var nYM = jet.nextMonth(gval.YYYY,gval.MM),
                             ymarr = [{YYYY:gval.YYYY,MM:gval.MM,DD:gval.DD},{YYYY:nYM.y,MM:nYM.m,DD:null}];
