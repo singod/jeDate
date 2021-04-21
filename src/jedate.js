@@ -421,7 +421,23 @@
             var getCurrValue = function () {
                 var mats = jet.reMatch(that.format), isEmpty = that.getValue() != "",curVal = [],
                     parmat = that.dlen == 7 ? "hh:mm:ss" : "YYYY-MM"+ (that.dlen <= 2 ? "":"-DD");
-                that.selectValue = that.selectValue && that.selectValue.length > 0 ? that.selectValue :  [jet.parse(jet.getDateTime({}), parmat)];
+                					var result = that.valCell.value;
+                      if (!result) {
+                       that.selectValue = [jet.parse(jet.getDateTime({}), parmat)];
+                      } else {
+                       result = result.substr(0,11);
+                       var nowTime = [jet.parse(jet.getDateTime({}), parmat)];
+                       nowTime = nowTime[0];
+                       var time1 = new Date(result).setHours('0');
+                       var time2 = new Date(nowTime).setHours('0');
+                       var nDays = (parseInt((time1 - time2) / 1000 / 3600 / 24));
+                       var redate = {
+                        DD: nDays
+                       };
+                       that.selectValue = [jet.parse(jet.getDateTime(redate), parmat)];
+                      }
+                // that.selectValue = that.selectValue && that.selectValue.length > 0 ? that.selectValue :  [jet.parse(jet.getDateTime({}), parmat)];
+ 
                 if(isEmpty && isShow){
                     var getVal = that.getValue().split(range);
                     jet.each(new Array(range ? 2 : 1),function (a) {
